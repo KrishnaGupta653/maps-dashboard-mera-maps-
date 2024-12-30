@@ -260,8 +260,9 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
       if (pincodeArray.hasOwnProperty(wh)) {
         const pincodes = pincodeArray[wh];
         for (const pin of pincodes) {
-          var latlng = new google.maps.LatLng(pin.latitude, pin.longitute);
-          let pincode = pin.pincode.toString();
+          // var latlng = new google.maps.LatLng(pin.latitude, pin.longitute);
+          try {
+            let pincode = pin.pincode.toString();
           const request = { address: pincode };
 
           const result = await geocoder.geocode(request)
@@ -288,6 +289,9 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
             featureLayer.style = null;
           }
           featureLayers.push(featureLayer);
+          } catch (error) {
+            console.log("error", error);
+          }
         }
       }
     }
