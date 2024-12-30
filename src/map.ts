@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-export function loadGoogleMapsScript(): Promise<void> {
+export async function loadGoogleMapsScript(): Promise<void> {
   return new Promise((resolve, reject) => {
     if (window.google && window.google.maps) {
       resolve();
@@ -199,14 +199,13 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
     await loadGoogleMapsScript();
     map = initializeMap("map");
   }
+  console.log("pincodeArray", pincodeArray);
   geocoder = new google.maps.Geocoder();
   if (!marker) {
     marker = new google.maps.Marker({
       map: map,
     });
   }
-
-  // console.log("pincodeArray", pincodeArray);
   const dataLayer = new google.maps.Data();
   dataLayer.setMap(map);
 
@@ -251,8 +250,9 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
   }
 
   try {
-    
+
     const featureLayers: google.maps.FeatureLayer[] = [];
+    console.log("featureLayers", featureLayers);
     const placeIdsToStyle: Set<string> = new Set();
     featureLayer = map.getFeatureLayer(POSTAL_CODE);
 
@@ -260,35 +260,34 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
       if (pincodeArray.hasOwnProperty(wh)) {
         const pincodes = pincodeArray[wh];
         for (const pin of pincodes) {
-          // var latlng = new google.maps.LatLng(pin.latitude, pin.longitute);
           try {
             let pincode = pin.pincode.toString();
-          const request = { address: pincode };
+            const request = { address: pincode };
 
-          const result = await geocoder.geocode(request)
-          const { results } = result;
-          if (results.length > 0) {
-            placeIdsToStyle.add(results[0].place_id);
-          }
-          function styleBoundary() {
-            const featureStyleOptions = {
-              strokeColor: '#810FCB',
-              strokeOpacity: 1.0,
-              strokeWeight: 2.0,
-              fillColor: '#810FCB',
-              fillOpacity: 0.5
-            };
-            featureLayer.style = (options: { feature: { placeId: string; }; }) => {
-              if (placeIdsToStyle.has(options.feature.placeId)) {
-                return featureStyleOptions;
-              }
-            };
-          }
-          styleBoundary();
-          if (!toggle) {
-            featureLayer.style = null;
-          }
-          featureLayers.push(featureLayer);
+            const result = await geocoder.geocode(request)
+            const { results } = result;
+            if (results.length > 0) {
+              placeIdsToStyle.add(results[0].place_id);
+            }
+            function styleBoundary() {
+              const featureStyleOptions = {
+                strokeColor: '#810FCB',
+                strokeOpacity: 1.0,
+                strokeWeight: 2.0,
+                fillColor: '#810FCB',
+                fillOpacity: 0.5
+              };
+              featureLayer.style = (options: { feature: { placeId: string; }; }) => {
+                if (placeIdsToStyle.has(options.feature.placeId)) {
+                  return featureStyleOptions;
+                }
+              };
+            }
+            styleBoundary();
+            if (!toggle) {
+              featureLayer.style = null;
+            }
+            featureLayers.push(featureLayer);
           } catch (error) {
             console.log("error", error);
           }

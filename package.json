@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@googlemaps/region-lookup": "^0.0.0",
     "@next/env": "^15.1.2",
     "@nextui-org/checkbox": "^2.3.6",
     "@nextui-org/progress": "^2.2.5",

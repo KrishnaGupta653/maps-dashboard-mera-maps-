@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import { geocodefor, initHeatMap, initHeatMapSelection } from '../../map';
-import { HeatMapDateSelection, WareHouseLocation, WareHouseLocationWithPincode } from '@/app/actions/actions';
+import { heatMapDateSelection, wareHouseLocation, getwareHouseLocations } from '@/app/actions/actions';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ interface Location {
     Warehouse: string
 }
 
-interface ResultItem {
+interface resultItem {
     Schedule: string;
     WH: string;
     distance: number;
@@ -24,8 +24,8 @@ interface ResultItem {
     state: string;
 }
 
-interface WhMap {
-    [key: string]: ResultItem[];
+interface whMap {
+    [key: string]: resultItem[];
 }
 
 export default function Home() {
@@ -40,13 +40,13 @@ export default function Home() {
     const [pincodeBoundary, setPincodeBoundary] = useState(true);
     const [loading, setLoading] = useState<boolean>(false);
     const [storePincode, setStorePincode] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
-    const [whMap, setWhMap] = useState<WhMap>({});
+    const [whMap, setWhMap] = useState<whMap>({});
 
     const fetchWarehouseData = async () => {
         try {
-            const response = await WareHouseLocationWithPincode();
-            const res = await WareHouseLocation();
-            const whMap: WhMap = {};
+            const response = await getwareHouseLocations();
+            const res = await wareHouseLocation();
+            const whMap: whMap = {};
             response.forEach((item: any) => {
                 const warehouse = item.WH;
                 if (!whMap[warehouse]) {
@@ -125,9 +125,9 @@ export default function Home() {
         setSelectedMetric(e.target.value as 'cust_count' | 'order_value' | 'so_count');
     };
 
-    const HeatMapDateSelect = async (startDate: any, endDate: any, selectedMetric: any) => {
+    const heatMapDateSelect = async (startDate: any, endDate: any, selectedMetric: any) => {
         try {
-            const response = await HeatMapDateSelection(startDate, endDate, selectedMetric);
+            const response = await heatMapDateSelection(startDate, endDate, selectedMetric);
             setLocationData(response)
         } catch (error) {
             console.error('Error fetching warehouse data:', error);
@@ -147,7 +147,7 @@ export default function Home() {
     useEffect(() => {
         const fetchDataForHeatmap = async () => {
             if (endDate && startDate) {
-                await HeatMapDateSelect(startDate, endDate, selectedMetric);
+                await heatMapDateSelect(startDate, endDate, selectedMetric);
                 await initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
             }
         };
@@ -189,7 +189,6 @@ export default function Home() {
         geocodefor({ address: text });
     };
 
-
     return (
         <>
             <div className='bg-slate-200'>
@@ -210,21 +209,6 @@ export default function Home() {
                             {isExpanded ? "Hide WareHouse" : "Show WareHouse"}
                         </button>
                         {isExpanded && (
-                            // <div className="flex ml-2 mt-2">
-                            //     {Object.keys(whMap).map((warehouse) => (
-                            //         <div key={warehouse} className="px-1">
-                            //             <input
-                            //                 className="bg-slate-400 size-5 mt-1"
-                            //                 type="checkbox"
-                            //                 id={warehouse}
-                            //                 checked={selectedWarehouse.includes(warehouse)}
-                            //                 onChange={() => handleSelectChange(warehouse)}
-                            //             />
-                            //             <label htmlFor={warehouse} className="text-black text-xl ml-0.5">{warehouse}</label>
-                            //         </div>
-                            //     ))}
-                            // </div>
-
                             <div className="flex ml-2 mt-2">
                                 {Object.keys(whMap).map((warehouse) => (
                                     <div key={warehouse} className="px-1">
@@ -241,20 +225,6 @@ export default function Home() {
                                     </div>
                                 ))}
                             </div>
-                            // <div className="flex ml-2 mt-2">
-                            //     {data.map((warehouse) => (
-                            //         <div key={warehouse.WH} className='px-1'>
-                            //             <input
-                            //                 className='bg-slate-400 size-5 mt-1'
-                            //                 type="checkbox"
-                            //                 id={warehouse.WH}
-                            //                 checked={selectedWarehouse.includes(warehouse.WH)}
-                            //                 onChange={() => handleSelectChange(warehouse.WH)}
-                            //             />
-                            //             <label htmlFor={warehouse.WH} className='text-black text-xl ml-0.5'>{warehouse.WH}</label>
-                            //         </div>
-                            //     ))}
-                            // </div>
                         )}
                     </div>
                     <div className='px-4 py-2 ml-auto mr-2 mt-1 mb-1 text-black rounded-xl border-2 border-blue-300'>
@@ -294,13 +264,6 @@ export default function Home() {
                             <option value="order_value">Order Value</option>
                             <option value="so_count">Order Count</option>
                         </select>
-
-                        {/* {loading ? (
-                                <div className='flex gap-4'>Loading....</div> // You can replace this with a spinner or custom loading message
-                            ) : (
-                                <div className=''>HeatMap is ready</div> // You can replace this with your actual content
-                            )} */}
-
                         <button onClick={handlePincodeBoundary} className='px-4 py-2 mx-10 mb-8 my-1 text-black rounded-xl border-2 border-blue-300'>Toggle Pincode Boundaries</button>
 
                         <input

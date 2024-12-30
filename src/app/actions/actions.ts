@@ -1,7 +1,7 @@
 "use server";
 import { getClient } from "./gauth";
 
-interface Warehouse {
+interface wareHouse {
   Schedule: string,
   WH: string,
   distance: number,
@@ -19,17 +19,7 @@ interface Location{
   Warehouse: string
 }
 
-interface OrderDataLocation {
-  cust_count: number;
-  latitude: number;
-  longitude: number;
-  order_date: string;
-  order_value: number;
-  so_count: number;
-  volume: number;
-}
-
-export async function WareHouseLocation(): Promise<Location[]> {
+export async function wareHouseLocation(): Promise<Location[]> {
   try {
     const client = await getClient();
     const res = await client.request<{ results: Location[] }>({
@@ -44,14 +34,14 @@ export async function WareHouseLocation(): Promise<Location[]> {
   }
 }
 
-export async function WareHouseLocationWithPincode(): Promise<Warehouse[]> {
+export async function getwareHouseLocations(): Promise<wareHouse[]> {
   try {
     const client = await getClient();
-    const res = await client.request<{ results: Warehouse[] }>({
+    const res = await client.request<{ results: wareHouse[] }>({
       url: `${process.env.NEXT_PUBLIC_MAP_VISUALIZER_BASE_URL}/serviceablePincode/location`,
       method: "GET",
     });
-    const results: Warehouse[] = res.data.results;
+    const results: wareHouse[] = res.data.results;
     return results;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -59,7 +49,7 @@ export async function WareHouseLocationWithPincode(): Promise<Warehouse[]> {
   }
 }
 
-export async function HeatMapDateSelection(
+export async function heatMapDateSelection(
   from_date: string,
   to_date: string,
   metric: string,
