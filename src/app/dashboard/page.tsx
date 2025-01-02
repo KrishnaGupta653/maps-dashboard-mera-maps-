@@ -1,10 +1,11 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { geocodefor, initHeatMap, initHeatMapSelection } from '../../map';
+import { geoCodeRequest, initHeatMap, initHeatMapSelection } from '../../map';
 import { heatMapDateSelection, wareHouseLocation, getwareHouseLocations } from '@/app/actions/actions';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
+// import {Button} from "@nextui-org/react";
 
 interface Location {
     Latitude: number,
@@ -27,20 +28,34 @@ interface resultItem {
 interface whMap {
     [key: string]: resultItem[];
 }
+let map: google.maps.Map | null = null;
 
 export default function Home() {
+
     const router = useRouter();
     const [radius, setRadius] = useState(10);
     const [selectedWarehouse, setSelectedWarehouse] = useState<string[]>([]);
-    const [filteredData, setFilteredData] = useState([]);
     const [selectedMetric, setSelectedMetric] = useState<'order_value' | 'so_count' | 'cust_count'>('cust_count');
     const [data, setData] = useState<Location[]>([]);
     const [locationData, setLocationData] = useState<any>([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [pincodeBoundary, setPincodeBoundary] = useState(true);
-    const [loading, setLoading] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
     const [storePincode, setStorePincode] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
     const [whMap, setWhMap] = useState<whMap>({});
+    const [storeData, setStoreData] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
+
+
+    // const dataofware = async() => {
+    //     if (!map) {
+    //         await loadGoogleMapsScript();
+    //         map = initializeMap("map");
+    //     }
+    // }
+
+    // useEffect(()=>{
+    //     dataofware()
+    // }, [])
 
     const fetchWarehouseData = async () => {
         try {
@@ -73,6 +88,15 @@ export default function Home() {
     const [endDate, setEndDate] = useState(getDefaultDateRange().endDate);
 
     useEffect(() => {
+        // if (storeData) {
+        //     const warehouseData: [google.maps.LatLngLiteral, string][] = data.map((data) => [
+        //         { lat: parseFloat(data.Latitude.toString()), lng: parseFloat(data.Longitute.toString()) },
+        //         data.Warehouse
+        //     ]);
+        //     const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
+        //     // initHeatMap(radius, filteredData, filteredPincodeByWH);
+        // }
+        // else {
         fetchWarehouseData();
         const warehouseData: [google.maps.LatLngLiteral, string][] = data.map((data) => [
             { lat: parseFloat(data.Latitude.toString()), lng: parseFloat(data.Longitute.toString()) },
@@ -87,13 +111,34 @@ export default function Home() {
             }, {} as { [key: string]: any[] });
 
         setStorePincode(filteredPincodeByWH);
+        setStoreData(filteredPincodeByWH);
         const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
         initHeatMap(radius, filteredData, filteredPincodeByWH);
+        // }
     }, [selectedWarehouse, radius, selectedMetric, startDate, endDate]);
 
-    const handlePincodeBoundary = () => {
+    const [geoCoderesponse, setGeoCoderesponse] = useState(true);
+    const [storeFeatureLayer, setStoreFeatureLayer] = useState<google.maps.FeatureLayer[]>([]);
+    const [count, setCount] = useState(0);
+
+    const handlePincodeBoundary = async () => {
+
         setPincodeBoundary(!pincodeBoundary);
-        geocodefor("", storePincode, pincodeBoundary);
+        setCount(count + 1);
+        if (count == 0) {
+            let temp = false
+            setGeoCoderesponse(temp);
+            temp = await geoCodeRequest("", storePincode, pincodeBoundary);
+            setGeoCoderesponse(temp);
+        }
+        else {
+            let temp = await geoCodeRequest("", storePincode, pincodeBoundary);
+            setCount(0);   
+        }
+
+        // if (temp) {
+        //     console.log("2334");
+        // }
     }
 
     const handleSelectChange = (warehouse: string) => {
@@ -136,18 +181,30 @@ export default function Home() {
 
     useEffect(() => {
         if (locationData.length > 0) {
+            // map = new google.maps.Map(document.getElementById('map')!, {
+            //     center: { lat: 29.3516232, lng: 77.7109485 },
+            //     zoom: 8,
+            //     gestureHandling: 'greedy',
+            //     mapId: '68b8f843e24917af'
+            //   });
             initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
         }
     }, [locationData, selectedMetric, startDate, endDate]);
 
     const handleEndDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setEndDate(e.target.value);
-        setLoading(true);
+        // setLoading(true);
     }
     useEffect(() => {
         const fetchDataForHeatmap = async () => {
             if (endDate && startDate) {
                 await heatMapDateSelect(startDate, endDate, selectedMetric);
+                // map = new google.maps.Map(document.getElementById('map')!, {
+                //     center: { lat: 29.3516232, lng: 77.7109485 },
+                //     zoom: 8,
+                //     gestureHandling: 'greedy',
+                //     mapId: '68b8f843e24917af'
+                //   });
                 await initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
             }
         };
@@ -155,7 +212,7 @@ export default function Home() {
             fetchDataForHeatmap();
         }
 
-        setLoading(false);
+        // setLoading(false);
 
     }, [startDate, endDate, selectedMetric]);
 
@@ -186,7 +243,7 @@ export default function Home() {
     };
 
     const handlePlace = () => {
-        geocodefor({ address: text });
+        geoCodeRequest({ address: text });
     };
 
     return (
@@ -194,7 +251,7 @@ export default function Home() {
             <div className='bg-slate-200'>
                 <div className='flex text-white'>
                     <div className='p-1 mt-2'>
-                        <label htmlFor="radius" className='text-black text-xl p-2 ml-2 font-medium rounded-xl border-2 border-blue-300'>Radius (km): </label>
+                        <label htmlFor="radius" className={`text-${radius === 10 ? 'black' : 'white'} text-xl p-2 ml-2 font-medium rounded-xl border-2 ${radius === 10 ? 'border-blue-200' : 'bg-blue-500'}`}>Radius (km): </label>
                         <input
                             className='bg-slate-200 text-black text-xl ml-4'
                             id="radius"
@@ -205,7 +262,7 @@ export default function Home() {
                         />
                     </div>
                     <div className='flex m-1'>
-                        <button onClick={toggleExpand} className='text-black text-xl p-2 font-medium rounded-xl border-2 border-blue-300'>
+                        <button onClick={toggleExpand} className={`text-${isExpanded ? 'white' : 'black'} text-xl p-2 font-medium rounded-xl border-2 ${isExpanded ? 'border-blue-500 bg-blue-500' : 'border-blue-300'}`}>
                             {isExpanded ? "Hide WareHouse" : "Show WareHouse"}
                         </button>
                         {isExpanded && (
@@ -227,13 +284,13 @@ export default function Home() {
                             </div>
                         )}
                     </div>
-                    <div className='px-4 py-2 ml-auto mr-2 mt-1 mb-1 text-black rounded-xl border-2 border-blue-300'>
-                        <button className='text-black text-xl' onClick={handleClick}>Logout</button>
+                    <div className='px-4 py-2 ml-auto mr-2 mt-1 mb-1 rounded-xl border-2 border-blue-300 bg-blue-500'>
+                        <button className='text-white text-xl' onClick={handleClick}>Logout</button>
                     </div>
                 </div>
 
                 <div id="map" style={{ width: '100%', height: '636px' }}></div>
-                
+
 
                 <div className='flex flex-row m-1'>
                     <h2 className='text-black text-xl p-2 font-medium'>Heatmap</h2>
@@ -264,7 +321,16 @@ export default function Home() {
                             <option value="order_value">Order Value</option>
                             <option value="so_count">Order Count</option>
                         </select>
-                        <button onClick={handlePincodeBoundary} className='px-4 py-2 mx-10 mb-8 my-1 text-black rounded-xl border-2 border-blue-300'>Toggle Pincode Boundaries</button>
+                        {/* <Button onPress = {handlePincodeBoundary} className="mx-2 p-0 bg-transparent"
+              size="sm">Toggle Pincode Boundaries</Button> */}
+                        <button onClick={handlePincodeBoundary} className={`px-4 py-2 mx-10 mb-8 my-1 text-${pincodeBoundary ? 'black' : 'white'} rounded-xl border-2 ${pincodeBoundary ? 'border-blue-300 ' : 'border-blue-500 bg-blue-500'}`}>
+                            {geoCoderesponse ? (
+                                'Toggle Pincode Boundaries'
+                                // Show "Loading..." when isLoading is true
+                            ) : (
+                                <span>Loading...</span>
+                            )}
+                        </button>
 
                         <input
                             className='bg-slate-200 text-black text-xl p-2 m-1 w-36 h-10 rounded-md'

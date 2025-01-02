@@ -65,51 +65,54 @@ export const initializeMap = (mapElementId: string): google.maps.Map => {
 };
 
 
-async function findPlaces() {
-  const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-  const request = {
-    textQuery: 'Giridih',
-    fields: ['displayName', 'location'],
-    locationBias: { lat: 37.4161493, lng: -122.0812166 },
-    isOpenNow: true,
-    language: 'en-US',
-    maxResultCount: 8,
-    minRating: 3.2,
-    region: 'us',
-    useStrictTypeFiltering: false,
-  };
-  const { places } = await Place.searchByText(request);
+// async function findPlaces() {
+//   const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+//   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+//   const request = {
+//     textQuery: 'Giridih',
+//     fields: ['displayName', 'location'],
+//     locationBias: { lat: 37.4161493, lng: -122.0812166 },
+//     isOpenNow: true,
+//     language: 'en-US',
+//     maxResultCount: 8,
+//     minRating: 3.2,
+//     region: 'us',
+//     useStrictTypeFiltering: false,
+//   };
+//   const { places } = await Place.searchByText(request);
 
-  if (places.length) {
-    console.log(places);
+//   if (places.length) {
+//     console.log(places);
 
-    const { LatLngBounds } = await google.maps.importLibrary("core") as google.maps.CoreLibrary;
-    const bounds = new LatLngBounds();
-    places.forEach((place) => {
-      const markerView = new AdvancedMarkerElement({
-        map,
-        position: place.location,
-        title: place.displayName,
-      });
+//     const { LatLngBounds } = await google.maps.importLibrary("core") as google.maps.CoreLibrary;
+//     const bounds = new LatLngBounds();
+//     places.forEach((place) => {
+//       const markerView = new AdvancedMarkerElement({
+//         map,
+//         position: place.location,
+//         title: place.displayName,
+//       });
 
-      bounds.extend(place.location as google.maps.LatLng);
-      console.log(place);
-    });
+//       bounds.extend(place.location as google.maps.LatLng);
+//       console.log(place);
+//     });
 
-    map!.fitBounds(bounds);
+//     map!.fitBounds(bounds);
 
-  } else {
-    console.log('No results');
-  }
-}
+//   } else {
+//     console.log('No results');
+//   }
+// }
 
-type Metric = 'order_value' | 'so_count' | 'cust_count';
+// type Metric = 'order_value' | 'so_count' | 'cust_count';
 
-export async function initHeatMapSelection(locationData?: any, selectedMetric?: any, startDate?: any, endDate?: any): Promise<void> {
+export async function initHeatMapSelection(locationData?: any, selectedMetric?: any, startDate?: string, endDate?: string): Promise<void> {
   try {
-    await loadGoogleMapsScript();
-    map = initializeMap("map");
+    if (!map) {
+      await loadGoogleMapsScript();
+      map = initializeMap("map");
+    }
+    // map.setMap(null);
     const filterDataByDate = (locationData: any, startDate: string, endDate: string) => {
       const start = new Date(startDate);
       const end = new Date(endDate);
@@ -123,22 +126,19 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
     const prepareHeatmapData = (locationData: any, metric: string, zoomLevel: any) => {
       return locationData.map((item: any) => {
         const latLng = new google.maps.LatLng(item.latitude, item.longitude);
-        const weight = item[metric];
+        // const weight = item[metric];
 
-        const zoomWeightMultiplier = 1 + (zoomLevel - 12) * 0.05;
-        const adjustedWeight = weight * zoomWeightMultiplier;
+        // const zoomWeightMultiplier = 1 + (zoomLevel - 12) * 0.05;
+        // const adjustedWeight = weight * zoomWeightMultiplier;
         return {
           location: latLng,
-          weight: Math.max(adjustedWeight, 1),
+          // weight: Math.max(adjustedWeight, 1),
         };
 
       }).filter((item: any) => item !== null);
     };
-
+    // heatmap!.setMap(null);
     const zoomLevel = map.getZoom();
-    // const radius = Math.max(50, 120 - (zoomLevel! * 2)); // Reduce radius as you zoom in
-    // const opacity = Math.max(0.3, 0.8 - (zoomLevel! * 0.05));
-
     const heatmapDataMetric = prepareHeatmapData(filtered, selectedMetric, zoomLevel);
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapDataMetric,
@@ -153,6 +153,9 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
         'rgba(255, 0, 0, 1)', // Solid red
       ],
     });
+
+    heatmap.setMap(map)
+
     if (filtered.length > 0) {
       const centerLatLng = new google.maps.LatLng(filtered[0].latitude, filtered[0].longitude);
       map.setCenter(centerLatLng);
@@ -163,14 +166,12 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
   }
 }
 
-let currentInfoWindow: google.maps.InfoWindow | null = null;
+const currentInfoWindow: google.maps.InfoWindow | null = null;
 let geocoder: google.maps.Geocoder;
 let markers: google.maps.Marker[] = [];
 let circles: google.maps.Circle[] = [];
 let marker: google.maps.Marker;
-let infoWindow: any;
-let lastInteractedFeatureIds: any = [];
-let lastClickedFeatureIds: any[] = [];
+
 
 
 //   // const placeAutocomplete = new google.maps.places.Autocomplete(request?.address);
@@ -191,15 +192,18 @@ let lastClickedFeatureIds: any[] = [];
 
 
 let featureLayer: google.maps.FeatureLayer;
-var LOCALITY = 'LOCALITY';
-var POSTAL_CODE = 'POSTAL_CODE';
+// const lovalj: google.maps.FeatureType = "POSTAL_CODE"
+// const {LOCALITY} = google.maps.FeatureType
+const LOCALITY = 'LOCALITY';
+const POSTAL_CODE = 'POSTAL_CODE';
+const featureLayers: google.maps.FeatureLayer[] = [];
 
-export async function geocodefor(request: any, pincodeArray?: any, toggle?: any): Promise<void> {
+export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: boolean): Promise<boolean> {
   if (!map) {
     await loadGoogleMapsScript();
     map = initializeMap("map");
   }
-  console.log("pincodeArray", pincodeArray);
+  const {LOCALITY, POSTAL_CODE} = google.maps.FeatureType;
   geocoder = new google.maps.Geocoder();
   if (!marker) {
     marker = new google.maps.Marker({
@@ -209,6 +213,8 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
   const dataLayer = new google.maps.Data();
   dataLayer.setMap(map);
 
+  const infoWindow = new google.maps.InfoWindow(); 
+
   function styleBoundary(placeId: string) {
     const featureStyleOptions = {
       strokeColor: '#810FCB',
@@ -217,7 +223,7 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
       fillColor: '#810FCB',
       fillOpacity: 0.5
     };
-    featureLayer.style = (options: { feature: { placeId: string; }; }) => {
+    featureLayer.style = (options: any) => {
       if (options.feature.placeId == placeId) {
         return featureStyleOptions;
       }
@@ -251,9 +257,9 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
 
   try {
 
-    const featureLayers: google.maps.FeatureLayer[] = [];
-    console.log("featureLayers", featureLayers);
+    
     const placeIdsToStyle: Set<string> = new Set();
+    const infoWindow = new google.maps.InfoWindow();
     featureLayer = map.getFeatureLayer(POSTAL_CODE);
 
     for (const wh in pincodeArray) {
@@ -261,54 +267,78 @@ export async function geocodefor(request: any, pincodeArray?: any, toggle?: any)
         const pincodes = pincodeArray[wh];
         for (const pin of pincodes) {
           try {
-            let pincode = pin.pincode.toString();
+            const pincode = pin.pincode.toString();
             const request = { address: pincode };
 
             const result = await geocoder.geocode(request)
             const { results } = result;
             if (results.length > 0) {
-              placeIdsToStyle.add(results[0].place_id);
-            }
-            function styleBoundary() {
+              if (!toggle) {
+                featureLayer.style = null;
+                continue; // Reset styling if toggle is false
+              }
+              const placeId = results[0].place_id;
+              placeIdsToStyle.add(placeId);
+
               const featureStyleOptions = {
                 strokeColor: '#810FCB',
                 strokeOpacity: 1.0,
                 strokeWeight: 2.0,
-                fillColor: '#810FCB',
                 fillOpacity: 0.5
               };
-              featureLayer.style = (options: { feature: { placeId: string; }; }) => {
+
+
+              // Style the boundaries for each pincode
+              featureLayer.style = (options:any) => {
                 if (placeIdsToStyle.has(options.feature.placeId)) {
                   return featureStyleOptions;
                 }
               };
+
+              // function styleBoundary() {
+              //   const featureStyleOptions = {
+              //     strokeColor: '#810FCB',
+              //     strokeOpacity: 1.0,
+              //     strokeWeight: 2.0,
+              //     // fillColor: '#810FCB',
+              //     fillOpacity: 0.5
+              //   };
+              //   featureLayer.style = (options: { feature: { placeId: string; }; }) => {
+              //     if (placeIdsToStyle.has(options.feature.placeId)) {
+              //       return featureStyleOptions;
+              //     }
+              //   };
+              // }
+              // styleBoundary();
+              // if (!toggle) {
+              //   featureLayer.style = null;
+              //   break;
+              // }
+              featureLayers.push(featureLayer);
             }
-            styleBoundary();
-            if (!toggle) {
-              featureLayer.style = null;
-            }
-            featureLayers.push(featureLayer);
+            
           } catch (error) {
             console.log("error", error);
           }
         }
       }
     }
+    return true;
   } catch (e) {
     console.error("Geocode was not successful for the following reason:", e);
+    return false;
   }
 }
 
 
 
 export async function initHeatMap(props?: any, filteredData?: any, PincodeWH?: any): Promise<void> {
+  
+  // const {Place} = await google.maps.importLibrary("places");
   if (!map) {
     await loadGoogleMapsScript();
     map = initializeMap("map");
   }
-
-  // const {Place} = await google.maps.importLibrary("places");
-
   const clearMarkers = () => {
     markers.forEach(marker => {
       marker.setMap(null);
