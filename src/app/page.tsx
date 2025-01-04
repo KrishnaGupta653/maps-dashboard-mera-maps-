@@ -4,22 +4,6 @@ import { useEffect, useState } from 'react';
 import { app, auth, GoogleAuthProvider, signInWithPopup, firestore, doc, getDoc, setDoc } from './lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
 import { getAuth } from 'firebase/auth';
-// import { findWareHouseLocation } from './actions/actions';
-
-interface Warehouse {
-  // Latitude: number,
-  // Longitute: number,
-  // Warehouse: string
-  Schedule: string,
-  WH: string,
-  distance: number,
-  district: string,
-  latitude: number,
-  longitute: number,
-  pincode: number,
-  schedule_type: string,
-  state: string
-}
 
 
 export default function Home() {
@@ -60,6 +44,4 @@ export default function Home() {
       </button>
     </div>
   );
-
-
 }

@@ -8,7 +8,7 @@ export async function loadGoogleMapsScript(): Promise<void> {
       return;
     }
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_API_KEY}&libraries=visualization,places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}&libraries=visualization,places`;
     script.async = true;
     script.defer = true;
     script.onload = () => resolve();
