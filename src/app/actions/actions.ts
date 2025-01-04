@@ -1,6 +1,5 @@
 "use server";
 import { getClient } from "./gauth";
-
 interface wareHouse {
   Schedule: string,
   WH: string,
@@ -60,8 +59,6 @@ export async function heatMapDateSelection(
   let page = 1; 
   let totalPages = 1;
   let retries = 0;
-
-  console.log("to_data", to_date);
   try {
     const client = await getClient();
     while (page <= totalPages) {

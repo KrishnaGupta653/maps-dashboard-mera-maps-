@@ -1,12 +1,11 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { geoCodeRequest, initHeatMap, initHeatMapSelection } from '../../map';
-import { heatMapDateSelection, wareHouseLocation, getwareHouseLocations } from '@/app/actions/actions';
+import { geoCodeRequest, initHeatMap, initHeatMapSelection } from '../map';
+import { heatMapDateSelection, wareHouseLocation, getwareHouseLocations } from '../actions/actions';
 import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebaseConfig';
+import { auth } from '../lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
-// import {Button} from "@nextui-org/react";
-
+import './page.css';
 interface Location {
     Latitude: number,
     Longitute: number,
@@ -28,34 +27,19 @@ interface resultItem {
 interface whMap {
     [key: string]: resultItem[];
 }
-let map: google.maps.Map | null = null;
 
 export default function Home() {
 
     const router = useRouter();
     const [radius, setRadius] = useState(10);
     const [selectedWarehouse, setSelectedWarehouse] = useState<string[]>([]);
-    const [selectedMetric, setSelectedMetric] = useState<'order_value' | 'so_count' | 'cust_count'>('cust_count');
+    const [selectedMetric, setSelectedMetric] = useState<'order_value' | 'so_count' | 'cust_count' | 'volume'>('cust_count');
     const [data, setData] = useState<Location[]>([]);
     const [locationData, setLocationData] = useState<any>([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [pincodeBoundary, setPincodeBoundary] = useState(true);
-    // const [loading, setLoading] = useState<boolean>(false);
     const [storePincode, setStorePincode] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
     const [whMap, setWhMap] = useState<whMap>({});
-    const [storeData, setStoreData] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
-
-
-    // const dataofware = async() => {
-    //     if (!map) {
-    //         await loadGoogleMapsScript();
-    //         map = initializeMap("map");
-    //     }
-    // }
-
-    // useEffect(()=>{
-    //     dataofware()
-    // }, [])
 
     const fetchWarehouseData = async () => {
         try {
@@ -88,15 +72,6 @@ export default function Home() {
     const [endDate, setEndDate] = useState(getDefaultDateRange().endDate);
 
     useEffect(() => {
-        // if (storeData) {
-        //     const warehouseData: [google.maps.LatLngLiteral, string][] = data.map((data) => [
-        //         { lat: parseFloat(data.Latitude.toString()), lng: parseFloat(data.Longitute.toString()) },
-        //         data.Warehouse
-        //     ]);
-        //     const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
-        //     // initHeatMap(radius, filteredData, filteredPincodeByWH);
-        // }
-        // else {
         fetchWarehouseData();
         const warehouseData: [google.maps.LatLngLiteral, string][] = data.map((data) => [
             { lat: parseFloat(data.Latitude.toString()), lng: parseFloat(data.Longitute.toString()) },
@@ -111,10 +86,8 @@ export default function Home() {
             }, {} as { [key: string]: any[] });
 
         setStorePincode(filteredPincodeByWH);
-        setStoreData(filteredPincodeByWH);
         const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
-        initHeatMap(radius, filteredData, filteredPincodeByWH);
-        // }
+        initHeatMap(radius, filteredData);
     }, [selectedWarehouse, radius, selectedMetric, startDate, endDate]);
 
     const [geoCoderesponse, setGeoCoderesponse] = useState(true);
@@ -133,12 +106,8 @@ export default function Home() {
         }
         else {
             let temp = await geoCodeRequest("", storePincode, pincodeBoundary);
-            setCount(0);   
+            setCount(0);
         }
-
-        // if (temp) {
-        //     console.log("2334");
-        // }
     }
 
     const handleSelectChange = (warehouse: string) => {
@@ -167,7 +136,7 @@ export default function Home() {
     };
 
     const handleMetricChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedMetric(e.target.value as 'cust_count' | 'order_value' | 'so_count');
+        setSelectedMetric(e.target.value as 'cust_count' | 'order_value' | 'so_count' | 'volume');
     };
 
     const heatMapDateSelect = async (startDate: any, endDate: any, selectedMetric: any) => {
@@ -181,38 +150,27 @@ export default function Home() {
 
     useEffect(() => {
         if (locationData.length > 0) {
-            // map = new google.maps.Map(document.getElementById('map')!, {
-            //     center: { lat: 29.3516232, lng: 77.7109485 },
-            //     zoom: 8,
-            //     gestureHandling: 'greedy',
-            //     mapId: '68b8f843e24917af'
-            //   });
             initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
         }
     }, [locationData, selectedMetric, startDate, endDate]);
 
     const handleEndDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setEndDate(e.target.value);
-        // setLoading(true);
     }
+
+    const [loader, setLoader] = useState(true);
     useEffect(() => {
         const fetchDataForHeatmap = async () => {
             if (endDate && startDate) {
+                setLoader(false);
                 await heatMapDateSelect(startDate, endDate, selectedMetric);
-                // map = new google.maps.Map(document.getElementById('map')!, {
-                //     center: { lat: 29.3516232, lng: 77.7109485 },
-                //     zoom: 8,
-                //     gestureHandling: 'greedy',
-                //     mapId: '68b8f843e24917af'
-                //   });
                 await initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
+                setLoader(true);
             }
         };
         if (endDate) {
             fetchDataForHeatmap();
         }
-
-        // setLoading(false);
 
     }, [startDate, endDate, selectedMetric]);
 
@@ -225,24 +183,15 @@ export default function Home() {
             console.log(error);
         }
     }
-
+    const [handleGeoCode, setHandleGeoCode] = useState(false);
     const [text, setText] = useState("");
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // var dispal = (predictions: any, state: any) => {
-        //     if (state == google.maps.places.PlacesServiceStatus.OK) {
-        //         predictions.forEach((predictio: any) => {
-        //             console.log("prediction", predictio);
-        //             setText(predictio.description)
-        //         })
-        //     }
-        // }
-        // var service = new google.maps.places.AutocompleteService();
-        // service.getQueryPredictions({ 'input': e.target.value }, dispal);
-
+        setHandleGeoCode(false);
         setText(e.target.value);
     };
 
     const handlePlace = () => {
+        setHandleGeoCode(true);
         geoCodeRequest({ address: text });
     };
 
@@ -293,7 +242,11 @@ export default function Home() {
 
 
                 <div className='flex flex-row m-1'>
-                    <h2 className='text-black text-xl p-2 font-medium'>Heatmap</h2>
+                    <h2 className={`text-'black' text-xl p-1 mt-2 font-medium rounded-xl `}>{loader ? (
+                        'HeatMap'
+                    ) : (
+                        <span className="loader"></span>
+                    )}</h2>
                     <div className='flex flex-row'>
                         <div className='text-black text-xl p-2 mt-1'>Start Date: </div>
                         <input
@@ -318,15 +271,13 @@ export default function Home() {
                             className="bg-slate-100 mb-8 rounded-xl p-1"
                         >
                             <option value="cust_count">Customer Count</option>
+                            <option value="volume">Volume</option>
                             <option value="order_value">Order Value</option>
                             <option value="so_count">Order Count</option>
                         </select>
-                        {/* <Button onPress = {handlePincodeBoundary} className="mx-2 p-0 bg-transparent"
-              size="sm">Toggle Pincode Boundaries</Button> */}
                         <button onClick={handlePincodeBoundary} className={`px-4 py-2 mx-10 mb-8 my-1 text-${pincodeBoundary ? 'black' : 'white'} rounded-xl border-2 ${pincodeBoundary ? 'border-blue-300 ' : 'border-blue-500 bg-blue-500'}`}>
                             {geoCoderesponse ? (
                                 'Toggle Pincode Boundaries'
-                                // Show "Loading..." when isLoading is true
                             ) : (
                                 <span>Loading...</span>
                             )}
@@ -338,7 +289,7 @@ export default function Home() {
                             type="text"
                             onChange={handleTextChange}
                         />
-                        <button onClick={handlePlace} className='px-4 py-2 mx-10 mb-8 my-1 text-black rounded-xl border-2 border-blue-300'>Locate</button>
+                        <button onClick={handlePlace} className={`px-4 py-2 mx-10 mb-8 my-1 text-${handleGeoCode ? 'white' : 'black'} rounded-xl border-2  ${handleGeoCode ? 'border-blue-500 bg-blue-500' : 'border-blue-300 '}`}>Locate</button>
                     </div>
                 </div>
             </div>
