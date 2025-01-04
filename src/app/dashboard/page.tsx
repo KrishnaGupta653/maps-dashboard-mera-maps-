@@ -5,7 +5,7 @@ import { heatMapDateSelection, wareHouseLocation, getwareHouseLocations } from '
 import { signOut } from 'firebase/auth';
 import { auth } from '../lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
-
+import './page.css';
 interface Location {
     Latitude: number,
     Longitute: number,
@@ -27,21 +27,19 @@ interface resultItem {
 interface whMap {
     [key: string]: resultItem[];
 }
-let map: google.maps.Map | null = null;
 
 export default function Home() {
 
     const router = useRouter();
     const [radius, setRadius] = useState(10);
     const [selectedWarehouse, setSelectedWarehouse] = useState<string[]>([]);
-    const [selectedMetric, setSelectedMetric] = useState<'order_value' | 'so_count' | 'cust_count'>('cust_count');
+    const [selectedMetric, setSelectedMetric] = useState<'order_value' | 'so_count' | 'cust_count' | 'volume'>('cust_count');
     const [data, setData] = useState<Location[]>([]);
     const [locationData, setLocationData] = useState<any>([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [pincodeBoundary, setPincodeBoundary] = useState(true);
     const [storePincode, setStorePincode] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
     const [whMap, setWhMap] = useState<whMap>({});
-    const [storeData, setStoreData] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
 
     const fetchWarehouseData = async () => {
         try {
@@ -88,10 +86,8 @@ export default function Home() {
             }, {} as { [key: string]: any[] });
 
         setStorePincode(filteredPincodeByWH);
-        setStoreData(filteredPincodeByWH);
         const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
-        initHeatMap(radius, filteredData, filteredPincodeByWH);
-        // }
+        initHeatMap(radius, filteredData);
     }, [selectedWarehouse, radius, selectedMetric, startDate, endDate]);
 
     const [geoCoderesponse, setGeoCoderesponse] = useState(true);
@@ -110,7 +106,7 @@ export default function Home() {
         }
         else {
             let temp = await geoCodeRequest("", storePincode, pincodeBoundary);
-            setCount(0);   
+            setCount(0);
         }
     }
 
@@ -140,7 +136,7 @@ export default function Home() {
     };
 
     const handleMetricChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedMetric(e.target.value as 'cust_count' | 'order_value' | 'so_count');
+        setSelectedMetric(e.target.value as 'cust_count' | 'order_value' | 'so_count' | 'volume');
     };
 
     const heatMapDateSelect = async (startDate: any, endDate: any, selectedMetric: any) => {
@@ -160,13 +156,16 @@ export default function Home() {
 
     const handleEndDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setEndDate(e.target.value);
-        // setLoading(true);
     }
+
+    const [loader, setLoader] = useState(true);
     useEffect(() => {
         const fetchDataForHeatmap = async () => {
             if (endDate && startDate) {
+                setLoader(false);
                 await heatMapDateSelect(startDate, endDate, selectedMetric);
                 await initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
+                setLoader(true);
             }
         };
         if (endDate) {
@@ -184,13 +183,15 @@ export default function Home() {
             console.log(error);
         }
     }
-
+    const [handleGeoCode, setHandleGeoCode] = useState(false);
     const [text, setText] = useState("");
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setHandleGeoCode(false);
         setText(e.target.value);
     };
 
     const handlePlace = () => {
+        setHandleGeoCode(true);
         geoCodeRequest({ address: text });
     };
 
@@ -241,7 +242,11 @@ export default function Home() {
 
 
                 <div className='flex flex-row m-1'>
-                    <h2 className='text-black text-xl p-2 font-medium'>Heatmap</h2>
+                    <h2 className={`text-'black' text-xl p-1 mt-2 font-medium rounded-xl `}>{loader ? (
+                        'HeatMap'
+                    ) : (
+                        <span className="loader"></span>
+                    )}</h2>
                     <div className='flex flex-row'>
                         <div className='text-black text-xl p-2 mt-1'>Start Date: </div>
                         <input
@@ -266,6 +271,7 @@ export default function Home() {
                             className="bg-slate-100 mb-8 rounded-xl p-1"
                         >
                             <option value="cust_count">Customer Count</option>
+                            <option value="volume">Volume</option>
                             <option value="order_value">Order Value</option>
                             <option value="so_count">Order Count</option>
                         </select>
@@ -283,7 +289,7 @@ export default function Home() {
                             type="text"
                             onChange={handleTextChange}
                         />
-                        <button onClick={handlePlace} className='px-4 py-2 mx-10 mb-8 my-1 text-black rounded-xl border-2 border-blue-300'>Locate</button>
+                        <button onClick={handlePlace} className={`px-4 py-2 mx-10 mb-8 my-1 text-${handleGeoCode ? 'white' : 'black'} rounded-xl border-2  ${handleGeoCode ? 'border-blue-500 bg-blue-500' : 'border-blue-300 '}`}>Locate</button>
                     </div>
                 </div>
             </div>
