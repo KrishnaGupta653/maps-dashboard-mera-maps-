@@ -22,7 +22,7 @@ export async function wareHouseLocation(): Promise<Location[]> {
   try {
     const client = await getClient();
     const res = await client.request<{ results: Location[] }>({
-      url: `${process.env.NEXT_PUBLIC_MAP_VISUALIZER_BASE_URL}/serviceableWarehouse/location`,
+      url: `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/serviceableWarehouse/location`,
       method: "GET",
     });
     const results: Location[] = res.data.results;
@@ -37,7 +37,7 @@ export async function getwareHouseLocations(): Promise<wareHouse[]> {
   try {
     const client = await getClient();
     const res = await client.request<{ results: wareHouse[] }>({
-      url: `${process.env.NEXT_PUBLIC_MAP_VISUALIZER_BASE_URL}/serviceablePincode/location`,
+      url: `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/serviceablePincode/location`,
       method: "GET",
     });
     const results: wareHouse[] = res.data.results;
@@ -64,7 +64,7 @@ export async function heatMapDateSelection(
     while (page <= totalPages) {
       try {
         const res = await client.request<{ results: any, Info: { totalPages: number } }>({
-          url: `${process.env.NEXT_PUBLIC_MAP_VISUALIZER_BASE_URL}/orderData/location?from_date=${from_date}&to_date=${to_date}&metric=${metric}&page=${page}&limit=${limit}`,
+          url: `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/orderData/location?from_date=${from_date}&to_date=${to_date}&metric=${metric}&page=${page}&limit=${limit}`,
           method: "GET",
         });
 

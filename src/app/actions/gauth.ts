@@ -15,7 +15,7 @@ export async function getClient() : Promise<IdTokenClient> {
         } else{
             auth = new GoogleAuth()
         }
-        client = await auth.getIdTokenClient(process.env.NEXT_PUBLIC_MAP_VISUALIZER_BASE_URL!!)
+        client = await auth.getIdTokenClient(process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL!!)
     }
     return client;
 }
