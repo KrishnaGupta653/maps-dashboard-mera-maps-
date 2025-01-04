@@ -5,6 +5,8 @@ steps:
       '-t', 
       'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps', 
       '--build-arg',
+      'NEXT_PUBLIC_MAPS_API_KEY=AIzaSyBAOwdI8Lfy-NRP-FDb5GObheVj-s7qkAI',
+      '--build-arg',
       'GOOGLE_CLOUD_PROJECT=hubemployee-189ad',
       '--build-arg',
       'NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyCcvcRb5MvkFpkylvT9FOW7cXKsFd6eg7Q',
