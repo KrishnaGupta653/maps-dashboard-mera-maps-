@@ -1,0 +1,43 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 
+      'build', 
+      '-t', 
+      'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps', 
+      '--build-arg',
+      'GOOGLE_CLOUD_PROJECT=hubemployee-189ad',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyCcvcRb5MvkFpkylvT9FOW7cXKsFd6eg7Q',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=hubemployee-189ad.firebaseapp.com',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_DATABASE_URL=https://hubemployee-189ad-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_PROJECT_ID=hubemployee-189ad',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=hubemployee-189ad.appspot.com',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=1019598212725',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_APP_ID=1:1019598212725:web:8da8120a8b733d7ded323c',
+      '--build-arg',
+      'NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-VHLDVR6NS8',
+      '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'run', 
+      'deploy', 
+      'mera-maps', 
+      '--image', 
+      'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps', 
+      '--region', 
+      'asia-south1', 
+      '--service-account',
+      'mera-maps-executor@hubemployee-189ad.iam.gserviceaccount.com'
+      ]
+options:
+  logging: CLOUD_LOGGING_ONLY
