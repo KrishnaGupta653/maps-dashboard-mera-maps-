@@ -20,7 +20,6 @@ export async function loadGoogleMapsScript(): Promise<void> {
 
 const updateHeatmapOnZoom = (zoomLevel: number) => {
   if (heatmap) {
-
     const radius = Math.max(50, 90 - zoomLevel * 3.5);
     const opacity = Math.max(0.8, 0.8 - zoomLevel * 0.05);
     console.log("radius", radius);
@@ -37,7 +36,8 @@ export const initializeMap = (mapElementId: string): google.maps.Map => {
       center: { lat: 29.3516232, lng: 77.7109485 },
       zoom: 8,
       gestureHandling: 'greedy',
-      mapId: '68b8f843e24917af'
+      mapId: `${process.env.NEXT_PUBLIC_MAPS_ID_KEY}`,
+      mapTypeControl: false,
     });
     // map.addListener('zoom_changed', () => {
     //   const zoomLevel: any = map.getZoom();
@@ -57,6 +57,7 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
       await loadGoogleMapsScript();
       map = initializeMap("map");
     }
+    console.log("locationData", locationData);
     const filterDataByDate = (locationData: any, startDate: string, endDate: string) => {
       const start = new Date(startDate);
       const end = new Date(endDate);
@@ -65,22 +66,22 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
         return orderDate >= start && orderDate <= end;
       });
     };
-
     const filtered = filterDataByDate(locationData, startDate || "", endDate || "");
-
     const prepareHeatmapData = (locationData: any, metric: string, zoomLevel: any) => {
-      return locationData.map((item: any) => {
-        const latLng = new google.maps.LatLng(item.latitude, item.longitude);
-        const weight = item[metric];
+      return locationData
+        .map((item: any) => {
+          const latLng = new google.maps.LatLng(item.latitude, item.longitude);
+          const weight = item[metric];
+          if (!weight || weight <= 0) {
+            return null;
+          }
 
-        const zoomWeightMultiplier = 1 + (zoomLevel - 12) * 0.05;
-        const adjustedWeight = weight * zoomWeightMultiplier;
-        return {
-          location: latLng,
-          weight: adjustedWeight
-        };
-
-      }).filter((item: any) => item !== null);
+          return {
+            location: latLng,
+            weight: weight
+          };
+        })
+        .filter((item: any) => item !== null);
     };
 
     const zoomLevel = map.getZoom();
@@ -91,19 +92,18 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
     heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatmapDataMetric,
       map: map,
+      opacity: 0.8,
       dissipating: true,
       maxIntensity: 1,
       radius: 20,
-      // opacity: 0.8,
-      // gradient: [
-      //   'rgba(0, 255, 0, 0)', // Transparent green
-      //   'rgba(0, 255, 0, 0.6)', // Light green
-      //   'rgba(255, 255, 0, 0.8)', // Yellow
-      //   'rgba(255, 165, 0, 0.4)', // Orange
-      //   'rgba(255, 0, 0, 1)', // Solid red
-      // ],
+      gradient: [
+        'rgba(0, 255, 0, 0)',
+        'rgba(0, 255, 0, 0.6)',
+        'rgba(255, 255, 0, 0.7)',
+        'rgba(255, 165, 0, 0.6)',
+        'rgba(255, 0, 0, 0.7)',
+      ],
     });
-
     if (filtered.length > 0) {
       const centerLatLng = new google.maps.LatLng(filtered[0].latitude, filtered[0].longitude);
       map.setCenter(centerLatLng);
@@ -184,10 +184,29 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
     styleBoundary(results[0].place_id);
   }
 
+  function handleClick(e: any) {
+    createInfoWindow(e);
+  }
+  async function createInfoWindow(event: any) {
+    let feature = event.features[0];
+    if (!feature.placeId) return;
+    const place = await feature.fetchPlace();
+    let content =
+      '<span style="font-size:large"> Pincode: ' + place.displayName
+    updateInfoWindow(content, event.latLng);
+  }
+  function updateInfoWindow(content: any, center: any) {
+    infoWindow.setContent(content);
+    infoWindow.setPosition(center);
+    infoWindow.open({
+      map,
+      shouldFocus: true,
+    });
+  }
+
   try {
     const placeIdsToStyle: Set<string> = new Set();
     featureLayer = map.getFeatureLayer(POSTAL_CODE);
-
     for (const wh in pincodeArray) {
       if (pincodeArray.hasOwnProperty(wh)) {
         const pincodes = pincodeArray[wh];
@@ -195,20 +214,20 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
           try {
             const pincode = pin.pincode.toString();
             const request = { address: pincode };
-
+            if (!toggle) {
+              featureLayer.style = null;
+              continue;
+            }
             const result = await geocoder.geocode(request)
             const { results } = result;
             if (results.length > 0) {
-              if (!toggle) {
-                featureLayer.style = null;
-                continue;
-              }
               const placeId = results[0].place_id;
               placeIdsToStyle.add(placeId);
               const featureStyleOptions = {
                 strokeColor: '#810FCB',
                 strokeOpacity: 1.0,
                 strokeWeight: 2.0,
+                fillColor: '#F0F0F0',
                 fillOpacity: 0.5
               };
               featureLayer.style = (options: any) => {
@@ -216,13 +235,6 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
                   return featureStyleOptions;
                 }
               };
-              // featureLayer.addListener('click', function (event:any) {
-              //   // The event argument contains information about the feature being hovered over
-              //   const feature = event.feature;
-
-              //   // Log the feature or show some information
-              //   console.log('Mouse over feature:', feature);
-              // })
               featureLayers.push(featureLayer);
             }
           } catch (error) {
@@ -231,6 +243,7 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
         }
       }
     }
+    featureLayer.addListener('mousemove', handleClick);
     return true;
   } catch (e) {
     console.error("Geocode was not successful for the following reason:", e);
@@ -271,6 +284,7 @@ export async function initHeatMap(props?: any, filteredData?: any): Promise<void
           title: ware[1],
           optimized: false,
         });
+        map.setCenter(new google.maps.LatLng(lat, lng));
         markers.push(marker);
         marker.addListener("click", () => {
           const infoWindow = new google.maps.InfoWindow();
