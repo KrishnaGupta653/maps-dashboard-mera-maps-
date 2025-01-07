@@ -211,7 +211,7 @@ export default function Home() {
             />
           </div>
           <div className='flex m-1'>
-            <button onClick={toggleExpand} className={`text-${isExpanded ? 'white' : 'black'} text-xl p-2 font-medium rounded-xl border-2 ${isExpanded ? 'border-blue-300 bg-blue-500' : 'border-blue-300'}`}>
+            <button onClick={toggleExpand} className={`text-${isExpanded ? 'white' : 'black'} text-xl p-2 font-medium rounded-xl border-2 ${isExpanded ? 'bg-blue-500' : 'border-blue-300'}`}>
               {isExpanded ? "Hide WareHouse" : "Show WareHouse"}
             </button>
             {isExpanded && (
