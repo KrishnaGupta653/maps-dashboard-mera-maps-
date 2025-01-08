@@ -316,12 +316,9 @@ export async function initHeatMap(props?: any, filteredData?: any): Promise<void
       }
       const pinBackground = new PinElement({
         background: currentBoundaryColour,
-        glyphColor: currentBoundaryColour,
-        borderColor: currentBoundaryColour,
+        glyphColor: "black",
+        borderColor: "black",
         scale: 1.2,
-      });
-      const pinGlyph = new PinElement({
-
       });
       const lat = ware[0]?.lat;
       const lng = ware[0]?.lng;
