@@ -36,7 +36,7 @@ export const initializeMap = (mapElementId: string): google.maps.Map => {
       center: { lat: 29.3516232, lng: 77.7109485 },
       zoom: 8,
       gestureHandling: 'greedy',
-      mapId: `${process.env.NEXT_PUBLIC_MAPS_ID_KEY}`,
+      mapId: `${process.env.NEXT_PUBLIC_MAP_ID}`,
       mapTypeControl: false,
     });
     // map.addListener('zoom_changed', () => {
