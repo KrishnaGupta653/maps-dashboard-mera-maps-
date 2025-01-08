@@ -26,6 +26,9 @@ steps:
       'NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-VHLDVR6NS8',
       '--build-arg',
       'NEXT_PUBLIC_SUCHNAVALI_BASE_URL=https://suchnavali-1019598212725.asia-south1.run.app',
+      '--build-arg',
+      'NEXT_PUBLIC_MAP_ID=68b8f843e24917af',
+
       '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
