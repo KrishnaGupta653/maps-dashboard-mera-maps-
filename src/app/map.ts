@@ -184,7 +184,9 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
     marker.setMap(map);
     styleBoundary(results[0].place_id);
   }
-
+  function handleClick(event: any) {
+    createInfoWindow(event);
+  }
 
   async function createInfoWindow(event: any) {
     let feature = event.features[0];
@@ -212,16 +214,11 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
     for (const wh in pincodeArray) {
       let currentBoundaryColour = "";
 
-      // Find the color associated with the current 'wh'
       for (const [place, colour] of Object.entries(boundaryColourStore)) {
         if (place === wh) {
           currentBoundaryColour = colour;
           break;
         }
-      }
-
-      function handleClick(event: any) {
-        createInfoWindow(event);
       }
 
       if (pincodeArray.hasOwnProperty(wh)) {
@@ -268,7 +265,6 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
         };
         allFeatureLayers.push(featureLayerStyle);
       }
-      featureLayer.addListener('mousemove', handleClick);
     }
 
     featureLayer.style = (options: any) => {
@@ -279,6 +275,7 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
         }
       }
     };
+    featureLayer.addListener('mousemove', handleClick);
     return true;
   } catch (e) {
     console.error("Geocode was not successful for the following reason:", e);
