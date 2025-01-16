@@ -184,112 +184,19 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
     marker.setMap(map);
     styleBoundary(results[0].place_id);
   }
-  function handleMove(event: any) {
-    createInfoWindow(event);
-  }
-
-  async function createInfoWindow(event: any) {
-    let feature = event.features[0];
-    if (!feature.placeId) return;
-    const place = await feature.fetchPlace();
-    let content =
-      '<span style="font-size:large"> Pincode: ' + place.displayName
-    updateInfoWindow(content, event.latLng);
-  }
-
-  function updateInfoWindow(content: any, center: any) {
-    infoWindow.setContent(content);
-    infoWindow.setPosition(center);
-    infoWindow.open({
-      map,
-      shouldFocus: true,
-    });
-  }
-
-  try {
-    featureLayer = map.getFeatureLayer(POSTAL_CODE);
-    const allFeatureLayers: any[] = [];
-    for (const wh in pincodeArray) {
-      let currentBoundaryColour = "";
-
-      for (const [place, colour] of Object.entries(boundaryColourStore)) {
-        if (place === wh) {
-          currentBoundaryColour = colour;
-          break;
-        }
-      }
-
-      if (pincodeArray.hasOwnProperty(wh)) {
-        const pincodes = pincodeArray[wh];
-        const geocodePromises: Promise<any>[] = [];
-        const placeIdsToStyle = new Set<string>();
-
-        pincodes.forEach((pin: any) => {
-          const pincode = pin.pincode.toString();
-          const request = { address: pincode };
-
-          if (!toggle) {
-            featureLayer.style = null;
-            return;
-          }
-          geocodePromises.push(
-            geocoder.geocode(request).then((result) => {
-              const { results } = result;
-              if (results.length > 0) {
-                const placeId = results[0].place_id;
-                placeIdsToStyle.add(placeId);
-              } else {
-                console.warn(`No results found for pincode: ${pincode}`);
-              }
-            }).catch((error) => {
-              console.log("Error geocoding pincode", error);
-            })
-          );
-        });
-        await Promise.all(geocodePromises);
-
-        const featureLayerStyle = (options: any) => {
-          const placeId = options.feature.placeId;
-
-          if (placeIdsToStyle.has(placeId)) {
-            return {
-              strokeColor: currentBoundaryColour,
-              strokeOpacity: 1.0,
-              strokeWeight: 2.0,
-              fillColor: currentBoundaryColour,
-              fillOpacity: 0.5
-            };
-          }
-        };
-        allFeatureLayers.push(featureLayerStyle);
-      }
-    }
-
-    featureLayer.style = (options: any) => {
-      for (const styleFunction of allFeatureLayers) {
-        const style = styleFunction(options);
-        if (style) {
-          return style;
-        }
-      }
-    };
-    featureLayer.addListener('mousemove', handleMove);
-    return true;
-  } catch (e) {
-    console.error("Geocode was not successful for the following reason:", e);
-    return false;
-  }
+  return true;
 
 }
 
 
 
-export async function initHeatMap(props?: any, filteredData?: any): Promise<void> {
-
+export async function initHeatMap(props?: any, filteredData?: any, pincodeArray?: any, toggle?: boolean): Promise<void> {
+ 
   if (!map) {
     await loadGoogleMapsScript();
     map = initializeMap("map");
   }
+  const infoWindow = new google.maps.InfoWindow();
   const clearMarkers = () => {
     markers.forEach((marker: any) => {
       marker.setMap(null);
@@ -304,7 +211,7 @@ export async function initHeatMap(props?: any, filteredData?: any): Promise<void
     circles = [];
   };
   const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-  const infoWindow = new google.maps.InfoWindow();
+  
   const addMarkers = (filteredData: any[], map: google.maps.Map) => {
     filteredData.forEach((ware: any) => {
       let currentBoundaryColour = null
@@ -374,4 +281,144 @@ export async function initHeatMap(props?: any, filteredData?: any): Promise<void
       addCircles(filteredData, map, props);
     }
   }
+  const pincodePlaceIdArray: { placeId: string, pincode: string }[] = [];
+
+  const { POSTAL_CODE } = google.maps.FeatureType;
+  geocoder = new google.maps.Geocoder();
+  const dataLayer = new google.maps.Data();
+  dataLayer.setMap(map);
+  // const infoWindow = new google.maps.InfoWindow();
+  let currentFeature = null;
+
+  function handleMove(event: any) {
+    let feature = event.feature;
+    createInfoWindow(event);
+    currentFeature = feature;
+  }
+  function handleMouseOut(event: any) {
+    if (infoWindow) {
+      infoWindow.close();
+    }
+    currentFeature = null;
+  }
+
+  function findPincodeFromPlaceId(placeId: string) {
+    const match = pincodePlaceIdArray.find(item => item.placeId === placeId);
+    return match ? match.pincode : null;
+  }
+
+  async function createInfoWindow(event: any) {
+    infoWindow.close()
+    let feature = event.features[0];
+    if (!feature.placeId) return;
+    const foundPincode = findPincodeFromPlaceId(feature.Hg);
+    if (foundPincode) {
+      const content = `<span style="font-size:large">Pincode: ${foundPincode}</span>`;
+      updateInfoWindow(content, event.latLng);
+    } 
+  }
+
+  function updateInfoWindow(content: any, center: any) {
+    infoWindow.setContent(content);
+    infoWindow.setPosition(center);
+    infoWindow.open({
+      map,
+      shouldFocus: true,
+    });
+  }
+
+  try {
+    featureLayer = map.getFeatureLayer(POSTAL_CODE);
+    const allFeatureLayers: any[] = [];
+
+    // Create an array to store pincode and placeId pairs
+
+
+    // Iterate over each area (wh in this case, assuming it's an area or region key)
+    for (const wh in pincodeArray) {
+      let currentBoundaryColour = "";
+
+      // Loop through boundaryColourStore to set the boundary color for each pincode area
+      for (const [place, colour] of Object.entries(boundaryColourStore)) {
+        if (place === wh) {
+          currentBoundaryColour = colour;
+          break;
+        }
+      }
+
+      if (pincodeArray.hasOwnProperty(wh)) {
+        const pincodes = pincodeArray[wh];
+        const geocodePromises: Promise<any>[] = [];
+        const placeIdsToStyle = new Set<string>();
+
+        // Iterate over each pincode in the area
+        pincodes.forEach((pin: any) => {
+          const pincode = pin.pincode.toString();
+          const request = { address: pincode };
+
+          // Skip geocoding if toggle is false
+          if (!toggle) {
+            featureLayer.style = null;
+            return;
+          }
+
+          geocodePromises.push(
+            geocoder.geocode(request).then((result) => {
+              const { results } = result;
+              if (results.length > 0) {
+                const placeId = results[0].place_id;
+
+                // Store the pincode and placeId in the array
+                pincodePlaceIdArray.push({
+                  placeId: placeId,
+                  pincode: pincode
+                });
+
+                // Add the placeId to the set for styling
+                placeIdsToStyle.add(placeId);
+              } else {
+                // console.warn(`No results found for pincode: ${pincode}`);
+              }
+            }).catch((error) => {
+              // console.error("Error geocoding pincode:", error);
+            })
+          );
+        });
+
+        // Wait for all geocode promises to resolve
+        await Promise.all(geocodePromises);
+
+        // Define feature layer style logic
+        const featureLayerStyle = (options: any) => {
+          const placeId = options.feature.placeId;
+
+          if (placeIdsToStyle.has(placeId)) {
+            return {
+              strokeColor: currentBoundaryColour,
+              strokeOpacity: 1.0,
+              strokeWeight: 2.0,
+              fillColor: currentBoundaryColour,
+              fillOpacity: 0.5
+            };
+          }
+        };
+
+        allFeatureLayers.push(featureLayerStyle);
+      }
+    }
+
+    featureLayer.style = (options: any) => {
+      for (const styleFunction of allFeatureLayers) {
+        const style = styleFunction(options);
+        if (style) {
+          return style;
+        }
+      }
+    };
+    featureLayer.addListener('mousemove', handleMove);
+    featureLayer.addListener('mouseout', handleMouseOut);
+  } catch (e) {
+    // console.error("Error processing geocode requests:", e);
+  }
+
 }
