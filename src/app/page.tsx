@@ -2,8 +2,6 @@
 import { useEffect, useState } from 'react';
 import { geoCodeRequest, initHeatMap, initHeatMapSelection } from './map';
 import { heatMapDateSelection, wareHouseLocation, getwareHouseLocations } from './actions/actions';
-import { signOut } from 'firebase/auth';
-import { auth } from './lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
 import './Loader.css';
 interface Location {
@@ -37,7 +35,7 @@ export default function Home() {
   const [data, setData] = useState<Location[]>([]);
   const [locationData, setLocationData] = useState<any>([]);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [pincodeBoundary, setPincodeBoundary] = useState(true);
+  const [pincodeBoundary, setPincodeBoundary] = useState(false);
   const [storePincode, setStorePincode] = useState<[{ [key: string]: any[] }] | undefined>(undefined);
   const [whMap, setWhMap] = useState<whMap>({});
 
@@ -45,15 +43,15 @@ export default function Home() {
     try {
       const response = await getwareHouseLocations();
       const res = await wareHouseLocation();
-      const whMap: whMap = {};
+      const hMap: whMap = {};
       response.forEach((item: any) => {
         const warehouse = item.WH;
-        if (!whMap[warehouse]) {
-          whMap[warehouse] = [];
+        if (!hMap[warehouse]) {
+          hMap[warehouse] = [];
         }
-        whMap[warehouse].push(item);
+        hMap[warehouse].push(item);
       });
-      setWhMap(whMap);
+      setWhMap(hMap);
       setData(res)
     } catch (error) {
       console.error('Error fetching warehouse data:', error);
@@ -87,29 +85,31 @@ export default function Home() {
 
     setStorePincode(filteredPincodeByWH);
     const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
-    initHeatMap(radius, filteredData);
-  }, [selectedWarehouse, radius, selectedMetric, startDate, endDate]);
+    initHeatMap(radius, filteredData, filteredPincodeByWH, pincodeBoundary);
+  }, [selectedWarehouse, radius, selectedMetric, startDate, endDate, pincodeBoundary ]);
 
   const [geoCoderesponse, setGeoCoderesponse] = useState(true);
   const [count, setCount] = useState(0);
 
   const handlePincodeBoundary = async () => {
-
     setPincodeBoundary(!pincodeBoundary);
-    setCount(count + 1);
-    if (count == 0) {
-      let temp = false
-      setGeoCoderesponse(temp);
-      temp = await geoCodeRequest("", storePincode, pincodeBoundary);
-      setGeoCoderesponse(temp);
-    }
-    else {
-      let temp = await geoCodeRequest("", storePincode, pincodeBoundary);
-      setCount(0);
-    }
+    // if(pincodeBoundary && selectedWarehouse.length === 0){
+    //   setPincodeBoundary(!pincodeBoundary);
+    // }
+    // setCount(count + 1);
+    // if (count == 0) {
+
+    //   setGeoCoderesponse(temp);
+    // }
+    // else {
+    //   let temp = await geoCodeRequest("", storePincode, pincodeBoundary);
+    //   setCount(0);
+    // }
   }
 
-  const handleSelectChange = (warehouse: string) => {
+  // console.log("storePincode", storePincode);
+
+  const handleSelectChange = async (warehouse: string) => {
     setSelectedWarehouse((prevSelected) => {
       if (prevSelected.includes(warehouse)) {
         return prevSelected.filter(item => item !== warehouse);
@@ -117,6 +117,8 @@ export default function Home() {
         return [...prevSelected, warehouse];
       }
     });
+    // let temp = false
+    // temp = await geoCodeRequest("", storePincode, pincodeBoundary);
   };
 
   const toggleExpand = () => {
@@ -173,15 +175,6 @@ export default function Home() {
 
   }, [startDate, endDate, selectedMetric]);
 
-  const handleClick = async () => {
-    try {
-      await signOut(auth);
-      router.push('/')
-      console.log("object");
-    } catch (error) {
-      console.log(error);
-    }
-  }
   const [handleGeoCode, setHandleGeoCode] = useState(false);
   const [text, setText] = useState("");
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -238,7 +231,7 @@ export default function Home() {
 
         <div id="map" style={{ width: '100%', height: '636px' }}></div>
 
-        <div className='flex flex-row m-1'>
+        <div className='flex flex-row m-4'>
           <h2 className={`text-'black' text-xl p-1 mt-2 rounded-xl font-bold`}>{loader ? (
             'HeatMap'
           ) : (
