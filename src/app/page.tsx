@@ -86,29 +86,14 @@ export default function Home() {
     setStorePincode(filteredPincodeByWH);
     const filteredData = warehouseData.filter(item => selectedWarehouse.includes(item[1]));
     initHeatMap(radius, filteredData, filteredPincodeByWH, pincodeBoundary);
-  }, [selectedWarehouse, radius, selectedMetric, startDate, endDate, pincodeBoundary ]);
+  }, [selectedWarehouse, radius, selectedMetric, startDate, endDate, pincodeBoundary]);
 
   const [geoCoderesponse, setGeoCoderesponse] = useState(true);
   const [count, setCount] = useState(0);
 
   const handlePincodeBoundary = async () => {
     setPincodeBoundary(!pincodeBoundary);
-    // if(pincodeBoundary && selectedWarehouse.length === 0){
-    //   setPincodeBoundary(!pincodeBoundary);
-    // }
-    // setCount(count + 1);
-    // if (count == 0) {
-
-    //   setGeoCoderesponse(temp);
-    // }
-    // else {
-    //   let temp = await geoCodeRequest("", storePincode, pincodeBoundary);
-    //   setCount(0);
-    // }
   }
-
-  // console.log("storePincode", storePincode);
-
   const handleSelectChange = async (warehouse: string) => {
     setSelectedWarehouse((prevSelected) => {
       if (prevSelected.includes(warehouse)) {
@@ -117,8 +102,6 @@ export default function Home() {
         return [...prevSelected, warehouse];
       }
     });
-    // let temp = false
-    // temp = await geoCodeRequest("", storePincode, pincodeBoundary);
   };
 
   const toggleExpand = () => {
@@ -189,13 +172,22 @@ export default function Home() {
 
   return (
     <>
-      <div className='bg-slate-200'>
-
-        <div className='flex text-white'>
-          <div className='p-1 mt-2'>
-            <label htmlFor="radius" className={`text-${radius === 10 ? 'black' : 'white'} text-xl p-2 ml-2 font-medium rounded-xl border-2 ${radius === 10 ? 'border-blue-300' : 'bg-blue-500'}`}>Radius (km): </label>
+      <div className='bg-slate-200 w-full h-full' style={{ position: 'relative', minHeight: '100vh' }}>
+        <div className='flex text-white'
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: '12px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(109, 136, 153, 0.5)',
+            borderRadius: '12px',
+            zIndex: 10
+          }}>
+          <div className='p-1'>
+            <label htmlFor="radius" className={`text-${radius === 10 ? 'black' : 'white'} text-2xl font-bold p-2 ml-2 rounded-xl ${radius === 10 ? 'border-blue-0' : 'bg-blue-500'}`}>Radius (km): </label>
             <input
-              className='bg-slate-200 text-black text-xl ml-4'
+              className='bg-transparent text-black text-2xl pl-1 ml-4'
               id="radius"
               type="number"
               value={radius}
@@ -204,21 +196,21 @@ export default function Home() {
             />
           </div>
           <div className='flex m-1'>
-            <button onClick={toggleExpand} className={`text-${isExpanded ? 'white' : 'black'} text-xl p-2 font-medium rounded-xl border-2 ${isExpanded ? 'bg-blue-500' : 'border-blue-300'}`}>
+            <button onClick={toggleExpand} className={`text-${isExpanded ? 'white' : 'black'} text-2xl p-2 font-bold rounded-xl ${isExpanded ? 'bg-blue-500' : 'border-blue-0'}`}>
               {isExpanded ? "Hide WareHouse" : "Show WareHouse"}
             </button>
             {isExpanded && (
-              <div className="flex ml-2 mt-2">
+              <div className="flex ml-4 mt-3">
                 {Object.keys(whMap).map((warehouse) => (
                   <div key={warehouse} className="px-1">
                     <input
-                      className="bg-slate-400 size-5 mt-1"
+                      className="bg-slate-400 size-6"
                       type="checkbox"
                       id={warehouse}
                       checked={selectedWarehouse.includes(warehouse)}
                       onChange={() => handleSelectChange(warehouse)}
                     />
-                    <label htmlFor={warehouse} className="text-black text-xl ml-0.5">
+                    <label htmlFor={warehouse} className="text-black font-semibold text-2xl mb-4 ml-1">
                       {warehouse}
                     </label>
                   </div>
@@ -229,57 +221,73 @@ export default function Home() {
 
         </div>
 
-        <div id="map" style={{ width: '100%', height: '636px' }}></div>
-
-        <div className='flex flex-row m-4'>
-          <h2 className={`text-'black' text-xl p-1 mt-2 rounded-xl font-bold`}>{loader ? (
-            'HeatMap'
-          ) : (
-            <span className="loader"></span>
-          )}</h2>
-          <div className='flex flex-row'>
-            <div className='text-black text-xl p-2 mt-1'>Start Date: </div>
-            <input
-              type="date"
-              value={startDate}
-              onChange={handleStartDateChange}
-              className="bg-slate-100 mb-8 rounded-xl p-1"
-            />
-
-            <div className='text-black text-xl p-2 mt-1'>End Date: </div>
-            <input
-              type="date"
-              value={endDate}
-              onChange={handleEndDateChange}
-              className="bg-slate-100 mb-8 rounded-xl p-1"
-            />
-
-            <div className='text-black text-xl p-2 mt-1'>Select Metric: </div>
-            <select
-              onChange={handleMetricChange}
-              value={selectedMetric}
-              className="bg-slate-100 mb-8 rounded-xl p-1"
-            >
-              <option value="cust_count">Customer Count</option>
-              <option value="so_count">Order Count</option>
-              <option value="volume">Volume</option>
-              <option value="order_value">Order Value</option>
-            </select>
-            <div className='flex flex-row ml-4 mt-3'>
+        <div id="map" style={{ width: '100vw', height: '100vh' }}></div>
+        <div
+          className="flex flex-row text-white mb-2"
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '12px',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(109, 136, 153, 0.5)',
+            borderRadius: '12px',
+            zIndex: 10,
+          }}
+        >
+          <div className="flex flex-row items-center py-2 px-4">
+            <h2 className="text-black text-3xl font-bold mr-4">
+              {loader ? 'HeatMap' : <span className="loader"></span>}
+            </h2>
+            <div className="flex items-center space-x-4">
+              <div className="text-black text-2xl font-bold whitespace-nowrap">Start Date:</div>
               <input
-                className="bg-slate-400 size-6"
-                type="checkbox"
-                onChange={handlePincodeBoundary}
+                type="date"
+                value={startDate}
+                onChange={handleStartDateChange}
+                className="bg-transparent text-black text-2xl rounded-xl p-1"
               />
-              <span className="mb-10 text-xl  mx-2">Pincode Boundary</span>
             </div>
-            <input
-              className='bg-slate-200 text-black text-xl p-2 m-1 w-48 h-10 rounded-md'
-              placeholder='Enter a location'
-              type="text"
-              onChange={handleTextChange}
-            />
-            <button onClick={handlePlace} className={`px-4 py-2 mx-10 mb-8 my-1 text-${handleGeoCode ? 'white' : 'black'} rounded-xl border-2  ${handleGeoCode ? 'border-blue-300 bg-blue-500' : 'border-blue-300 '}`}>Locate</button>
+            <div className="flex items-center space-x-4 ml-4">
+              <div className="text-black text-2xl font-bold whitespace-nowrap">End Date:</div>
+              <input
+                type="date"
+                value={endDate}
+                onChange={handleEndDateChange}
+                className="bg-transparent text-black text-2xl rounded-xl p-1"
+              />
+            </div>
+            <div className="flex items-center space-x-4 ml-4">
+              <div className="text-black text-2xl font-bold whitespace-nowrap">Select Metric:</div>
+              <select
+                onChange={handleMetricChange}
+                value={selectedMetric}
+                className="bg-transparent text-black text-2xl rounded-xl p-1"
+              >
+                <option value="cust_count">Customer Count</option>
+                <option value="so_count">Order Count</option>
+                <option value="volume">Volume</option>
+                <option value="order_value">Order Value</option>
+              </select>
+            </div>
+            <div className="flex items-center ml-4">
+              <input type="checkbox" onChange={handlePincodeBoundary} className="mt-0.5 size-6" />
+              <span className="text-black text-2xl font-bold whitespace-nowrap mx-2">Pincode Boundary</span>
+            </div>
+            <div className="flex items-center ml-4">
+              <input
+                className="bg-slate-100 text-black text-xl rounded-md p-2 w-48"
+                placeholder="Enter a location"
+                type="text"
+                onChange={handleTextChange}
+              />
+              <button
+                onClick={handlePlace}
+                className={`px-4 py-2 text-2xl font-bold ml-4 text-${handleGeoCode ? 'white' : 'black'} rounded-xl ${handleGeoCode ? 'bg-blue-500' : ''
+                  }`}
+              >
+                Locate
+              </button>
+            </div>
           </div>
         </div>
 
