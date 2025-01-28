@@ -142,20 +142,23 @@ export default function Home() {
     setEndDate(e.target.value);
   }
 
-  const [loader, setLoader] = useState(true);
-  useEffect(() => {
-    const fetchDataForHeatmap = async () => {
-      if (endDate && startDate) {
-        setLoader(false);
+  const [loader, setLoader] = useState(false);
+  const [loaderHeatMap, setLoaderHeatmap] = useState(false);
+  const handleHeatMap = async () => {
+    setLoaderHeatmap(!loaderHeatMap);
+    if (endDate && startDate) {
+      setLoader(true);
+      if (locationData.length == 0) {
         await heatMapDateSelect(startDate, endDate, selectedMetric);
-        await initHeatMapSelection(locationData, selectedMetric, startDate, endDate);
-        setLoader(true);
       }
-    };
-    if (endDate) {
-      fetchDataForHeatmap();
+      await initHeatMapSelection(locationData, selectedMetric, startDate, endDate, loaderHeatMap);
+      setLoader(false);
     }
-
+  }
+  useEffect(() => {
+    if (endDate && loaderHeatMap) {
+      handleHeatMap();
+    }
   }, [startDate, endDate, selectedMetric]);
 
   const [handleGeoCode, setHandleGeoCode] = useState(false);
@@ -173,21 +176,29 @@ export default function Home() {
   return (
     <>
       <div className='bg-slate-200 w-full h-full' style={{ position: 'relative', minHeight: '100vh' }}>
-        <div className='flex text-white'
+        <div
+          className="flex text-white"
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 20,
-            left: '12px',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(109, 136, 153, 0.5)',
-            borderRadius: '12px',
-            zIndex: 10
-          }}>
-          <div className='p-1'>
-            <label htmlFor="radius" className={`text-${radius === 10 ? 'black' : 'white'} text-2xl font-bold p-2 ml-2 rounded-xl ${radius === 10 ? 'border-blue-0' : 'bg-blue-500'}`}>Radius (km): </label>
+            left: "12px",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(109, 136, 153, 0.5)",
+            borderRadius: "12px",
+            zIndex: 10,
+          }}
+        >
+          <div className="p-1 mt-3 mb-1">
+            <label
+              htmlFor="radius"
+              className={`text-${radius === 10 ? "black" : "white"} text-2xl font-bold p-2 ml-2 rounded-xl ${radius === 10 ? "border-blue-0" : "bg-blue-500"
+                }`}
+            >
+              Radius (km):{" "}
+            </label>
             <input
-              className='bg-transparent text-black text-2xl pl-1 ml-4'
+              className="bg-transparent text-black text-2xl pl-1 ml-4"
               id="radius"
               type="number"
               value={radius}
@@ -195,22 +206,42 @@ export default function Home() {
               step="10"
             />
           </div>
-          <div className='flex m-1'>
-            <button onClick={toggleExpand} className={`text-${isExpanded ? 'white' : 'black'} text-2xl p-2 font-bold rounded-xl ${isExpanded ? 'bg-blue-500' : 'border-blue-0'}`}>
+        </div>
+
+        <div
+          className="flex text-white"
+          style={{
+            position: "absolute",
+            top: 20,
+            left: "510px",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(109, 136, 153, 0.5)",
+            borderRadius: "12px",
+            zIndex: 30,
+          }}
+        >
+          <div className="flex flex-col mt-2">
+            <button
+              onClick={toggleExpand}
+              className={`text-${isExpanded ? "white" : "black"} text-2xl p-2 font-bold rounded-xl ${isExpanded ? "bg-blue-500" : "border-blue-0"
+                }`}
+            >
               {isExpanded ? "Hide WareHouse" : "Show WareHouse"}
             </button>
+
             {isExpanded && (
-              <div className="flex ml-4 mt-3">
+              <div className="mt-4 p-2 bg-transparent rounded-lg">
                 {Object.keys(whMap).map((warehouse) => (
-                  <div key={warehouse} className="px-1">
+                  <div key={warehouse} className="flex items-center mb-2">
                     <input
-                      className="bg-slate-400 size-6"
+                      className="bg-slate-400 w-6 h-6"
                       type="checkbox"
                       id={warehouse}
                       checked={selectedWarehouse.includes(warehouse)}
                       onChange={() => handleSelectChange(warehouse)}
                     />
-                    <label htmlFor={warehouse} className="text-black font-semibold text-2xl mb-4 ml-1">
+                    <label htmlFor={warehouse} className="text-black font-semibold text-xl ml-2">
                       {warehouse}
                     </label>
                   </div>
@@ -218,12 +249,11 @@ export default function Home() {
               </div>
             )}
           </div>
-
         </div>
 
         <div id="map" style={{ width: '100vw', height: '100vh' }}></div>
-        <div
-          className="flex flex-row text-white mb-2"
+
+        <div className="flex flex-row text-white mb-2"
           style={{
             position: 'absolute',
             bottom: 0,
@@ -235,9 +265,11 @@ export default function Home() {
           }}
         >
           <div className="flex flex-row items-center py-2 px-4">
-            <h2 className="text-black text-3xl font-bold mr-4">
-              {loader ? 'HeatMap' : <span className="loader"></span>}
-            </h2>
+            <input type="checkbox" onChange={handleHeatMap} className="mt-0.5 size-6" />
+            <span className="text-black text-2xl font-bold whitespace-nowrap mx-2">HeatMap</span>
+            {loader ? <h2 className="text-black text-3xl font-bold mr-4">
+              <span className="loader"></span>
+            </h2> : ""}
             <div className="flex items-center space-x-4">
               <div className="text-black text-2xl font-bold whitespace-nowrap">Start Date:</div>
               <input

@@ -50,8 +50,7 @@ export const initializeMap = (mapElementId: string): google.maps.Map => {
 };
 
 
-export async function initHeatMapSelection(locationData?: any, selectedMetric?: any, startDate?: string, endDate?: string): Promise<boolean> {
-
+export async function initHeatMapSelection(locationData?: any, selectedMetric?: any, startDate?: string, endDate?: string, loaderHeatMap?: boolean): Promise<boolean> {
   try {
     if (!map) {
       await loadGoogleMapsScript();
@@ -77,26 +76,27 @@ export async function initHeatMapSelection(locationData?: any, selectedMetric?: 
       }
     }
 
-    if (heatmap) {
+    if (heatmap && loaderHeatMap) {
       heatmap.setMap(null);
     }
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: heat,
-      map,
-      opacity: 0.8,
-      dissipating: true,
-      maxIntensity: 1,
-      // maxIntensity: Math.max(...heatmapDataMetric.map((item:any) => item.weight)) || 1,
-
-      radius: 20,
-      gradient: [
-        'rgba(0, 255, 0, 0)',
-        'rgba(0, 255, 0, 0.6)',
-        'rgba(255, 255, 0, 0.7)',
-        'rgba(255, 165, 0, 0.6)',
-        'rgba(255, 0, 0, 0.8)',
-      ],
-    });
+    else {
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        data: heat,
+        map,
+        opacity: 0.8,
+        dissipating: true,
+        maxIntensity: 1,
+        // maxIntensity: Math.max(...heatmapDataMetric.map((item:any) => item.weight)) || 1,
+        radius: 20,
+        gradient: [
+          'rgba(0, 255, 0, 0)',
+          'rgba(0, 255, 0, 0.6)',
+          'rgba(255, 255, 0, 0.7)',
+          'rgba(255, 165, 0, 0.6)',
+          'rgba(255, 0, 0, 0.8)',
+        ],
+      });
+    }
     if (filtered.length > 0) {
       const centerLatLng = new google.maps.LatLng(filtered[0].latitude, filtered[0].longitude);
       map.setCenter(centerLatLng);
@@ -191,7 +191,7 @@ export async function geoCodeRequest(request: any, pincodeArray?: any, toggle?: 
 
 
 export async function initHeatMap(props?: any, filteredData?: any, pincodeArray?: any, toggle?: boolean): Promise<void> {
- 
+
   if (!map) {
     await loadGoogleMapsScript();
     map = initializeMap("map");
@@ -211,7 +211,7 @@ export async function initHeatMap(props?: any, filteredData?: any, pincodeArray?
     circles = [];
   };
   const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-  
+
   const addMarkers = (filteredData: any[], map: google.maps.Map) => {
     filteredData.forEach((ware: any) => {
       let currentBoundaryColour = null
@@ -313,9 +313,9 @@ export async function initHeatMap(props?: any, filteredData?: any, pincodeArray?
     if (!feature.placeId) return;
     const foundPincode = findPincodeFromPlaceId(feature.Hg);
     if (foundPincode) {
-      const content = `<span style="font-size:large">Pincode: ${foundPincode}</span>`;
+      const content = `<span style="font-size: large; color: black;">Pincode: ${foundPincode}</span>`;
       updateInfoWindow(content, event.latLng);
-    } 
+    }
   }
 
   function updateInfoWindow(content: any, center: any) {
