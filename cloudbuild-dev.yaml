@@ -1,0 +1,34 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 
+      'build', 
+      '-t', 
+      'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps', 
+      '--build-arg',
+      'NEXT_PUBLIC_MAPS_API_KEY=AIzaSyBg9ZxwT8cpJJOQA-LiJ-Pi24-3rhsN0OU',
+      '--build-arg',
+      'GOOGLE_CLOUD_PROJECT=hubemployee-189ad',
+      '--build-arg',
+      'NEXT_PUBLIC_SUCHNAVALI_BASE_URL=https://suchnavali-1019598212725.asia-south1.run.app',
+      '--build-arg',
+      'NEXT_PUBLIC_MAP_ID=68b8f843e24917af',
+
+      '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'run', 
+      'deploy', 
+      'mera-maps', 
+      '--image', 
+      'asia-south1-docker.pkg.dev/hubemployee-189ad/cloud-run-source-deploy/mera-maps', 
+      '--region', 
+      'asia-south1', 
+      '--service-account',
+      'mera-maps-executor@hubemployee-189ad.iam.gserviceaccount.com'
+      ]
+options:
+  logging: CLOUD_LOGGING_ONLY
