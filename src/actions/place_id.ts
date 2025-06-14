@@ -309,7 +309,7 @@ export async function fetchSinglePincodeData(pincode: string): Promise<PincodeDa
     }
 
     const client = await getDhruvtaraClient()
-    const url = `https://dhruv-tara-1019598212725.asia-east2.run.app/pincode/${pincode}`
+    const url = `${process.env.DHRUV_TARA_URL}/pincode/${pincode}`
     
     console.log(`Fetching data for pincode: ${pincode}`)
     
@@ -370,10 +370,8 @@ export async function fetchAllPincodePlaceIds(pincodes: string[]): Promise<Recor
     console.log(`Fetching place IDs for ${validPincodes.length} valid pincodes...`)
     
     const results: Record<string, { placeId: string; latitude: number; longitude: number }> = {}
-    
-    // Process pincodes in smaller batches to avoid overwhelming the API
-    const batchSize = 100 // Reduced batch size for better reliability
-    const delay = 100 // Increased delay between batches
+    const batchSize = 100
+    const delay = 100 
     
     for (let i = 0; i < validPincodes.length; i += batchSize) {
       const batch = validPincodes.slice(i, i + batchSize)
