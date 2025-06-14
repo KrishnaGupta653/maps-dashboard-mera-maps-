@@ -72,7 +72,7 @@ export interface PincodeResponse {
 export async function fetchPincodeLocations(warehouses?: string): Promise<PincodeResponse> {
   try {
     const client = await getClient()
-    let url = `${process.env.SUCHNAVALI_API_BASE_URL}/serviceablePincode/location`
+    let url = `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/serviceablePincode/location`
     
     if (warehouses) {
       url += `?WH=${encodeURIComponent(warehouses)}`
@@ -82,8 +82,6 @@ export async function fetchPincodeLocations(warehouses?: string): Promise<Pincod
       url,
       method: 'GET',
     })
-    
-    // Ensure we return a plain object
     return JSON.parse(JSON.stringify(response.data)) as PincodeResponse
   } catch (error) {
     console.error('Error fetching pincode locations:', error)

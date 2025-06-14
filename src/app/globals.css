@@ -34,3 +34,12 @@ body {
          scrollbar-width: none;
        }
      }
+.gmnoprint {
+  padding: 1px  !important; 
+}
+
+.gm-control-active, 
+.gm-svpc,
+.gmnoprint {
+  transform: scale(0.85); 
+}
