@@ -1,5 +1,5 @@
 // 'use server'
-// import { getClient } from './gauth'
+// import { getSuchnavaliClient } from './gauth'
 
 // export type PincodePoint = {
 //   Schedule: string
@@ -25,7 +25,7 @@
 
 // export async function fetchPincodeLocations(warehouses?: string): Promise<PincodeResponse> {
 //   try {
-//     const client = await getClient()
+//     const client = await getSuchnavaliClient()
 //     let url = 'https://suchnavali-vslywuxv3a-el.a.run.app/serviceablePincode/location'
     
 //     if (warehouses) {
@@ -45,7 +45,7 @@
 //   }
 // }
 'use server'
-import { getClient } from './gauth'
+import { getSuchnavaliClient } from './gauth'
 
 export type PincodePoint = {
   Schedule: string
@@ -71,8 +71,8 @@ export interface PincodeResponse {
 
 export async function fetchPincodeLocations(warehouses?: string): Promise<PincodeResponse> {
   try {
-    const client = await getClient()
-    let url = `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/serviceablePincode/location`
+    const client = await getSuchnavaliClient()
+    let url = `${process.env.SUCHNAVALI_BASE_URL}/serviceablePincode/location`
     
     if (warehouses) {
       url += `?WH=${encodeURIComponent(warehouses)}`

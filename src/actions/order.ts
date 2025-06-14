@@ -1,5 +1,5 @@
 'use server'
-import { getClient } from './gauth'
+import { getSuchnavaliClient } from './gauth'
 
 export interface OrderLocationData {
   cust_count: number
@@ -27,7 +27,7 @@ export async function fetchOrderLocationData(
   metric?: string
 ): Promise<OrderResponse> {
   try {
-    const client = await getClient()
+    const client = await getSuchnavaliClient()
     
     // Build query parameters
     const params = new URLSearchParams()
@@ -42,7 +42,7 @@ export async function fetchOrderLocationData(
     
     do {
       params.set('page', currentPage.toString())
-      const url = `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/orderData/location?${params.toString()}`
+      const url = `${process.env.SUCHNAVALI_BASE_URL}/orderData/location?${params.toString()}`
       
       const response = await client.request({
         url,

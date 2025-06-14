@@ -1,5 +1,5 @@
 'use server'
-import { getClient } from './gauth'
+import { getSuchnavaliClient } from './gauth'
 export interface WarehouseLocation {
   Latitude: number
   Longitute: number
@@ -16,9 +16,9 @@ export interface WarehouseResponse {
 }
 export async function fetchWarehouseLocations(): Promise<WarehouseResponse> {
    try {
-     const client = await getClient()
+     const client = await getSuchnavaliClient()
      const response = await client.request({
-        url: `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/serviceableWarehouse/location`,
+        url: `${process.env.SUCHNAVALI_BASE_URL}/serviceableWarehouse/location`,
         method: 'GET',
      })
 

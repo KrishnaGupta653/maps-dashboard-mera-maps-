@@ -581,8 +581,8 @@ export default function Dashboard() {
         showPincodes={showPincodes}
         showHeatmap={showHeatmap}
         showCircles={showCircles}
-        showNewWarehouses={showNewWarehouses} // Add this
-        newWarehouses={newWarehouses} // Add this
+        showNewWarehouses={showNewWarehouses}
+        newWarehouses={newWarehouses}
         onNewWarehouseMove={updateNewWarehousePosition}
         selectedMetrics={[selectedMetric]}
         loading={loading}
@@ -715,7 +715,7 @@ function StatusCard({
       ? "text-green-300"
       : color === "red"
       ? "text-red-300"
-      : "text-purple-300"; // Add purple color
+      : "text-purple-300";
   const bgClass =
     color === "blue"
       ? "bg-blue-500"
@@ -723,7 +723,7 @@ function StatusCard({
       ? "bg-green-500"
       : color === "red"
       ? "bg-red-500"
-      : "bg-purple-500"; // Add purple color
+      : "bg-purple-500";
   return (
     <div className="bg-black/50 backdrop-blur-md rounded-lg p-2 border border-white/10">
       {loading && (
