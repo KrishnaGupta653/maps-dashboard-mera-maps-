@@ -18,7 +18,7 @@ export async function fetchWarehouseLocations(): Promise<WarehouseResponse> {
    try {
      const client = await getClient()
      const response = await client.request({
-        url: `${process.env.NEXT_PUBLIC_SUCHNAVALI_BASE_URL}/serviceableWarehouse/location`,
+        url: `${process.env.SUCHNAVALI_BASE_URL}/serviceableWarehouse/location`,
         method: 'GET',
      })
 

@@ -55,7 +55,8 @@ export async function fetchSinglePincodeData(pincode: string): Promise<PincodeDa
     }
 
     const client = await getClient()
-    const url = `https://dhruv-tara-1019598212725.asia-east2.run.app/pincode/${pincode}`
+    // const url = `https://dhruv-tara-1019598212725.asia-east2.run.app/pincode/${pincode}`
+    const url = `${process.env.DHRUV_TARA_URL}/pincode/${pincode}`
     
     console.log(`Fetching data for pincode: ${pincode}`)
     
