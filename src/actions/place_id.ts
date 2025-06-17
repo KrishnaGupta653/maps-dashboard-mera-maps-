@@ -1,491 +1,316 @@
 // 'use server'
 // import { getDhruvtaraClient } from './gauth'
 
-// export type PincodeData = {
+// export interface PincodeData {
 //   pincode: string
-//   deliveryType: string
-//   serviceSchedule: string[]
 //   geoLocation: {
 //     longitude: number
 //     latitude: number
 //   }
-//   state: string
-//   district: string
-//   servicedBy: {
-//     warehouses: Array<{
-//       erpnextWarehouseId: string
-//       zohoWarehouseId?: string
-//       distance: number
-//     }>
-//     hubs?: Array<any>
-//   }
-//   holidayList: string[]
-//   serviceable: boolean
 //   mapInfo: {
 //     googleMaps: {
 //       placeId: string
 //     }
 //   }
+//   deliveryType?: string
+//   serviceSchedule?: string[]
+//   state?: string
+//   district?: string
+//   servicedBy?: {
+//     warehouses: Array<{
+//       erpnextWarehouseId: string
+//       zohoWarehouseId?: string
+//       distance: number
+//     }>
+//   }
+//   holidayList?: string[]
+//   serviceable?: boolean
 //   serviceTimeWindow?: {
 //     start: string
 //     end: string
 //   }
 // }
-
-// // Validate pincode format (6 digits)
-// function isValidPincode(pincode: string): boolean {
-//   return /^\d{6}$/.test(pincode.trim())
-// }
-
-// // Function to get unique valid pincodes
+// const isValidPincode = (pincode: string): boolean => /^\d{6}$/.test(pincode.trim())
 // export async function getUniqueValidPincodes(pincodes: (string | number)[]): Promise<string[]> {
-//   const uniquePincodes = Array.from(new Set(
-//     pincodes.map(p => p.toString()).filter(isValidPincode)
-//   ))
-  
-//   console.log(`Filtered ${pincodes.length} pincodes to ${uniquePincodes.length} unique valid pincodes`)
-//   return uniquePincodes
+//   return Array.from(new Set(pincodes.map(p => p.toString()).filter(isValidPincode)))
 // }
-
 // export async function fetchSinglePincodeData(pincode: string): Promise<PincodeData | null> {
+//   if (!isValidPincode(pincode)) return null
 //   try {
-//     if (!isValidPincode(pincode)) {
-//       console.warn(`Invalid pincode format: ${pincode}`)
-//       return null
-//     }
-
 //     const client = await getDhruvtaraClient()
-//     const url = `https://dhruv-tara-1019598212725.asia-east2.run.app/pincode/${pincode}`
-    
-//     console.log(`Fetching data for pincode: ${pincode}`)
-    
 //     const response = await client.request({
-//       url,
+//       url: `${process.env.DHRUV_TARA_URL}/pincode/${pincode}`,
 //       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
+//       headers: { 'Content-Type': 'application/json' },
 //     })
-    
-//     if (!response.data) {
-//       console.warn(`No data returned for pincode: ${pincode}`)
-//       return null
-//     }
-
-//     const data = JSON.parse(JSON.stringify(response.data)) as PincodeData
-    
-//     // Validate that we have the required mapInfo
-//     if (!data.mapInfo?.googleMaps?.placeId) {
-//       console.warn(`No place ID found for pincode: ${pincode}`)
-//       return null
-//     }
-
-//     return data
-//   } catch (error: any) {
-//     console.error(`Error fetching pincode data for ${pincode}:`, {
-//       message: error.message,
-//       status: error.status,
-//       statusText: error.statusText,
-//     })
+//     const data = response.data as PincodeData
+//     return data?.mapInfo?.googleMaps?.placeId ? data : null
+//   } catch {
 //     return null
 //   }
 // }
-
-// export async function fetchAllPincodePlaceIds(pincodes: string[]): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
-//   try {
-//     // First validate and filter pincodes
-//     const validPincodes = await getUniqueValidPincodes(pincodes)
-    
-//     if (validPincodes.length === 0) {
-//       console.warn('No valid pincodes provided')
-//       return {}
+// export async function fetchAllPincodePlaceIds(
+//   pincodes: string[]
+// ): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
+//   const validPincodes = await getUniqueValidPincodes(pincodes)
+//   if (validPincodes.length === 0) return {}
+//   const results = await Promise.allSettled(
+//     validPincodes.map(async (pincode) => {
+//       const data = await fetchSinglePincodeData(pincode)
+//       return data ? {
+//         pincode,
+//         placeId: data.mapInfo.googleMaps.placeId,
+//         latitude: data.geoLocation.latitude,
+//         longitude: data.geoLocation.longitude
+//       } : null
+//     })
+//   )
+//   return results.reduce((acc, result) => {
+//     if (result.status === 'fulfilled' && result.value) {
+//       const { pincode, placeId, latitude, longitude } = result.value
+//       acc[pincode] = { placeId, latitude, longitude }
 //     }
-
-//     console.log(`Fetching place IDs for ${validPincodes.length} valid pincodes...`)
-    
-//     const results: Record<string, { placeId: string; latitude: number; longitude: number }> = {}
-    
-//     // Process pincodes in smaller batches to avoid overwhelming the API
-//     const batchSize = 100 // Reduced batch size for better reliability
-//     const delay = 100 // Increased delay between batches
-    
-//     for (let i = 0; i < validPincodes.length; i += batchSize) {
-//       const batch = validPincodes.slice(i, i + batchSize)
-//       console.log(`Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(validPincodes.length / batchSize)} (${batch.length} pincodes)`)
-      
-//       // Create promises for the current batch
-//       const batchPromises = batch.map(async (pincode) => {
-//         try {
-//           const data = await fetchSinglePincodeData(pincode)
-//           if (data && data.mapInfo?.googleMaps?.placeId) {
-//             return {
-//               pincode,
-//               placeId: data.mapInfo.googleMaps.placeId,
-//               latitude: data.geoLocation.latitude,
-//               longitude: data.geoLocation.longitude
-//             }
-//           }
-//           return null
-//         } catch (error) {
-//           console.error(`Failed to fetch data for pincode ${pincode}:`, error)
-//           return null
-//         }
-//       })
-      
-//       // Execute batch promises
-//       const batchResults = await Promise.all(batchPromises)
-      
-//       // Process results
-//       batchResults.forEach(result => {
-//         if (result) {
-//           results[result.pincode] = {
-//             placeId: result.placeId,
-//             latitude: result.latitude,
-//             longitude: result.longitude
-//           }
-//         }
-//       })
-      
-//       // Add delay between batches (except for the last batch)
-//       if (i + batchSize < validPincodes.length) {
-//         console.log(`Waiting ${delay}ms before next batch...`)
-//         await new Promise(resolve => setTimeout(resolve, delay))
-//       }
-//     }
-    
-//     const successCount = Object.keys(results).length
-//     console.log(`Successfully fetched place IDs for ${successCount} out of ${validPincodes.length} pincodes`)
-    
-//     if (successCount === 0) {
-//       console.warn('No place IDs were successfully fetched. Check API authentication and pincode validity.')
-//     }
-    
-//     return results
-//   } catch (error) {
-//     console.error('Error in fetchAllPincodePlaceIds:', error)
-//     throw new Error('Failed to fetch pincode place IDs')
-//   }
+//     return acc
+//   }, {} as Record<string, { placeId: string; latitude: number; longitude: number }>)
 // }
 
-// // Utility function to fetch place IDs for a specific set of pincodes with retry logic
 // export async function fetchPlaceIdsWithRetry(
 //   pincodes: string[], 
-//   maxRetries: number = 3
+//   maxRetries = 2
 // ): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
-//   let lastError: Error | null = null
-  
 //   for (let attempt = 1; attempt <= maxRetries; attempt++) {
 //     try {
-//       console.log(`Attempt ${attempt}/${maxRetries} to fetch place IDs`)
 //       const results = await fetchAllPincodePlaceIds(pincodes)
-      
-//       if (Object.keys(results).length > 0) {
-//         return results
-//       }
-      
-//       if (attempt < maxRetries) {
-//         const delay = attempt * 1000 // Exponential backoff
-//         console.log(`No results in attempt ${attempt}, retrying in ${delay}ms...`)
-//         await new Promise(resolve => setTimeout(resolve, delay))
-//       }
+//       if (Object.keys(results).length > 0) return results
 //     } catch (error) {
-//       lastError = error as Error
-//       console.error(`Attempt ${attempt} failed:`, error)
-      
-//       if (attempt < maxRetries) {
-//         const delay = attempt * 1000
-//         console.log(`Retrying in ${delay}ms...`)
-//         await new Promise(resolve => setTimeout(resolve, delay))
-//       }
+//       if (attempt === maxRetries) throw error
 //     }
 //   }
-  
-//   throw lastError || new Error('Failed to fetch place IDs after all retry attempts')
+//   throw new Error('Failed to fetch place IDs')
 // }
-
-// // Legacy function for backward compatibility
 // export async function fetchPincodeData(pincode?: string): Promise<PincodeData | PincodeData[]> {
-//   try {
-//     const client = await getDhruvtaraClient()
-//     const baseUrl = 'https://dhruv-tara-1019598212725.asia-east2.run.app/pincode'
-    
-//     const url = pincode ? `${baseUrl}/${pincode}/` : `${baseUrl}/`
-    
-//     const response = await client.request({
-//       url,
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-    
-//     return JSON.parse(JSON.stringify(response.data)) as PincodeData | PincodeData[]
-//   } catch (error) {
-//     console.error('Error fetching pincode data:', error)
-//     throw new Error('Failed to fetch pincode data')
-//   }
+//   const client = await getDhruvtaraClient()
+//   const response = await client.request({
+//     url: `${process.env.DHRUV_TARA_URL}/pincode${pincode ? `/${pincode}` : ''}`,
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   })
+//   return response.data as PincodeData | PincodeData[]
 // }
 'use server'
 import { getDhruvtaraClient } from './gauth'
+import { fetchWarehouseLocations } from './bazaar'
 
-// Define proper types for hub data
-export interface HubData {
-  id?: string
-  name?: string
-  location?: {
-    latitude: number
-    longitude: number
-  }
-  [key: string]: unknown // Allow additional properties
-}
-
-// Define proper error type for API errors
-export interface ApiError extends Error {
-  status?: number
-  statusText?: string
-  code?: string
-}
-
-export type PincodeData = {
+export interface PincodeData {
   pincode: string
-  deliveryType: string
-  serviceSchedule: string[]
   geoLocation: {
     longitude: number
     latitude: number
   }
-  state: string
-  district: string
-  servicedBy: {
-    warehouses: Array<{
-      erpnextWarehouseId: string
-      zohoWarehouseId?: string
-      distance: number
-    }>
-    hubs?: Array<HubData> // Fixed: proper type for hubs
-  }
-  holidayList: string[]
-  serviceable: boolean
   mapInfo: {
     googleMaps: {
       placeId: string
     }
   }
+  deliveryType?: string
+  serviceSchedule?: string[]
+  state?: string
+  district?: string
+  servicedBy?: {
+    warehouses: Array<{
+      erpnextWarehouseId: string
+      zohoWarehouseId?: string
+      distance: number
+    }>
+  }
+  holidayList?: string[]
+  serviceable?: boolean
   serviceTimeWindow?: {
     start: string
     end: string
   }
 }
 
-// Validate pincode format (6 digits)
-function isValidPincode(pincode: string): boolean {
-  return /^\d{6}$/.test(pincode.trim())
+export interface WarehousePincodeMapping {
+  zohoWarehouseId: string
+  warehouseName: string
+  pincodes: Array<{
+    pincode: string
+    placeId: string
+    latitude: number
+    longitude: number
+    state: string
+    district: string
+    distance: number
+  }>
 }
 
-// Type guard to check if error is ApiError
-function isApiError(error: unknown): error is ApiError {
-  return error instanceof Error && (
-    'status' in error || 
-    'statusText' in error || 
-    'code' in error
-  )
-}
+const isValidPincode = (pincode: string): boolean => /^\d{6}$/.test(pincode.trim())
 
-// Function to get unique valid pincodes
 export async function getUniqueValidPincodes(pincodes: (string | number)[]): Promise<string[]> {
-  const uniquePincodes = Array.from(new Set(
-    pincodes.map(p => p.toString()).filter(isValidPincode)
-  ))
-  
-  console.log(`Filtered ${pincodes.length} pincodes to ${uniquePincodes.length} unique valid pincodes`)
-  return uniquePincodes
+  return Array.from(new Set(pincodes.map(p => p.toString()).filter(isValidPincode)))
 }
 
 export async function fetchSinglePincodeData(pincode: string): Promise<PincodeData | null> {
+  if (!isValidPincode(pincode)) return null
   try {
-    if (!isValidPincode(pincode)) {
-      console.warn(`Invalid pincode format: ${pincode}`)
-      return null
-    }
-
     const client = await getDhruvtaraClient()
-    const url = `${process.env.DHRUV_TARA_URL}/pincode/${pincode}`
-    
-    console.log(`Fetching data for pincode: ${pincode}`)
-    
     const response = await client.request({
-      url,
+      url: `${process.env.DHRUV_TARA_URL}/pincode/${pincode}`,
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     })
-    
-    if (!response.data) {
-      console.warn(`No data returned for pincode: ${pincode}`)
-      return null
-    }
-
-    const data = JSON.parse(JSON.stringify(response.data)) as PincodeData
-    
-    // Validate that we have the required mapInfo
-    if (!data.mapInfo?.googleMaps?.placeId) {
-      console.warn(`No place ID found for pincode: ${pincode}`)
-      return null
-    }
-
-    return data
-  } catch (error) { // Fixed: proper error handling
-    let errorMessage = 'Unknown error occurred'
-    let errorStatus: number | undefined
-    let errorStatusText: string | undefined
-
-    if (isApiError(error)) {
-      errorMessage = error.message
-      errorStatus = error.status
-      errorStatusText = error.statusText
-    } else if (error instanceof Error) {
-      errorMessage = error.message
-    }
-    
-    console.error(`Error fetching pincode data for ${pincode}:`, {
-      message: errorMessage,
-      status: errorStatus,
-      statusText: errorStatusText,
-    })
+    const data = response.data as PincodeData
+    return data?.mapInfo?.googleMaps?.placeId ? data : null
+  } catch {
     return null
   }
 }
 
-export async function fetchAllPincodePlaceIds(pincodes: string[]): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
-  try {
-    // First validate and filter pincodes
-    const validPincodes = await getUniqueValidPincodes(pincodes)
-    
-    if (validPincodes.length === 0) {
-      console.warn('No valid pincodes provided')
-      return {}
-    }
-
-    console.log(`Fetching place IDs for ${validPincodes.length} valid pincodes...`)
-    
-    const results: Record<string, { placeId: string; latitude: number; longitude: number }> = {}
-    const batchSize = 100
-    const delay = 100 
-    
-    for (let i = 0; i < validPincodes.length; i += batchSize) {
-      const batch = validPincodes.slice(i, i + batchSize)
-      console.log(`Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(validPincodes.length / batchSize)} (${batch.length} pincodes)`)
-      
-      // Create promises for the current batch
-      const batchPromises = batch.map(async (pincode) => {
-        try {
-          const data = await fetchSinglePincodeData(pincode)
-          if (data && data.mapInfo?.googleMaps?.placeId) {
-            return {
-              pincode,
-              placeId: data.mapInfo.googleMaps.placeId,
-              latitude: data.geoLocation.latitude,
-              longitude: data.geoLocation.longitude
-            }
-          }
-          return null
-        } catch (error) {
-          console.error(`Failed to fetch data for pincode ${pincode}:`, error)
-          return null
-        }
-      })
-      
-      // Execute batch promises
-      const batchResults = await Promise.all(batchPromises)
-      
-      // Process results
-      batchResults.forEach(result => {
-        if (result) {
-          results[result.pincode] = {
-            placeId: result.placeId,
-            latitude: result.latitude,
-            longitude: result.longitude
-          }
-        }
-      })
-      
-      // Add delay between batches (except for the last batch)
-      if (i + batchSize < validPincodes.length) {
-        console.log(`Waiting ${delay}ms before next batch...`)
-        await new Promise(resolve => setTimeout(resolve, delay))
-      }
-    }
-    
-    const successCount = Object.keys(results).length
-    console.log(`Successfully fetched place IDs for ${successCount} out of ${validPincodes.length} pincodes`)
-    
-    if (successCount === 0) {
-      console.warn('No place IDs were successfully fetched. Check API authentication and pincode validity.')
-    }
-    
-    return results
-  } catch (error) {
-    console.error('Error in fetchAllPincodePlaceIds:', error)
-    throw new Error('Failed to fetch pincode place IDs')
-  }
-}
-
-// Utility function to fetch place IDs for a specific set of pincodes with retry logic
-export async function fetchPlaceIdsWithRetry(
-  pincodes: string[], 
-  maxRetries: number = 3
-): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
-  let lastError: Error | null = null
-  
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      console.log(`Attempt ${attempt}/${maxRetries} to fetch place IDs`)
-      const results = await fetchAllPincodePlaceIds(pincodes)
-      
-      if (Object.keys(results).length > 0) {
-        return results
-      }
-      
-      if (attempt < maxRetries) {
-        const delay = attempt * 1000 // Exponential backoff
-        console.log(`No results in attempt ${attempt}, retrying in ${delay}ms...`)
-        await new Promise(resolve => setTimeout(resolve, delay))
-      }
-    } catch (error) {
-      lastError = error as Error
-      console.error(`Attempt ${attempt} failed:`, error)
-      
-      if (attempt < maxRetries) {
-        const delay = attempt * 1000
-        console.log(`Retrying in ${delay}ms...`)
-        await new Promise(resolve => setTimeout(resolve, delay))
-      }
-    }
-  }
-  
-  throw lastError || new Error('Failed to fetch place IDs after all retry attempts')
-}
-
-// Legacy function for backward compatibility
-export async function fetchPincodeData(pincode?: string): Promise<PincodeData | PincodeData[]> {
+// Fetch pincodes for a specific warehouse using zohoWarehouseId
+export async function fetchPincodesByWarehouse(zohoWarehouseId: string): Promise<PincodeData[]> {
   try {
     const client = await getDhruvtaraClient()
-    const baseUrl = 'https://dhruv-tara-1019598212725.asia-east2.run.app/pincode'
-    
-    const url = pincode ? `${baseUrl}/${pincode}/` : `${baseUrl}/`
-    
     const response = await client.request({
-      url,
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      url: `${process.env.DHRUV_TARA_URL}/pincode/query`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: { "servicedBy.warehouses.zohoWarehouseId": zohoWarehouseId }
     })
     
-    return JSON.parse(JSON.stringify(response.data)) as PincodeData | PincodeData[]
+    return response.data as PincodeData[]
   } catch (error) {
-    console.error('Error fetching pincode data:', error)
-    throw new Error('Failed to fetch pincode data')
+    console.error(`Error fetching pincodes for warehouse ${zohoWarehouseId}:`, error)
+    return []
   }
+}
+
+// Fetch pincode and place ID mapping for a specific warehouse
+export async function fetchWarehousePincodeMapping(zohoWarehouseId: string, warehouseName: string): Promise<WarehousePincodeMapping> {
+  const pincodeData = await fetchPincodesByWarehouse(zohoWarehouseId)
+  
+  const pincodes = pincodeData
+    .filter(data => data.mapInfo?.googleMaps?.placeId) // Only include items with place IDs
+    .map(data => ({
+      pincode: data.pincode,
+      placeId: data.mapInfo.googleMaps.placeId,
+      latitude: data.geoLocation.latitude,
+      longitude: data.geoLocation.longitude,
+      state: data.state || '',
+      district: data.district || '',
+      distance: data.servicedBy?.warehouses[0]?.distance || 0
+    }))
+
+  return {
+    zohoWarehouseId,
+    warehouseName,
+    pincodes
+  }
+}
+
+// Fetch pincode and place ID mappings for all warehouses
+export async function fetchAllWarehousePincodeMappings(): Promise<WarehousePincodeMapping[]> {
+  try {
+    // Get all warehouses from Bazaar API
+    const warehouseResponse = await fetchWarehouseLocations()
+    const warehouses = warehouseResponse.results
+    
+    console.log(`Found ${warehouses.length} warehouses to process`)
+    
+    // Fetch pincode mappings for each warehouse
+    const mappingPromises = warehouses.map(warehouse => 
+      fetchWarehousePincodeMapping(warehouse.zohoWarehouseId, warehouse.Warehouse)
+    )
+    
+    const mappings = await Promise.all(mappingPromises)
+    
+    // Filter out warehouses with no pincodes
+    const validMappings = mappings.filter(mapping => mapping.pincodes.length > 0)
+    
+    console.log(`Successfully processed ${validMappings.length} warehouses with pincodes`)
+    
+    return validMappings
+  } catch (error) {
+    console.error('Error fetching all warehouse pincode mappings:', error)
+    throw new Error('Failed to fetch warehouse pincode mappings')
+  }
+}
+
+// Get consolidated pincode to place ID mapping across all warehouses
+export async function fetchAllPincodePlaceIds(): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
+  try {
+    const allMappings = await fetchAllWarehousePincodeMappings()
+    const consolidatedMapping: Record<string, { placeId: string; latitude: number; longitude: number }> = {}
+    
+    allMappings.forEach(mapping => {
+      mapping.pincodes.forEach(pincodeInfo => {
+        // If pincode already exists, keep the first occurrence (you can modify this logic as needed)
+        if (!consolidatedMapping[pincodeInfo.pincode]) {
+          consolidatedMapping[pincodeInfo.pincode] = {
+            placeId: pincodeInfo.placeId,
+            latitude: pincodeInfo.latitude,
+            longitude: pincodeInfo.longitude
+          }
+        }
+      })
+    })
+    
+    return consolidatedMapping
+  } catch (error) {
+    console.error('Error creating consolidated pincode place ID mapping:', error)
+    throw error
+  }
+}
+
+// Legacy function - kept for backward compatibility
+export async function fetchAllPincodePlaceIdsLegacy(
+  pincodes: string[]
+): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
+  const validPincodes = await getUniqueValidPincodes(pincodes)
+  if (validPincodes.length === 0) return {}
+  
+  const results = await Promise.allSettled(
+    validPincodes.map(async (pincode) => {
+      const data = await fetchSinglePincodeData(pincode)
+      return data ? {
+        pincode,
+        placeId: data.mapInfo.googleMaps.placeId,
+        latitude: data.geoLocation.latitude,
+        longitude: data.geoLocation.longitude
+      } : null
+    })
+  )
+  
+  return results.reduce((acc, result) => {
+    if (result.status === 'fulfilled' && result.value) {
+      const { pincode, placeId, latitude, longitude } = result.value
+      acc[pincode] = { placeId, latitude, longitude }
+    }
+    return acc
+  }, {} as Record<string, { placeId: string; latitude: number; longitude: number }>)
+}
+
+export async function fetchPlaceIdsWithRetry(
+  pincodes: string[], 
+  maxRetries = 2
+): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const results = await fetchAllPincodePlaceIdsLegacy(pincodes)
+      if (Object.keys(results).length > 0) return results
+    } catch (error) {
+      if (attempt === maxRetries) throw error
+    }
+  }
+  throw new Error('Failed to fetch place IDs')
+}
+
+export async function fetchPincodeData(pincode?: string): Promise<PincodeData | PincodeData[]> {
+  const client = await getDhruvtaraClient()
+  const response = await client.request({
+    url: `${process.env.DHRUV_TARA_URL}/pincode${pincode ? `/${pincode}` : ''}`,
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  return response.data as PincodeData | PincodeData[]
 }
