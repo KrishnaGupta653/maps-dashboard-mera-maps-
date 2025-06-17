@@ -1,12 +1,12 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { Switch } from "@headlessui/react";
-import { CalendarIcon, PlayIcon, Bars3Icon, XMarkIcon,} from "@heroicons/react/24/outline";
+import { CalendarIcon, PlayIcon, Bars3Icon, XMarkIcon,ChevronDownIcon} from "@heroicons/react/24/outline";
 import GoogleMap from "@/components/GoogleMap";
-import { WarehouseLocation, fetchWarehouseLocations,} from "@/actions/warehouse";
+//import { WarehouseLocation, fetchWarehouseLocations,} from "@/actions/warehouse";
+import { WarehouseLocation, fetchWarehouseLocations } from "@/actions/bazaar";
 import { PincodePoint, fetchPincodeLocations } from "@/actions/pincode";
 import { OrderLocationData, fetchOrderLocationData } from "@/actions/order";
-//30 days date range
 const getDefaultDateRange = () => {
   const today = new Date();
   const thirtyDaysAgo = new Date(today);
@@ -24,18 +24,8 @@ interface NewWarehouse {
   name: string;
   color: string;
 }
-const WAREHOUSE_COLORS = [
-  '#FF6B6B', // Red
-  '#4ECDC4', // Teal
-  '#45B7D1', // Blue
-  '#96CEB4', // Green
-  '#FFEAA7', // Yellow
-  '#DDA0DD', // Plum
-  '#98D8C8', // Mint
-  '#F7DC6F', // Light Yellow
-  '#BB8FCE', // Light Purple
-  '#85C1E9', // Light Blue
-];
+const WAREHOUSE_COLORS = ['#FF5722', '#00BCD4', '#9C27B0', '#4CAF50', '#FF9800', 
+'#E91E63', '#00E676', '#FFC107', '#673AB7', '#03A9F4'];
 
 export default function Dashboard() {
   const [showWarehouses, setShowWarehouses] = useState(false);
@@ -44,26 +34,16 @@ export default function Dashboard() {
   const [warehouses, setWarehouses] = useState<WarehouseLocation[]>([]);
   const [pincodes, setPincodes] = useState<PincodePoint[]>([]);
   const [orderData, setOrderData] = useState<OrderLocationData[]>([]);
-  const [loading, setLoading] = useState({
-    warehouses: false,
-    pincodes: false,
-    orders: false,
-  });
-  const [errors, setErrors] = useState({
-    warehouses: "",
-    pincodes: "",
-    orders: "",
-  });
+  const [loading, setLoading] = useState({ warehouses: false, pincodes: false, orders: false,});
+  const [errors, setErrors] = useState({warehouses: "", pincodes: "",orders: "",});
   const [selectedMetric, setSelectedMetric] = useState<string>("cust_count");
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
-  const [showHeatmapDropdown, setShowHeatmapDropdown] = useState(false);
   const [showCircles, setShowCircles] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showNewWarehouses, setShowNewWarehouses] = useState(false);
+  const [showRoads, setShowRoads] = useState(true); 
   const [newWarehouses, setNewWarehouses] = useState<NewWarehouse[]>([]);
-  const [newWarehouseCounter, setNewWarehouseCounter] = useState(1);
-
   const metricOptions = [
     { key: "cust_count", label: "Customer Count" },
     { key: "so_count", label: "Sales Order Count" },
@@ -80,30 +60,33 @@ export default function Dashboard() {
     return () =>
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
-
-  // Auto-collapse logic
   const shouldAutoCollapse = useCallback(() => {
-    if (showHeatmap && showHeatmapDropdown) {
+    if (showHeatmap) {
       return false;
     }
+      if (showNewWarehouses) {
+      return false;
+    }
+
     return true;
-  }, [showHeatmap, showHeatmapDropdown]);
+  }, [showHeatmap ,showNewWarehouses]);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const addNewWarehouse = useCallback(() => {
-     const colorIndex = (newWarehouses.length) % WAREHOUSE_COLORS.length;
+  setNewWarehouses((prev) => {
+    const colorIndex = prev.length % WAREHOUSE_COLORS.length;
     const newWarehouse: NewWarehouse = {
       id: `new-warehouse-${Date.now()}`,
-      lat: 28.6139, // Default to Delhi center
+      lat: 28.6139,
       lng: 77.209,
-      name: `New Warehouse ${newWarehouseCounter}`,
+      name: `New Warehouse ${prev.length + 1}`,
       color: WAREHOUSE_COLORS[colorIndex],
     };
-    setNewWarehouses((prev) => [...prev, newWarehouse]);
-    setNewWarehouseCounter((prev) => prev + 1);
-  }, [newWarehouseCounter, newWarehouses.length]);
+    return [...prev, newWarehouse];
+  });
+}, []);
 
   const removeNewWarehouse = useCallback(() => {
     setNewWarehouses((prev) => prev.slice(0, -1));
@@ -132,30 +115,26 @@ export default function Dashboard() {
   );
 
   const handleNewWarehouseToggle = useCallback(
-    (isSelected: boolean) => {
-      setShowNewWarehouses(isSelected);
-      if (!isSelected) {
-        setNewWarehouses([]);
-        setNewWarehouseCounter(1);
-      } else {
-        // Add one warehouse by default when toggling on
-        //addNewWarehouse();
-        const newWarehouse: NewWarehouse = { 
-          id: `new-warehouse-${Date.now()}`,
-          lat: 28.6139,
-          lng: 77.209,
-          name: `New Warehouse 1`,
-          color: WAREHOUSE_COLORS[0], // First color
-        };
-        setNewWarehouses([newWarehouse]);
-        setNewWarehouseCounter(2);
-      }
+  (isSelected: boolean) => {
+    setShowNewWarehouses(isSelected);
+    if (!isSelected) {
+      setNewWarehouses([]);
       if (shouldAutoCollapse()) {
         setTimeout(() => setIsMenuOpen(false), 300);
       }
-    },
-    [ shouldAutoCollapse]
-  );
+    } else {
+      const newWarehouse: NewWarehouse = { 
+        id: `new-warehouse-${Date.now()}`,
+        lat: 28.6139,
+        lng: 77.209,
+        name: `New Warehouse 1`,
+        color: WAREHOUSE_COLORS[0],
+      };
+      setNewWarehouses([newWarehouse]);
+   }
+  },
+  [shouldAutoCollapse]
+);
   const handleToggle = useCallback(
     async (
       type: "warehouses" | "pincodes" | "circles",
@@ -178,7 +157,7 @@ export default function Dashboard() {
             const message =
               err instanceof Error ? err.message : "Failed to fetch warehouses";
             setErrors((prev) => ({ ...prev, warehouses: message }));
-            setShowCircles(false); // Turn circles back off if loading fails
+            setShowCircles(false);
           } finally {
             setLoading((prev) => ({ ...prev, warehouses: false }));
           }
@@ -198,11 +177,9 @@ export default function Dashboard() {
       if (shouldAutoCollapse()) {
         setTimeout(() => setIsMenuOpen(false), 300);
       }
-
       if (!isSelected || data.length > 0) return;
       setLoading((prev) => ({ ...prev, [type]: true }));
       setErrors((prev) => ({ ...prev, [type]: "" }));
-
       try {
         const response = await (isWarehouse
           ? fetchWarehouseLocations()
@@ -238,7 +215,6 @@ export default function Dashboard() {
     async (fromDate: string, toDate: string, metric: string) => {
       setLoading((prev) => ({ ...prev, orders: true }));
       setErrors((prev) => ({ ...prev, orders: "" }));
-
       try {
         const response = await fetchOrderLocationData(fromDate, toDate, metric);
 
@@ -265,12 +241,13 @@ export default function Dashboard() {
       if (!isSelected) {
         setOrderData([]);
         setErrors((prev) => ({ ...prev, orders: "" }));
-        setShowHeatmapDropdown(false);
+        //setShowHeatmapDropdown(false);
         // Auto-collapse when turning off
         if (shouldAutoCollapse()) {
           setTimeout(() => setIsMenuOpen(false), 300);
         }
       }
+
     },
     [shouldAutoCollapse]
   );
@@ -280,23 +257,14 @@ export default function Dashboard() {
     // Auto-collapse after generating
     if (shouldAutoCollapse()) {
       setTimeout(() => {
-        setShowHeatmapDropdown(false);
         setIsMenuOpen(false);
       }, 300);
     }
-  }, [
-    fetchOrderData,
-    dateRange.from,
-    dateRange.to,
-    selectedMetric,
-    shouldAutoCollapse,
-  ]);
+  }, [ fetchOrderData, dateRange.from, dateRange.to, selectedMetric,shouldAutoCollapse,]);
 
   const handleMetricChange = useCallback(
     (metric: string) => {
       setSelectedMetric(metric);
-
-      // Clear any previous errors when metrics change
       if (errors.orders) {
         setErrors((prev) => ({ ...prev, orders: "" }));
       }
@@ -308,15 +276,21 @@ export default function Dashboard() {
     (field: "from" | "to", value: string) => {
       const updatedRange = { ...dateRange, [field]: value };
       setDateRange(updatedRange);
-
-      // Clear any previous errors when date changes
       if (errors.orders) {
         setErrors((prev) => ({ ...prev, orders: "" }));
       }
     },
     [dateRange, errors.orders]
   );
-
+  const handleRoadsToggle = useCallback(
+    (isSelected: boolean) => {
+      setShowRoads(isSelected);
+      if (shouldAutoCollapse()) {
+        setTimeout(() => setIsMenuOpen(false), 300);
+      }
+    },
+    [shouldAutoCollapse]
+  );
   const uniqueWarehouseCount = new Set(pincodes.map((p) => p.WH)).size;
   return (
     <div className="relative w-full h-screen bg-black text-black overflow-hidden">
@@ -370,20 +344,26 @@ export default function Dashboard() {
               color="green"
             />
             <ToggleControl
+              checked={showRoads}
+              onChange={handleRoadsToggle}
+              loading={false}
+              label="Roads & Highways"
+              color="yellow"
+            />
+            <ToggleControl
               checked={showNewWarehouses}
               onChange={handleNewWarehouseToggle}
               loading={false}
               label="New Warehouses"
               color="purple"
             />
+            
             {/* New Warehouse Controls - Only show when enabled */}
-            {showNewWarehouses && (
+            {(showNewWarehouses) &&(
               <div className="bg-white/10 px-2 py-2 rounded-lg border border-white/10 w-70 ">
                 <h4 className="text-xs font-medium mb-2 text-black flex items-center gap-1">
                   🏗️ Warehouse Controls
                 </h4>
-
-                {/* Add/Remove Buttons */}
                 <div className="flex items-center gap-1 mb-2">
                   <button
                     onClick={addNewWarehouse}
@@ -402,14 +382,23 @@ export default function Dashboard() {
                     {newWarehouses.length} warehouse
                     {newWarehouses.length !== 1 ? "s" : ""}
                   </span>
-                </div>
-
+                </div>                
                 {/* Position Controls for each warehouse */}
                 {newWarehouses.map((warehouse) => (
                   <div key={warehouse.id} className="mb-2 p-1.5 bg-white/10 rounded border border-white/20">
-                    <div className="text-xs font-medium mb-2 flex items-center gap-2" style={{ color:warehouse.color }}>
-                       <div className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: warehouse.color }} ></div>
-                      {warehouse.name}
+                    <div className="text-xs font-medium mb-2 flex items-center justify-between">
+                      <div className="flex items-center gap-2" style={{ color: warehouse.color }}>
+                        <div className="w-2.5 h-2.5 rounded-full border border-white/20" style={{ backgroundColor: warehouse.color }}></div>
+                        {warehouse.name}
+                      </div>
+                      {/* Cross button - Windows style top-right */}
+                      <button
+                        onClick={() => setNewWarehouses(prev => prev.filter(w => w.id !== warehouse.id))}
+                        className="w-4 h-4 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center text-xs font-bold transition-colors"
+                        title="Remove warehouse"
+                      >
+                        ×
+                      </button>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
@@ -455,67 +444,36 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
-
-            {/* Heatmap Control */}
-            <div className="flex items-center gap-1 bg-white/10 px-2 py-1.5 rounded-lg backdrop-blur-md border border-white/10">
-              <Switch
-                checked={showHeatmap}
-                onChange={handleHeatmapToggle}
-                disabled={loading.orders}
-                className={`${showHeatmap ? "bg-red-500" : "bg-gray-500"} ${
-                  loading.orders ? "opacity-50" : ""
-                } relative inline-flex h-4 w-8 rounded-full border-2 border-transparent transition-colors duration-200`}
-              >
-                <span
-                  className={`${
-                    showHeatmap ? "translate-x-4" : "translate-x-0"
-                  } 
-                  inline-block h-3 w-3 transform rounded-full bg-white shadow-lg transition duration-200`}
-                />
-              </Switch>
-              <span className="text-xs font-medium select-none">
-                {loading.orders ? "Loading..." : "Reports"}
-              </span>
-            </div>
-
-            {/* Metrics Selection - Only show when heatmap is enabled */}
+            
+            <ToggleControl
+              checked={showHeatmap}
+              onChange={handleHeatmapToggle}
+              loading={loading.orders}
+              label="Reports"
+              color="red"
+            />
+            {/* Metric Selection - Only show when heatmap is enabled */}
             {showHeatmap && (
               <div className="bg-white/10 px-3 py-2 rounded-lg border border-white/10">
-                <h4 className="text-xs font-medium mb-2 text-black">Metrics</h4>
-                <div className="space-y-1.5">
-                  {metricOptions.map((option) => (
-                    <div
-                      key={option.key}
-                      className="flex items-center justify-between"
-                    >
-                      <span className="text-xs text-black">{option.label}</span>
-                      <Switch
-                        checked={selectedMetric === option.key}
-                        onChange={() => handleMetricChange(option.key)}
-                        className={`${
-                          selectedMetric === option.key
-                            ? "bg-red-500"
-                            : "bg-gray-500"
-                        } 
-                          relative inline-flex h-3 w-6 rounded-full border-2 border-transparent transition-colors duration-200`}
-                      >
-                        <span
-                          className={`${
-                            selectedMetric === option.key
-                              ? "translate-x-3"
-                              : "translate-x-0"
-                          } 
-                          inline-block h-2 w-2 transform rounded-full bg-white shadow-lg transition duration-200`}
-                        />
-                      </Switch>
-                    </div>
-                  ))}
+                <h4 className="text-xs font-medium mb-2 text-black">Select Metric</h4>
+                <div className="relative">
+                  <select
+                    value={selectedMetric}
+                    onChange={(e) => handleMetricChange(e.target.value)}
+                    className="w-full px-2 py-1.5 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black appearance-none cursor-pointer"
+                  >
+                    {metricOptions.map((option) => (
+                      <option key={option.key} value={option.key} className="bg-white text-black">
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-black/50 pointer-events-none" />
                 </div>
               </div>
             )}
-
             {/* Date Range - Only show when heatmap is enabled */}
-            {showHeatmap && (
+            {(showHeatmap) &&  (
               <div className="bg-white/10 px-3 py-2 rounded-lg border border-white/10">
                 <h4 className="text-xs font-medium mb-2 flex items-center gap-1 text-black">
                   <CalendarIcon className="h-3 w-3" />
@@ -543,9 +501,8 @@ export default function Dashboard() {
                 </div>
               </div>
             )}
-
             {/* Generate Button - Only show when heatmap is enabled */}
-            {showHeatmap && (
+            {(showHeatmap) && (
               <button
                 onClick={handleGenerateHeatmap}
                 disabled={loading.orders}
@@ -586,6 +543,7 @@ export default function Dashboard() {
         onNewWarehouseMove={updateNewWarehousePosition}
         selectedMetrics={[selectedMetric]}
         loading={loading}
+        showRoads={showRoads}
       />
       {/* Status - legends */}
       <div
@@ -639,34 +597,31 @@ export default function Dashboard() {
           extra="Draggable markers with service areas"
           
         />
+        <StatusCard
+          show={!showRoads}
+          loading={false}
+          error=""
+          count={0}
+          label="roads hidden"
+          color="yellow"
+          extra="Roads and highways are hidden"
+        />
       </div>
     </div>
   );
 }
 
-// Helper Components
-function ToggleControl({
-  checked,
-  onChange,
-  loading,
-  label,
-  color,
-}: {
+function ToggleControl({checked, onChange, loading, label, color,}: {
   checked: boolean;
   onChange: (checked: boolean) => void;
   loading: boolean;
   label: string;
-  color: "blue" | "green" | "purple";
+  color: "blue" | "green" | "purple" | "yellow" | "red";
 }) {
-  // const colorClass = color === 'blue' ? 'bg-blue-500' : 'bg-green-500'
-  const colorClass =
-    color === "blue"
-      ? "bg-blue-500"
-      : color === "green"
-      ? "bg-green-500"
-      : "bg-purple-500";
+  const colorClass = color === "blue" ? "bg-blue-500" : color === "green" ? "bg-green-500": color === "purple"
+                     ? "bg-purple-500": color === "red" ? "bg-red-500" : "bg-yellow-500";
   return (
-    <div className="flex items-center gap-1 bg-white/15 px-2 py-1.5 rounded-lg backdrop-blur-md border border-white/10">
+      <div className="flex items-center gap-1 bg-white/15 px-2 py-1.5 rounded-lg backdrop-blur-md border border-white/10">
       <Switch
         checked={checked}
         onChange={onChange}
@@ -681,49 +636,27 @@ function ToggleControl({
         />
       </Switch>
       <span className="text-xs font-medium select-none text-black">
-        {loading ? "Loading..." : `Show ${label}`}
+        {/* {loading ? "Loading..." : `Show ${label}`} */}
+        {loading ? "Loading..." : label === "New Warehouses" ? "Add New Warehouses" : `Show ${label}`}
       </span>
-    </div>
+      </div>
   );
 }
-
-function StatusCard({
-  show,
-  loading,
-  error,
-  count,
-  label,
-  color,
-  extra,
-}: {
+function StatusCard({ show,loading, error,count,label,color,extra,}: {
   show: boolean;
   loading: boolean;
   error: string;
   count: number;
   label: string;
-  color: "blue" | "green" | "red" | "purple";
+  color: "blue" | "green" | "red" | "purple" | "yellow";
   extra?: string;
 }) {
   if (!show) return null;
-
-  // const colorClass = color === 'blue' ? 'text-blue-300' : color === 'green' ? 'text-green-300' : 'text-red-300'
-  // const bgClass = color === 'blue' ? 'bg-blue-500' : color === 'green' ? 'bg-green-500' : 'bg-red-500'
-  const colorClass =
-    color === "blue"
-      ? "text-blue-300"
-      : color === "green"
-      ? "text-green-300"
-      : color === "red"
-      ? "text-red-300"
-      : "text-purple-300";
+  const colorClass = color === "blue" ? "text-blue-300" : color === "green" ? "text-green-300" : color === "red" ? 
+                     "text-red-300" : color === "purple" ? "text-purple-300" : "text-yellow-300";
   const bgClass =
-    color === "blue"
-      ? "bg-blue-500"
-      : color === "green"
-      ? "bg-green-500"
-      : color === "red"
-      ? "bg-red-500"
-      : "bg-purple-500";
+    color === "blue" ? "bg-blue-500" : color === "green" ? "bg-green-500" : color === "red" ? 
+    "bg-red-500" : color === "purple" ? "bg-purple-500" : "bg-yellow-500";
   return (
     <div className="bg-black/50 backdrop-blur-md rounded-lg p-2 border border-white/10">
       {loading && (
@@ -734,14 +667,12 @@ function StatusCard({
           <p className={`${colorClass} text-xs`}>Loading {label}s...</p>
         </div>
       )}
-
       {error && (
         <div className="flex items-center gap-1">
           <div className="h-3 w-3 bg-red-500 rounded-full" />
           <p className="text-red-400 text-xs">{error}</p>
         </div>
       )}
-
       {!loading && !error && count > 0 && (
         <div className="space-y-1">
           <div className="flex items-center gap-1">
