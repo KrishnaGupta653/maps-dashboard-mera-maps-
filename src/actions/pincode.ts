@@ -1,5 +1,5 @@
 'use server'
-import { getSuchnavaliClient } from './gauth'
+import { getDhruvtaraClient } from './gauth'
 import { fetchWarehouseLocations, WarehouseLocation } from './bazaar'
 
 export interface PincodePoint {
@@ -13,9 +13,10 @@ export interface PincodePoint {
   schedule_type: string
   state: string
   matchedWarehouse?: WarehouseLocation | null 
+  placeId?: string
 }
 
-export interface PincodeResponse {
+interface PincodeResponse {
   Info: {
     currentPage: number
     rows: number
@@ -25,7 +26,7 @@ export interface PincodeResponse {
   results: PincodePoint[]
 }
 
-export interface DhruvtaraPincodeData {
+interface DhruvtaraPincodeData {
   pincode: string
   deliveryType: string
   serviceSchedule: string[]
@@ -42,39 +43,33 @@ export interface DhruvtaraPincodeData {
       distance: number
     }>
   }
+  mapInfo?: {
+    googleMaps: {
+      placeId: string
+    }
+  }
 }
 
-function matchWarehouseByZohoId(zohoWarehouseId: string, warehouses: WarehouseLocation[]): WarehouseLocation | null {
-  return warehouses.find(wh => wh.zohoWarehouseId === zohoWarehouseId) || null
-}
+const isValidPincode = (pincode: string): boolean => /^\d{6}$/.test(pincode.trim())
 
-function matchWarehouseByName(pincodeWH: string, warehouses: WarehouseLocation[]): WarehouseLocation | null {
-  let match = warehouses.find(wh => 
-    wh.Warehouse.toLowerCase() === pincodeWH.toLowerCase()
-  )
-  if (match) return match
-  const normalizedPincodeWH = pincodeWH.toLowerCase()
-    .replace(/warehouse/g, '')
-    .replace(/wh/g, '')
-    .trim()
-  
-  match = warehouses.find(wh => {
-    const normalizedName = wh.Warehouse.toLowerCase()
-      .replace(/warehouse/g, '')
-      .replace(/wh/g, '')
-      .trim()
-    return normalizedName.includes(normalizedPincodeWH) || 
-           normalizedPincodeWH.includes(normalizedName)
-  })
+const matchWarehouseByZohoId = (zohoWarehouseId: string, warehouses: WarehouseLocation[]): WarehouseLocation | null =>
+  warehouses.find(wh => wh.zohoWarehouseId === zohoWarehouseId) || null
 
-  return match || null
-}
+const createPincodeResponse = (results: PincodePoint[]): PincodeResponse => ({
+  Info: {
+    currentPage: 1,
+    rows: results.length,
+    totalData: results.length,
+    totalPages: 1,
+  },
+  results,
+})
 
-export async function fetchPincodesByZohoWarehouseId(zohoWarehouseId: string): Promise<PincodeResponse> {
+async function fetchPincodesByZohoWarehouseId(zohoWarehouseId: string): Promise<PincodePoint[]> {
   try {
-    const client = await getSuchnavaliClient()
+    const client = await getDhruvtaraClient()
     const response = await client.request({
-      url: `${process.env.DHRUVTARA_BASE_URL}/pincode/query`,
+      url: `${process.env.DHRUV_TARA_URL}/pincode/query`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       data: { "servicedBy.warehouses.zohoWarehouseId": zohoWarehouseId }
@@ -84,10 +79,10 @@ export async function fetchPincodesByZohoWarehouseId(zohoWarehouseId: string): P
     const bazaarWarehouses = await fetchWarehouseLocations()
     const matchedWarehouse = matchWarehouseByZohoId(zohoWarehouseId, bazaarWarehouses.results)
     
-    const transformedResults: PincodePoint[] = pincodeData.map((item) => ({
+    return pincodeData.map((item) => ({
       Schedule: item.serviceSchedule.join(','),
       WH: matchedWarehouse?.Warehouse || `Warehouse-${zohoWarehouseId}`,
-      distance: item.servicedBy.warehouses[0]?.distance || 0,
+      distance: item.servicedBy.warehouses.find(wh => wh.zohoWarehouseId === zohoWarehouseId)?.distance || 0,
       district: item.district,
       latitude: item.geoLocation.latitude,
       longitute: item.geoLocation.longitude,
@@ -95,50 +90,76 @@ export async function fetchPincodesByZohoWarehouseId(zohoWarehouseId: string): P
       schedule_type: item.deliveryType,
       state: item.state,
       matchedWarehouse,
+      placeId: item.mapInfo?.googleMaps?.placeId,
     }))
-    
-    return {
-      Info: {
-        currentPage: 1,
-        rows: transformedResults.length,
-        totalData: transformedResults.length,
-        totalPages: 1,
-      },
-      results: transformedResults,
-    }
   } catch (error) {
     console.error('Error fetching pincodes by zohoWarehouseId:', error)
-    throw new Error('Failed to fetch pincodes by zohoWarehouseId')
+    return []
+  }
+}
+
+async function fetchAllWarehousesPincodes(): Promise<PincodePoint[]> {
+  try {
+    const warehouseResponse = await fetchWarehouseLocations()
+    const warehouses = warehouseResponse.results
+    
+    const warehousePincodePromises = warehouses.map(warehouse => 
+      fetchPincodesByZohoWarehouseId(warehouse.zohoWarehouseId)
+    )
+    
+    const allResults = await Promise.all(warehousePincodePromises)
+    const allPincodes = allResults.flat().filter(p => p.placeId)
+    
+    // Remove duplicates based on pincode
+    return allPincodes.reduce((acc, current) => {
+      const existing = acc.find(item => item.pincode === current.pincode)
+      if (!existing) acc.push(current)
+      return acc
+    }, [] as PincodePoint[])
+  } catch (error) {
+    console.error('Error fetching all warehouses pincodes:', error)
+    return []
+  }
+}
+
+export async function getUniqueValidPincodes(pincodes: (string | number)[]): Promise<string[]> {
+  return Array.from(new Set(pincodes.map(p => p.toString()).filter(isValidPincode)))
+}
+
+export async function fetchAllPincodePlaceIds(): Promise<Record<string, { placeId: string; latitude: number; longitude: number }>> {
+  try {
+    const allPincodes = await fetchAllWarehousesPincodes()
+    const placeIdMapping: Record<string, { placeId: string; latitude: number; longitude: number }> = {}
+    
+    allPincodes.forEach(pincode => {
+      if (pincode.placeId && !placeIdMapping[pincode.pincode.toString()]) {
+        placeIdMapping[pincode.pincode.toString()] = {
+          placeId: pincode.placeId,
+          latitude: pincode.latitude,
+          longitude: pincode.longitute
+        }
+      }
+    })
+    return placeIdMapping
+  } catch (error) {
+    console.error('Error creating consolidated pincode place ID mapping:', error)
+    throw error
   }
 }
 
 export async function fetchPincodeLocations(warehouses?: string): Promise<PincodeResponse> {
   try {
-    const client = await getSuchnavaliClient()
-    let url = `${process.env.SUCHNAVALI_BASE_URL}/serviceablePincode/location`
-    
+    const allPincodes = await fetchAllWarehousesPincodes()
     if (warehouses) {
-      url += `?WH=${encodeURIComponent(warehouses)}`
+      const warehouseNames = warehouses.split(',').map(name => name.trim().toLowerCase())
+      const filteredPincodes = allPincodes.filter(pincode => 
+        warehouseNames.some(name => 
+          pincode.WH.toLowerCase().includes(name) || name.includes(pincode.WH.toLowerCase())
+        )
+      )
+      return createPincodeResponse(filteredPincodes)
     }
-    
-    const response = await client.request({ url, method: 'GET' })
-    const pincodeData = response.data as PincodeResponse
-    const bazaarWarehouses = await fetchWarehouseLocations()
-
-    const updatedResults = pincodeData.results.map(pincode => {
-      const matchedWarehouse = matchWarehouseByName(pincode.WH, bazaarWarehouses.results)
-      return {
-        ...pincode,
-        longitude: pincode.longitute, 
-        WH: matchedWarehouse?.Warehouse || pincode.WH,
-        matchedWarehouse,
-      }
-    })
-    
-    return {
-      ...pincodeData,
-      results: updatedResults,
-    }
+    return createPincodeResponse(allPincodes)
   } catch (error) {
     console.error('Error fetching pincode locations:', error)
     throw new Error('Failed to fetch pincode locations')

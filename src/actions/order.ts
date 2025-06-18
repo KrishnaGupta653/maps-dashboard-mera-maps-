@@ -28,8 +28,7 @@ export async function fetchOrderLocationData(
 ): Promise<OrderResponse> {
   try {
     const client = await getSuchnavaliClient()
-    
-    // Build query parameters
+  
     const params = new URLSearchParams()
     if (fromDate) params.append('from_date', fromDate)
     if (toDate) params.append('to_date', toDate)
