@@ -55,12 +55,11 @@ export default function Dashboard() {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
-  
+
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () =>
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
-  
   const shouldAutoCollapse = useCallback(() => {
     if (showHeatmap) {
       return false;
@@ -174,6 +173,7 @@ export default function Dashboard() {
       setter(isSelected);
       if (type === "warehouses" && isSelected) {
         setShowCircles(true);
+        
       }
       if (shouldAutoCollapse()) {
         setTimeout(() => setIsMenuOpen(false), 300);
@@ -186,8 +186,7 @@ export default function Dashboard() {
           ? fetchWarehouseLocations()
           : fetchPincodeLocations(
               showWarehouses ? warehouses.map((w) => w.Warehouse).join(",") : ""
-            )
-          );
+            ));
 
         if (response?.results) {
           if (isWarehouse) {
