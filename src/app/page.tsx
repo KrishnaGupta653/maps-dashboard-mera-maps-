@@ -43,6 +43,7 @@ export default function Dashboard() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showNewWarehouses, setShowNewWarehouses] = useState(false);
   // const [showRoads, setShowRoads] = useState(true); 
+  const [showPincodeMessage, setShowPincodeMessage] = useState(false);
   const [newWarehouses, setNewWarehouses] = useState<NewWarehouse[]>([]);
   const metricOptions = [
     { key: "cust_count", label: "Customer Count" },
@@ -140,6 +141,12 @@ export default function Dashboard() {
       type: "warehouses" | "pincodes" | "circles",
       isSelected: boolean
     ) => {
+      if (type === "pincodes" && isSelected && !showWarehouses) {
+        setShowPincodeMessage(true);
+        alert("Please enable Warehouses first to show Pincodes");
+        setTimeout(() => setShowPincodeMessage(false), 3000);
+        return;
+      }
       if (type === "circles") {
         setShowCircles(isSelected);
         if (isSelected && warehouses.length === 0) {
@@ -211,7 +218,21 @@ export default function Dashboard() {
     },
     [warehouses, pincodes, shouldAutoCollapse, showWarehouses]
   );
-
+//   const handlePincodeToggle = useCallback(
+//   (isSelected: boolean) => {
+//     if (isSelected && !showWarehouses) {
+//       setShowPincodeWarning(true);
+//       setTimeout(() => setShowPincodeWarning(false), 3000);
+//       handleToggle("warehouses", true);
+//       return;
+//     }
+//     if (showPincodeWarning) {
+//       setShowPincodeWarning(false);
+//     }
+//     handleToggle("pincodes", isSelected);
+//   },
+//   [showWarehouses, showPincodeWarning, handleToggle]
+// );
   const fetchOrderData = useCallback(
     async (fromDate: string, toDate: string, metric: string) => {
       setLoading((prev) => ({ ...prev, orders: true }));
@@ -339,11 +360,19 @@ export default function Dashboard() {
             />
             <ToggleControl
               checked={showPincodes}
-              onChange={(checked) => handleToggle("pincodes", checked)}
+              onChange={(checked) => handleToggle("pincodes",checked)}
               loading={loading.pincodes}
               label="Pincodes"
               color="green"
+              // disabled={!showWarehouses}
             />
+            {showPincodeMessage && (
+              <div className="bg-yellow-500/20 border border-yellow-500/50 px-3 py-2 rounded-lg">
+                <p className="text-yellow-200 text-xs font-medium">
+                  ⚠️ Please enable Warehouses first before enabling Pincodes
+                </p>
+              </div>
+            )}
             {/* <ToggleControl
               checked={showRoads}
               onChange={handleRoadsToggle}
@@ -526,6 +555,7 @@ export default function Dashboard() {
                 )}
               </button>
             )}
+            
           </div>
         </div>
       </div>
@@ -612,12 +642,13 @@ export default function Dashboard() {
   );
 }
 
-function ToggleControl({checked, onChange, loading, label, color,}: {
+function ToggleControl({checked, onChange, loading, label, color, disabled=false,}: {
   checked: boolean;
   onChange: (checked: boolean) => void;
   loading: boolean;
   label: string;
   color: "blue" | "green" | "purple" | "yellow" | "red";
+  disabled?: boolean;
 }) {
   const colorClass = color === "blue" ? "bg-blue-500" : color === "green" ? "bg-green-500": color === "purple"
                      ? "bg-purple-500": color === "red" ? "bg-red-500" : "bg-yellow-500";
@@ -626,9 +657,9 @@ function ToggleControl({checked, onChange, loading, label, color,}: {
       <Switch
         checked={checked}
         onChange={onChange}
-        disabled={loading}
+        disabled={loading || disabled}
         className={`${checked ? colorClass : "bg-gray-500"} ${
-          loading ? "opacity-50" : ""
+          loading || disabled ? "opacity-50" : ""
         } relative inline-flex h-4 w-8 rounded-full border-2 border-transparent transition-colors duration-200`}
       >
         <span
@@ -637,7 +668,6 @@ function ToggleControl({checked, onChange, loading, label, color,}: {
         />
       </Switch>
       <span className="text-xs font-medium select-none text-black">
-        {/* {loading ? "Loading..." : `Show ${label}`} */}
         {loading ? "Loading..." : label === "New Warehouses" ? "Add New Warehouses" : `Show ${label}`}
       </span>
       </div>
