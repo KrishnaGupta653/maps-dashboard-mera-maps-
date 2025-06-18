@@ -3,6 +3,7 @@ import { GoogleAuth, IdTokenClient } from 'google-auth-library'
 
 let suchnavaliClient: IdTokenClient
 let dhruvtaraClient: IdTokenClient
+let bazaarClient: IdTokenClient
 let auth: GoogleAuth
 
 export async function getSuchnavaliClient(): Promise<IdTokenClient> {
@@ -23,4 +24,14 @@ export async function getDhruvtaraClient(): Promise<IdTokenClient> {
         dhruvtaraClient = await auth.getIdTokenClient(process.env.DHRUV_TARA_URL!)
     }
     return dhruvtaraClient
+}
+
+export async function getBazaarClient(): Promise<IdTokenClient> {
+    if (!bazaarClient) {
+        if (!auth) {
+            auth = new GoogleAuth()
+        }
+        bazaarClient = await auth.getIdTokenClient(process.env.BAZAAR_BASE_URL!)
+    }
+    return bazaarClient
 }
