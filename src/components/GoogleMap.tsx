@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useCallback, useState } from "react";
-// import { WarehouseLocation } from "@/actions/warehouse";
 import { WarehouseLocation } from "@/actions/bazaar";
 import { PincodePoint } from "@/actions/pincode";
 import { OrderLocationData } from "@/actions/order";
@@ -91,39 +90,6 @@ const COLORS = [
 const ROAD_HIDDEN_STYLES: google.maps.MapTypeStyle[] = [
      // Hide all road types - more comprehensive
   { featureType: "road", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.highway", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.highway.controlled_access", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.arterial", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.local", stylers: [{ visibility: "off" }] },
-  // { featureType: "transit", stylers: [{ visibility: "off" }] },
-  // { featureType: "transit.line", stylers: [{ visibility: "off" }] },
-  // { featureType: "transit.station", stylers: [{ visibility: "off" }] },
-  // { featureType: "transit.station.airport", stylers: [{ visibility: "off" }] },
-  // { featureType: "transit.station.bus", stylers: [{ visibility: "off" }] },
-  // { featureType: "transit.station.rail", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.highway.controlled_access", elementType: "geometry", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.highway", elementType: "geometry", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.arterial", elementType: "geometry", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.local", elementType: "geometry", stylers: [{ visibility: "off" }] },
-  // { featureType: "road", elementType: "labels", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.highway", elementType: "labels", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.arterial", elementType: "labels", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.local", elementType: "labels", stylers: [{ visibility: "off" }] },
-  // { featureType: "all", elementType: "labels.text.stroke", stylers: [{ visibility: "off" }] },
-  // { featureType: "all", elementType: "labels.text.fill", stylers: [{ color: "#ffffff" }] },
-  // { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#c9b2a6" }] },
-  // { featureType: "administrative.land_parcel", elementType: "geometry.stroke", stylers: [{ color: "#dcd2be" }] },
-  // { featureType: "administrative.land_parcel", elementType: "labels.text.fill", stylers: [{ color: "#ae9e90" }] },
-  // { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#dfd2ae" }] },
-  // { featureType: "poi", elementType: "geometry", stylers: [{ color: "#dfd2ae" }] },
-  // { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#93817c" }] },
-  // { featureType: "poi.park", elementType: "geometry.fill", stylers: [{ color: "#a5b076" }] },
-  // { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#447530" }] },
-  // { featureType: "water", elementType: "geometry", stylers: [{ color: "#b9d3c2" }] },
-  // { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#92998d" }] },
-  // { featureType: "road.highway", elementType: "all", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.arterial", elementType: "all", stylers: [{ visibility: "off" }] },
-  // { featureType: "road.local", elementType: "all", stylers: [{ visibility: "off" }] },
 
   ];
 const generateWarehouseColors = (
@@ -147,7 +113,6 @@ const generateWarehouseColors = (
   );
 };
 const createMarkerIcon_existing_warehouse = (color: string): google.maps.Symbol => ({
-  // path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
   path: "M2 8L12 3L22 8V21H18V17H16V21H8V17H6V21H2V8Z M18 3V7H20V3H18Z M4 10V12H6V10H4Z M8 10V12H10V10H8Z M14 10V12H16V10H14Z M18 10V12H20V10H18Z",
   fillColor: color,
   fillOpacity: 0.9,
@@ -204,7 +169,6 @@ export default function GoogleMap({
         zoom: 8,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID,
         styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
-        // styles:ROAD_HIDDEN_STYLES,
         mapTypeControl: true,
         mapTypeControlOptions: {
           style: window.google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -222,7 +186,7 @@ export default function GoogleMap({
         fullscreenControlOptions: {
           position: window.google.maps.ControlPosition.RIGHT_TOP,
         },
-        gestureHandling: "greedy",
+        gestureHandling: "true",
       });
     mapInstanceRef.current = map;
     infoWindowRef.current = new window.google.maps.InfoWindow();
@@ -408,27 +372,106 @@ export default function GoogleMap({
         icon: createMarkerIcon_existing_warehouse(color),
         zIndex: 1000,
       });
+
       const infoContent = `
-        <div style="padding: 12px; font-family: system-ui; max-width: 300px;">
-          <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 8px;">
-            <span style="width: 12px; height: 12px; background-color: ${color}; border-radius: 50%;"></span>
-            🏢 ${warehouse.Warehouse || `Warehouse ${index + 1}`}
-          </h3>
-          <div style="font-size: 13px; color: #6b7280; line-height: 1.4;">
-            <div><strong>Location:</strong> ${lat.toFixed(6)}, ${lng.toFixed(6)} </div>
-            <div><strong>Associated Pincodes:</strong> ${associatedPincodes.length}</div>
-            ${associatedPincodes.length > 0 ? `
-              <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
-                <strong>Sample Pincodes:</strong><br>
-                ${associatedPincodes.slice(0, 5).map((p) =>
-                `<span style="display: inline-block; background-color: ${color}20; color: ${color}; padding: 2px 6px; border-radius: 12px; font-size: 11px; margin: 2px; border: 1px solid ${color}40;">${p.pincode}</span>`).join("")}
-                ${associatedPincodes.length > 5 ? `<br><small>... and ${associatedPincodes.length - 5 } more</small>`: ""}
-              </div>
-            `
-          : ""
-        }
+        <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 320px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15);">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid ${color};">
+            <div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 6px ${color}50;"></div>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2;">
+              🏢 ${warehouse.Warehouse || `Warehouse ${index + 1}`}
+            </h3>
           </div>
-        </div>`;
+          <div style="margin-bottom: 12px;">
+            <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
+              📍 Location
+            </h4>
+            <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 10px; border-radius: 6px; border-left: 3px solid ${color};">
+              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${lat.toFixed(6)}, ${lng.toFixed(6)}</span></div>
+              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Zoho ID:</span> <span style="color: #1f2937;">${warehouse.zohoWarehouseId || 'N/A'}</span></div>
+              ${warehouse.address ? `
+                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0;">
+                  <div style="font-size: 11px; line-height: 1.3; color: #374151; font-weight: 500;">
+                    <strong>${warehouse.address.addressLine1 || ''}</strong>${warehouse.address.addressLine2 ? '<br>' + warehouse.address.addressLine2 : ''}<br>
+                    ${warehouse.address.city || ''}, ${warehouse.address.district || ''}<br>
+                    <span style="color: ${color}; font-weight: 600;">${warehouse.address.state || ''} - ${warehouse.address.pincode || ''}</span><br>
+                    ${warehouse.address.country || ''}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 12px;">
+            <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
+              📮 Coverage
+            </h4>
+            <div style="background: linear-gradient(135deg, ${color}08 0%, ${color}15 100%); padding: 10px; border-radius: 6px; border: 1px solid ${color}40;">
+              <div style="margin-bottom: 6px; font-size: 12px; font-weight: 700; color: ${color};">
+                ${associatedPincodes.length} Total Pincodes
+              </div>
+              ${associatedPincodes.length > 0 ? `
+                <div style="margin-bottom: 8px;">
+                  <div style="display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 6px;">
+                    ${associatedPincodes.slice(0, 5).map((p) =>
+                      `<span style="display: inline-block; background: ${color}; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;">${p.pincode}</span>`
+                    ).join('')}
+                  </div>
+                  ${associatedPincodes.length > 5 ? `
+                    <div style="font-size: 10px; color: #64748b; font-weight: 500; margin-bottom: 6px;">
+                      +${associatedPincodes.length - 6} more pincodes
+                    </div>
+                  ` : ''}
+                </div>
+                <div style="background: white; padding: 6px 8px; border-radius: 4px; margin-bottom: 6px;">
+                  <div style="font-size: 13px; color: #374151; font-weight: 600;">
+                  Distance Range:<br>
+                    <span style="color: #10b981;">Min: ${Math.min(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> •
+                    <span style="color: #f59e0b;">Max: ${Math.max(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> • <br>
+                    <span style="color: #6366f1;">Avg: ${(associatedPincodes.reduce((sum, p) => sum + p.distance, 0) / associatedPincodes.length).toFixed(1)}km</span>
+                  </div>
+                </div>
+                ${(() => {
+                  const stateCount = associatedPincodes.reduce((acc, p) => {
+                    acc[p.state] = (acc[p.state] || 0) + 1;
+                    return acc;
+                  }, {} as Record<string, number>);
+                  const states = Object.keys(stateCount);
+                  if (states.length > 1) {
+                    return `
+                      <div style="background: white; padding: 6px 8px; border-radius: 4px;">
+                        <div style="font-size: 11px; color: #374151; font-weight: 600;">
+                          <strong>States:</strong> ${states.map(state => `${state} (${stateCount[state]})`).slice(0, 2).join(', ')}${states.length > 2 ? ` +${states.length - 2} more` : ''}
+                        </div>
+                      </div>
+                    `;
+                  }
+                  return '';
+                })()}
+              ` : `
+                <div style="font-size: 11px; color: #64748b; font-style: italic; font-weight: 500;">No associated pincodes</div>
+              `}
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 8px;">
+            <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
+              ⚡ Service Zones
+            </h4>
+            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 8px; border-radius: 6px; border: 1px solid #3b82f6;">
+              <div style="font-size: 11px; color: #1e40af; line-height: 1.3; font-weight: 600;">
+                <div style="margin-bottom: 3px;">🔵 <strong>30km:</strong> Primary zone</div>
+                <div>🔴 <strong>40km:</strong> Extended zone</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="text-align: center; padding-top: 8px; border-top: 1px solid #e2e8f0;">
+            <div style="font-size: 10px; color: #64748b; font-weight: 500;">
+              Click "Show Pincodes" for detailed coverage
+            </div>
+          </div>
+        </div>
+      `;
       marker.addListener("click", () => {
         if (infoWindowRef.current && mapInstanceRef.current) {
           infoWindowRef.current.setContent(infoContent);
@@ -441,7 +484,9 @@ export default function GoogleMap({
       fitBounds(positions);
     }
   }, [warehouses, showWarehouses, pincodes, showHeatmap, showPincodes]);
-
+    if (postalCodeLayerRef.current) {
+  postalCodeLayerRef.current.style = null;
+}
     const createPincodeFeatureLayers = useCallback(async () => {
       if ( !mapInstanceRef.current || !showPincodes || pincodes.length === 0 || Object.keys(pincodeToPlaceIdData).length === 0) {
         if (postalCodeLayerRef.current) {
@@ -449,7 +494,6 @@ export default function GoogleMap({
         }
         return;
       }
-    
       clearMarkers(pincodeMarkersRef);
       if (postalCodeLayerRef.current) {
         postalCodeLayerRef.current.style = null;
@@ -488,13 +532,11 @@ export default function GoogleMap({
           }
         });
       });
-    
       //console.log(`Mapped ${mappedPincodes} out of ${totalPincodes} pincodes to place IDs`);
       if (mappedPincodes === 0) {
         console.warn('No pincodes could be mapped to place IDs. Postal code styling will not work.');
         return;
       }
-    
       if (postalCodeLayerRef.current) {
         postalCodeLayerRef.current.style = (params: google.maps.FeatureStyleFunctionOptions) => {
           const feature = params.feature as google.maps.PlaceFeature;
@@ -521,49 +563,6 @@ export default function GoogleMap({
           }
           return null;
         };
-      
-        // postalCodeLayerRef.current.addListener(
-        //   "mousemove",
-        //   (event: FeatureMouseEvent) => {
-        //     const features = event.features || [];
-        //     const feature = features[0];
-          
-        //     if (feature?.placeId) {
-        //       const matchingPincode = Object.entries(
-        //         pincodeToPlaceIdRef.current
-        //       ).find(([, storedPlaceId]) => storedPlaceId === feature.placeId);
-            
-        //       if (matchingPincode && event.latLng) {
-        //         const [pincodeStr] = matchingPincode;
-        //         const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
-              
-        //         if (
-        //           warehouseInfo &&
-        //           infoWindowRef.current &&
-        //           mapInstanceRef.current
-        //         ) {
-        //           infoWindowRef.current.setContent(`
-        //             <div style="padding: 6px 10px; font-family: sans-serif; font-size: 11px; color: #333; line-height: 1.4; max-width: 220px;">
-        //               <style>
-        //                 .gm-ui-hover-effect > span {
-        //                   transform: scale(0.8) !important;
-        //                 }
-        //               </style>
-        //               <strong>Pincode:</strong> ${pincodeStr}<br>
-        //               <strong>Warehouse:</strong> <span style="color: ${warehouseInfo.color};">${warehouseInfo.warehouse}</span><br>
-        //               <strong>District:</strong> ${warehouseInfo.data.district}<br>
-        //               <strong>State:</strong>    ${warehouseInfo.data.state}<br>
-        //               <strong>Distance:</strong> ${warehouseInfo.data.distance} km<br>
-        //               <strong>Schedule:</strong> ${warehouseInfo.data.Schedule}
-        //             </div>
-        //           `);
-        //           infoWindowRef.current.setPosition(event.latLng);
-        //           infoWindowRef.current.open(mapInstanceRef.current);
-        //         }
-        //       }
-        //     }
-        //   }
-        // );
         postalCodeLayerRef.current.addListener(
   "click",
   (event: FeatureMouseEvent) => {
@@ -584,72 +583,72 @@ export default function GoogleMap({
           infoWindowRef.current &&
           mapInstanceRef.current
         ) {
-          // Enhanced info window with more pincode data
-          const pincodeData = warehouseInfo.data;
-          
+
+          const pincodeData = warehouseInfo.data;          
+        
           infoWindowRef.current.setContent(`
-            <div style="padding: 14px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; color: #1f2937; line-height: 1.5; max-width: 320px; background: white; border-radius: 8px;">
-              <!-- Header -->
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid ${warehouseInfo.color};">
-                <div style="width: 16px; height: 16px; background: ${warehouseInfo.color}; border-radius: 50%; flex-shrink: 0;"></div>
-                <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #111827;">
+            <div style="padding: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; color: #000; line-height: 1.6; max-width: 320px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 3px solid ${warehouseInfo.color};">
+                <div style="width: 18px; height: 18px; background: ${warehouseInfo.color}; border-radius: 50%;"></div>
+                <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #000;">
                   📍 Pincode ${pincodeStr}
                 </h3>
               </div>
 
               <!-- Location Details -->
-              <div style="margin-bottom: 12px;">
-                <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;">
+              <div style="margin-bottom: 16px;">
+                <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
                   🌍 Location Details
                 </h4>
-                <div style="background: #f9fafb; padding: 8px; border-radius: 6px; font-size: 12px;">
-                  <div style="margin-bottom: 4px;"><strong>State:</strong> ${pincodeData.state}</div>
-                  <div style="margin-bottom: 4px;"><strong>District:</strong> ${pincodeData.district}</div>
-                  <div style="margin-bottom: 4px;"><strong>Coordinates:</strong> ${pincodeData.latitude.toFixed(6)}, ${pincodeData.longitute.toFixed(6)}</div>
+                <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e9ecef;">
+                  <div style="margin-bottom: 6px; font-weight: 600;"><strong>State:</strong> ${pincodeData.state}</div>
+                  <div style="margin-bottom: 6px; font-weight: 600;"><strong>District:</strong> ${pincodeData.district}</div>
+                  <div style="font-weight: 600;"><strong>Coordinates:</strong> ${pincodeData.latitude.toFixed(6)}, ${pincodeData.longitute.toFixed(6)}</div>
                 </div>
               </div>
 
               <!-- Warehouse Assignment -->
-              <div style="margin-bottom: 12px;">
-                <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;">
+              <div style="margin-bottom: 16px;">
+                <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
                   🏢 Warehouse Assignment
                 </h4>
-                <div style="background: ${warehouseInfo.color}15; border: 1px solid ${warehouseInfo.color}40; padding: 8px; border-radius: 6px; font-size: 12px;">
-                  <div style="margin-bottom: 4px;">
-                    <strong style="color: ${warehouseInfo.color};">Warehouse:</strong> ${warehouseInfo.warehouse}
+                <div style="background: ${warehouseInfo.color}20; border: 2px solid ${warehouseInfo.color}; padding: 12px; border-radius: 6px;">
+                  <div style="margin-bottom: 6px; font-weight: 700; color: #000;">
+                    <strong>Warehouse:</strong> ${warehouseInfo.warehouse}
                   </div>
-                  <div style="margin-bottom: 4px;"><strong>Distance:</strong> ${pincodeData.distance} km</div>
+                  <div style="margin-bottom: 6px; font-weight: 600;"><strong>Distance:</strong> ${pincodeData.distance} km</div>
                   ${pincodeData.matchedWarehouse ? `
-                    <div style="margin-bottom: 4px;"><strong>Warehouse Code:</strong> ${pincodeData.matchedWarehouse.zohoWarehouseId || 'N/A'}</div>
+                    <div style="font-weight: 600;"><strong>Warehouse Code:</strong> ${pincodeData.matchedWarehouse.zohoWarehouseId || 'N/A'}</div>
                   ` : ''}
                 </div>
               </div>
-
+                  
               <!-- Service Schedule -->
-              <div style="margin-bottom: 12px;">
-                <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;">
+              <div style="margin-bottom: 16px;">
+                <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
                   📅 Service Schedule
                 </h4>
-                <div style="background: #f0f9ff; border: 1px solid #0ea5e9; padding: 8px; border-radius: 6px; font-size: 12px;">
-                  <div style="margin-bottom: 4px;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
-                  <div style="margin-bottom: 4px;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
+                <div style="background: #e3f2fd; border: 2px solid #1976d2; padding: 12px; border-radius: 6px;">
+                  <div style="margin-bottom: 6px; font-weight: 600; color: #000;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
+                  <div style="font-weight: 600; color: #000;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
                 </div>
               </div>
+                  
               ${pincodeData.matchedWarehouse ? `
-                <div style="margin-bottom: 8px;">
-                  <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px;">
+                <div>
+                  <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
                     📦 Warehouse Details
                   </h4>
-                  <div style="background: #fef7ff; border: 1px solid #d946ef; padding: 8px; border-radius: 6px; font-size: 11px;">
+                  <div style="background: #f3e5f5; border: 2px solid #9c27b0; padding: 12px; border-radius: 6px;">
                     ${pincodeData.matchedWarehouse.Latitude && pincodeData.matchedWarehouse.Longitute ? `
-                      <div style="margin-bottom: 4px;">
+                      <div style="font-weight: 600; color: #000;">
                         <strong>WH Location:</strong> ${parseFloat(pincodeData.matchedWarehouse.Latitude.toString()).toFixed(4)}, ${parseFloat(pincodeData.matchedWarehouse.Longitute.toString()).toFixed(4)}
                       </div>
                     ` : ''}
                   </div>
                 </div>
               ` : ''}
-
+                    
             </div>
           `);
           
@@ -847,6 +846,16 @@ mapInstanceRef.current.addListener('click', () => {
       clearCircles();
     }
   }, [warehouses, showCircles, loading.warehouses, createWarehouseCircles, createPincodeFeatureLayers]);
+  useEffect(() => {
+    if (!isInitializedRef.current) return;
+    if (
+      showPincodes &&
+      !loading.pincodes &&
+      Object.keys(pincodeToPlaceIdData).length > 0
+    ) {
+      createPincodeFeatureLayers(); // Ensure we retry drawing if data loads later
+    }
+  }, [pincodeToPlaceIdData, createPincodeFeatureLayers, loading.pincodes, showPincodes]);
 
   useEffect(() => {
     if (!isInitializedRef.current) return;
@@ -862,7 +871,7 @@ mapInstanceRef.current.addListener('click', () => {
         postalCodeLayerRef.current.style = null;
       }
     }
-  }, [ pincodes, showPincodes, loading.pincodes, pincodeToPlaceIdData, createPincodeFeatureLayers,]);
+  }, [ pincodes, showPincodes, loading.pincodes, pincodeToPlaceIdData, createPincodeFeatureLayers]);
   
   useEffect(() => {
     if (!isInitializedRef.current) return;
@@ -918,8 +927,9 @@ mapInstanceRef.current.addListener('click', () => {
                   </div>
                 )}
               </button>
-              {/* Legends Panel */}
-              <div className={`bg-white/20 backdrop-blur-md rounded-l-lg shadow-xl border border-gray-200 p-4 w-70 h-134 overflow-y-auto transform transition-transform duration-300 ${isLegendOpen ? "translate-x-0" : "translate-x-full"}`}>
+              {isLegendOpen && (
+                /* Legends Panel */
+                <div className={`bg-white/20 backdrop-blur-md rounded-l-lg shadow-xl border border-gray-200 p-4 w-70 h-134 overflow-y-auto transform transition-transform duration-300 ${isLegendOpen ? "translate-x-0" : "translate-x-full"}`}>
                 {/* Panel Header */}
                 <div className="flex items-center justify-between mb-3 pb-1 border-b border-gray-200">
                   <h3 className="text-sm font-bold text-black-800">Map Legend</h3>
@@ -1000,14 +1010,8 @@ mapInstanceRef.current.addListener('click', () => {
                               key={warehouse.Warehouse || index}
                               className="flex items-center space-x-3"
                             >
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                style={{ color }}
-                              >
+                              <svg width="20" height="20" viewBox="0 0 24 24" style={{ color }}>
                                 <path
-                                  // d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
                                   d= "M2 8L12 3L22 8V21H18V17H16V21H8V17H6V21H2V8Z M18 3V7H20V3H18Z M4 10V12H6V10H4Z M8 10V12H10V10H8Z M14 10V12H16V10H14Z M18 10V12H20V10H18Z"
                                   fill="currentColor"
                                   stroke="#000000"
@@ -1067,12 +1071,7 @@ mapInstanceRef.current.addListener('click', () => {
                       <div className="space-y-2 pl-2 max-h-40 overflow-y-auto">
                         {newWarehouses.map((warehouse) => (
                           <div key={warehouse.id} className="flex items-center space-x-3">
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              style={{ color: "#9B59B6" }}
-                            >
+                            <svg width="20" height="20" viewBox="0 0 24 24" style={{ color: "#9B59B6" }}>
                               <path
                                 // d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
                                 d="M3 21V9L8 6L13 9V5L18 2L23 5V21H19V18H17V21H15V18H13V21H11V18H9V21H7V18H5V21H3Z M19 7V9H21V7H19Z M5 11V13H7V11H5Z M9 11V13H11V11H9Z M13 11V13H15V11H13Z M17 11V13H19V11H17Z M19 15V17H21V15H19Z M5 15V17H7V15H5Z"
@@ -1096,6 +1095,7 @@ mapInstanceRef.current.addListener('click', () => {
                   )}
                 </div>
               </div>
+              )}
             </div>
           )}
       </div>

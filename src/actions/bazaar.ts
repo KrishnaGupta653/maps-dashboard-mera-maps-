@@ -1,6 +1,5 @@
 'use server'
 import { getBazaarClient } from './gauth'
-
 export interface BazaarWarehouseAddress {
   addressLine1: string
   addressLine2?: string
@@ -10,12 +9,10 @@ export interface BazaarWarehouseAddress {
   pincode: number
   country: string
 }
-
 export interface BazaarWarehouseGeoLocation {
   type: 'Point'
   coordinates: [number, number] // [longitude, latitude]
 }
-
 export interface BazaarWarehouse {
   _id: string
   name: string
@@ -29,15 +26,16 @@ export interface BazaarWarehouse {
   createdAt: string
   updatedAt: string
 }
-
 export interface WarehouseLocation {
   Latitude: number
   Longitute: number 
   Warehouse: string
   zohoWarehouseId: string
   address: BazaarWarehouseAddress
+  warehouseId: string
+  hubCode?: string
+  shipsyHubCode?: string
 }
-
 export interface WarehouseResponse {
   Info: {
     currentPage: number
@@ -57,9 +55,7 @@ export async function fetchWarehouseLocations(): Promise<WarehouseResponse> {
     const data = response.data as BazaarWarehouse[]
     const transformedResults: WarehouseLocation[] = data
       .filter(warehouse => 
-        warehouse.geoLocation?.coordinates?.length === 2 &&
-        warehouse.name.toLowerCase() !== 'retail warehouse'
-      )
+        warehouse.geoLocation?.coordinates?.length === 2 && warehouse.name.toLowerCase() !== 'retail warehouse')
       .map((warehouse) => {
         const [longitude, latitude] = warehouse.geoLocation.coordinates
         return {
@@ -68,6 +64,9 @@ export async function fetchWarehouseLocations(): Promise<WarehouseResponse> {
           Warehouse: warehouse.name,
           zohoWarehouseId: warehouse.zohoWarehouseId,
           address: warehouse.address,
+          warehouseId: warehouse._id,
+          hubCode: warehouse.hubCode,
+          shipsyHubCode: warehouse.shipsyHubCode,
         }
       })
     return {
