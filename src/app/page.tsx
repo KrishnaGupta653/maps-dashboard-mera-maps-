@@ -42,7 +42,7 @@ export default function Dashboard() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showNewWarehouses, setShowNewWarehouses] = useState(false);
-  const [showRoads, setShowRoads] = useState(true); 
+  // const [showRoads, setShowRoads] = useState(true); 
   const [newWarehouses, setNewWarehouses] = useState<NewWarehouse[]>([]);
   const metricOptions = [
     { key: "cust_count", label: "Customer Count" },
@@ -283,15 +283,15 @@ export default function Dashboard() {
     },
     [dateRange, errors.orders]
   );
-  const handleRoadsToggle = useCallback(
-    (isSelected: boolean) => {
-      setShowRoads(isSelected);
-      if (shouldAutoCollapse()) {
-        setTimeout(() => setIsMenuOpen(false), 300);
-      }
-    },
-    [shouldAutoCollapse]
-  );
+  // const handleRoadsToggle = useCallback(
+  //   (isSelected: boolean) => {
+  //     setShowRoads(isSelected);
+  //     if (shouldAutoCollapse()) {
+  //       setTimeout(() => setIsMenuOpen(false), 300);
+  //     }
+  //   },
+  //   [shouldAutoCollapse]
+  // );
   const uniqueWarehouseCount = new Set(pincodes.map((p) => p.WH)).size;
   return (
     <div className="relative w-full h-screen bg-black text-black overflow-hidden">
@@ -544,7 +544,7 @@ export default function Dashboard() {
         onNewWarehouseMove={updateNewWarehousePosition}
         selectedMetrics={[selectedMetric]}
         loading={loading}
-        showRoads={showRoads}
+        // showRoads={showRoads}
       />
       {/* Status - legends */}
       <div
@@ -598,7 +598,7 @@ export default function Dashboard() {
           extra="Draggable markers with service areas"
           
         />
-        <StatusCard
+        {/* <StatusCard
           show={!showRoads}
           loading={false}
           error=""
@@ -606,7 +606,7 @@ export default function Dashboard() {
           label="roads hidden"
           color="yellow"
           extra="Roads and highways are hidden"
-        />
+        /> */}
       </div>
     </div>
   );
