@@ -12,7 +12,7 @@ interface GoogleMapProps {
   showPincodes: boolean;
   showHeatmap: boolean;
   showCircles?: boolean;
-  showRoads: boolean;
+  // showRoads: boolean;
   showNewWarehouses: boolean;
   newWarehouses: NewWarehouse[];
   onNewWarehouseMove: (id: string, lat: number, lng: number) => void;
@@ -86,17 +86,17 @@ const COLORS = [
   "#FFEAA7", "#DDA0DD", "#98D8C8", "#F7DC6F", "#4ECDC4", "#F1948A", "#45B7D1",
   "#BB8FCE", "#85C1E9", "#F8C471", "#82E0AA", "#85C1E9", "#F4D03F", "#FF6B6B", "#96CEB4"];
 
-const ROAD_HIDDEN_STYLES: google.maps.MapTypeStyle[] = [
-  { featureType: "road", stylers: [{ visibility: "off" }] },
-  { featureType: "road.highway", stylers: [{ visibility: "off" }] },
-  { featureType: "road.highway.controlled_access", stylers: [{ visibility: "off" }] },
-  { featureType: "road.arterial", stylers: [{ visibility: "off" }] },
-  { featureType: "road.local", stylers: [{ visibility: "off" }] },
-  { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "transit.line", stylers: [{ visibility: "off" }] },
-  { featureType: "transit.station", stylers: [{ visibility: "off" }] },
-  { featureType: "transit.station.airport", stylers: [{ visibility: "off" }] },
-  ];
+// const ROAD_HIDDEN_STYLES: google.maps.MapTypeStyle[] = [
+//   { featureType: "road", stylers: [{ visibility: "off" }] },
+//   { featureType: "road.highway", stylers: [{ visibility: "off" }] },
+//   { featureType: "road.highway.controlled_access", stylers: [{ visibility: "off" }] },
+//   { featureType: "road.arterial", stylers: [{ visibility: "off" }] },
+//   { featureType: "road.local", stylers: [{ visibility: "off" }] },
+//   { featureType: "transit", stylers: [{ visibility: "off" }] },
+//   { featureType: "transit.line", stylers: [{ visibility: "off" }] },
+//   { featureType: "transit.station", stylers: [{ visibility: "off" }] },
+//   { featureType: "transit.station.airport", stylers: [{ visibility: "off" }] },
+//   ];
 const generateWarehouseColors = (
   warehouses: WarehouseLocation[],
   pincodes: PincodePoint[]
@@ -146,7 +146,7 @@ export default function GoogleMap({
   showHeatmap,
   showCircles,
   showNewWarehouses,
-  showRoads,
+  // showRoads,
   newWarehouses,
   onNewWarehouseMove,
   selectedMetrics,
@@ -173,7 +173,7 @@ export default function GoogleMap({
         center: { lat: 28.6139, lng: 77.209 },
         zoom: 8,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID,
-        styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
+        // styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
         mapTypeControl: true,
         mapTypeControlOptions: {
           style: window.google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -199,7 +199,8 @@ export default function GoogleMap({
       window.google.maps.FeatureType.POSTAL_CODE
     );
     isInitializedRef.current = true;
-  }, [showRoads]);
+  // }, [showRoads]);
+  }, []);
 
   const loadGoogleMaps = useCallback(() => {
     if (window.google?.maps) {
@@ -735,15 +736,15 @@ export default function GoogleMap({
     };
   }, [loadGoogleMaps]);
 
-  useEffect(() => {
-    if (!mapInstanceRef.current || !isInitializedRef.current) return;
-      console.log('Toggling roads:', showRoads);
-      const roadStyles = showRoads ? null : ROAD_HIDDEN_STYLES;
-      mapInstanceRef.current.setOptions({
-        styles: roadStyles,
-      });
-       console.log("✅ Road styles updated:", showRoads ? "Visible" : "Hidden");
-    }, [showRoads]);
+  // useEffect(() => {
+  //   if (!mapInstanceRef.current || !isInitializedRef.current) return;
+  //     console.log('Toggling roads:', showRoads);
+  //     const roadStyles = showRoads ? null : ROAD_HIDDEN_STYLES;
+  //     mapInstanceRef.current.setOptions({
+  //       styles: roadStyles,
+  //     });
+  //      console.log("✅ Road styles updated:", showRoads ? "Visible" : "Hidden");
+  //   }, [showRoads]);
 
   useEffect(() => {
     if (!isInitializedRef.current) return;
