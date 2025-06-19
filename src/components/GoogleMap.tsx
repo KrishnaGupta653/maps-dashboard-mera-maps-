@@ -13,7 +13,6 @@ interface GoogleMapProps {
   showHeatmap: boolean;
   showCircles?: boolean;
   // showRoads: boolean;
-  // showRoads: boolean;
   showNewWarehouses: boolean;
   newWarehouses: NewWarehouse[];
   onNewWarehouseMove: (id: string, lat: number, lng: number) => void;
@@ -135,7 +134,6 @@ export default function GoogleMap({
   showCircles,
   showNewWarehouses,
   // showRoads,
-  // showRoads,
   newWarehouses,
   onNewWarehouseMove,
   selectedMetrics,
@@ -163,7 +161,6 @@ export default function GoogleMap({
         zoom: 8,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID,
         // styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
-        // styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
         mapTypeControl: true,
         mapTypeControlOptions: {
           style: window.google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -189,8 +186,6 @@ export default function GoogleMap({
       window.google.maps.FeatureType.POSTAL_CODE
     );
     isInitializedRef.current = true;
-  // }, [showRoads]);
-  }, []);
   // }, [showRoads]);
   }, []);
 
@@ -356,10 +351,8 @@ export default function GoogleMap({
       });
       const infoContent = `
         <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 350px; min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15); word-wrap: break-word; overflow-wrap: break-word;">
-        <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 350px; min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15); word-wrap: break-word; overflow-wrap: break-word;">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid ${color};">
             <div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 6px ${color}50;"></div>
-            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2; word-break: break-word;">
             <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2; word-break: break-word;">
               🏢 ${warehouse.Warehouse || `Warehouse ${index + 1}`}
             </h3>
@@ -371,15 +364,8 @@ export default function GoogleMap({
             <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 10px; border-radius: 6px; border-left: 3px solid ${color};">
               <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600; word-break: break-all;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${lat.toFixed(6)}, ${lng.toFixed(6)}</span></div>
               <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600; word-break: break-word;"><span style="color: #64748b;">Zoho ID:</span> <span style="color: #1f2937;">${warehouse.zohoWarehouseId || 'N/A'}</span></div>
-              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600; word-break: break-all;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${lat.toFixed(6)}, ${lng.toFixed(6)}</span></div>
-              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600; word-break: break-word;"><span style="color: #64748b;">Zoho ID:</span> <span style="color: #1f2937;">${warehouse.zohoWarehouseId || 'N/A'}</span></div>
               ${warehouse.address ? `
                 <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0;">
-                  <div style="font-size: 11px; line-height: 1.3; color: #374151; font-weight: 500; word-wrap: break-word; overflow-wrap: break-word;">
-                    <strong style="word-break: break-word;">${warehouse.address.addressLine1 || ''}</strong>${warehouse.address.addressLine2 ? '<br><span style="word-break: break-word;">' + warehouse.address.addressLine2 + '</span>' : ''}<br>
-                    <span style="word-break: break-word;">${warehouse.address.city || ''}, ${warehouse.address.district || ''}</span><br>
-                    <span style="color: ${color}; font-weight: 600; word-break: break-word;">${warehouse.address.state || ''} - ${warehouse.address.pincode || ''}</span><br>
-                    <span style="word-break: break-word;">${warehouse.address.country || ''}</span>
                   <div style="font-size: 11px; line-height: 1.3; color: #374151; font-weight: 500; word-wrap: break-word; overflow-wrap: break-word;">
                     <strong style="word-break: break-word;">${warehouse.address.addressLine1 || ''}</strong>${warehouse.address.addressLine2 ? '<br><span style="word-break: break-word;">' + warehouse.address.addressLine2 + '</span>' : ''}<br>
                     <span style="word-break: break-word;">${warehouse.address.city || ''}, ${warehouse.address.district || ''}</span><br>
@@ -403,11 +389,8 @@ export default function GoogleMap({
                   <div style="display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 6px;">
                     ${associatedPincodes.slice(0, 6).map((p) =>
                       `<span style="display: inline-block; background: ${color}; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap;">${p.pincode}</span>`
-                    ${associatedPincodes.slice(0, 6).map((p) =>
-                      `<span style="display: inline-block; background: ${color}; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap;">${p.pincode}</span>`
                     ).join('')}
                   </div>
-                  ${associatedPincodes.length > 6 ? `
                   ${associatedPincodes.length > 6 ? `
                     <div style="font-size: 10px; color: #64748b; font-weight: 500; margin-bottom: 6px;">
                       +${associatedPincodes.length - 6} more pincodes
@@ -415,10 +398,6 @@ export default function GoogleMap({
                   ` : ''}
                 </div>
                 <div style="background: white; padding: 6px 8px; border-radius: 4px; margin-bottom: 6px;">
-                  <div style="font-size: 12px; color: #374151; font-weight: 600; line-height: 1.3;">
-                    Distance Range:<br>
-                    <span style="color: #10b981;">Min: ${Math.min(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> • 
-                    <span style="color: #f59e0b;">Max: ${Math.max(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span><br>
                   <div style="font-size: 12px; color: #374151; font-weight: 600; line-height: 1.3;">
                     Distance Range:<br>
                     <span style="color: #10b981;">Min: ${Math.min(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> • 
@@ -433,17 +412,7 @@ export default function GoogleMap({
                   }, {} as Record<string, number>);
                   const states = Object.keys(stateCount).sort();
                   if (states.length > 0) {
-                  const states = Object.keys(stateCount).sort();
-                  if (states.length > 0) {
                     return `
-                      <div style="background: white; padding: 6px 8px; border-radius: 4px; max-height: 80px; overflow-y: auto;">
-                        <div style="font-size: 12px; color: #374151; font-weight: 600; margin-bottom: 4px;">
-                          <strong>States Coverage (${states.length}):</strong>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 2px;">
-                          ${states.map(state => 
-                            `<span style="display: inline-block; background: #e5e7eb; color: #374151; padding: 1px 4px; border-radius: 6px; font-size: 10px; font-weight: 500; white-space: nowrap; margin: 1px;">${state} (${stateCount[state]})</span>`
-                          ).join('')}
                       <div style="background: white; padding: 6px 8px; border-radius: 4px; max-height: 80px; overflow-y: auto;">
                         <div style="font-size: 12px; color: #374151; font-weight: 600; margin-bottom: 4px;">
                           <strong>States Coverage (${states.length}):</strong>
@@ -621,8 +590,6 @@ export default function GoogleMap({
                       <div style="background: #e3f2fd; border: 2px solid #1976d2; padding: 12px; border-radius: 6px;">
                         <div style="margin-bottom: 6px; font-weight: 600; color: #000 word-wrap: break-word;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
                         <div style="font-weight: 600; color: #000; word-wrap: break-word;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
-                        <div style="margin-bottom: 6px; font-weight: 600; color: #000 word-wrap: break-word;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
-                        <div style="font-weight: 600; color: #000; word-wrap: break-word;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
                       </div>
                     </div>
                     ${pincodeData.matchedWarehouse ? `
@@ -755,42 +722,6 @@ export default function GoogleMap({
               </div>
             </div>
           </div>
-        <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 320px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15);">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid ${color};">
-              <div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 6px ${color}50;"></div>
-              <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2;">
-                 ${warehouse.name} (New)
-              </h3>
-            </div>
-            <div style="margin-bottom: 12px;">
-              <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
-                📍 Location
-              </h4>
-              <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 10px; border-radius: 6px; border-left: 3px solid ${color};">
-                <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${warehouse.lat.toFixed(6)}, ${warehouse.lng.toFixed(6)}</span></div>
-                <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Type:</span> <span style="color: #1f2937;">Proposed Warehouse</span></div>
-                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; color: ${color}; font-weight: 600;">
-                  ✋ Drag to reposition this warehouse
-                </div>
-              </div>
-            </div>
-            <div style="margin-bottom: 8px;">
-              <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
-                ⚡ Service Zones
-              </h4>
-              <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #9B59B6;">
-                <div style="font-size: 11px; color: #6a1b9a; line-height: 1.3; font-weight: 600;">
-                 <div style="margin-bottom: 3px;"><span style="color: #9B59B6; font-size:16px">●</span> <strong>30km:</strong> Primary service zone</div>
-                  <div><span style="color: #8E44AD; font-size:16px">●</span> <strong>40km:</strong> Extended service zone</div>
-                </div>
-              </div>
-            </div>
-            <div style="text-align: center; padding-top: 8px; border-top: 1px solid #e2e8f0;">
-              <div style="font-size: 10px; color: #64748b; font-weight: 500;">
-                Analyze coverage impact after positioning
-              </div>
-            </div>
-          </div>
       `;
         marker.addListener("click", () => {
           if (infoWindowRef.current && mapInstanceRef.current) {
@@ -815,15 +746,6 @@ export default function GoogleMap({
     };
   }, [loadGoogleMaps]);
 
-  // useEffect(() => {
-  //   if (!mapInstanceRef.current || !isInitializedRef.current) return;
-  //     console.log('Toggling roads:', showRoads);
-  //     const roadStyles = showRoads ? null : ROAD_HIDDEN_STYLES;
-  //     mapInstanceRef.current.setOptions({
-  //       styles: roadStyles,
-  //     });
-  //      console.log("✅ Road styles updated:", showRoads ? "Visible" : "Hidden");
-  //   }, [showRoads]);
   // useEffect(() => {
   //   if (!mapInstanceRef.current || !isInitializedRef.current) return;
   //     console.log('Toggling roads:', showRoads);
@@ -1076,7 +998,6 @@ export default function GoogleMap({
                   {showHeatmap && orderData.length > 0 && (
                     <div>
                       <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        🔥 {selectedMetrics.join(", ").toUpperCase()} Heatmap
                         🔥 {selectedMetrics.join(", ").toUpperCase()} Heatmap
                       </h4>
                       <div className="space-y-2 pl-2">

@@ -41,7 +41,6 @@ const getDefaultDateRange = () => {
   };
 };
 
-
 interface NewWarehouse {
   id: string;
   lat: number;
@@ -67,8 +66,6 @@ export default function Dashboard() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showNewWarehouses, setShowNewWarehouses] = useState(false);
-  // const [showRoads, setShowRoads] = useState(true); 
-  const [showPincodeMessage, setShowPincodeMessage] = useState(false);
   // const [showRoads, setShowRoads] = useState(true); 
   const [showPincodeMessage, setShowPincodeMessage] = useState(false);
   const [newWarehouses, setNewWarehouses] = useState<NewWarehouse[]>([]);
@@ -210,12 +207,6 @@ const handleDateChange = useCallback(
       type: "warehouses" | "pincodes" | "circles",
       isSelected: boolean
     ) => {
-      if (type === "pincodes" && isSelected && !showWarehouses) {
-        setShowPincodeMessage(true);
-        // alert("Please enable Warehouses first to show Pincodes");
-        setTimeout(() => setShowPincodeMessage(false), 3000);
-        return;
-      }
       if (type === "pincodes" && isSelected && !showWarehouses) {
         setShowPincodeMessage(true);
         // alert("Please enable Warehouses first to show Pincodes");
@@ -410,7 +401,6 @@ const handleDateChange = useCallback(
             />
             <ToggleControl
               checked={showPincodes}
-              onChange={(checked) => handleToggle("pincodes",checked)}
               onChange={(checked) => handleToggle("pincodes",checked)}
               loading={loading.pincodes}
               label="Pincodes"
@@ -664,7 +654,6 @@ const handleDateChange = useCallback(
                 )}
               </button>
             )}
-            
           </div>
         </div>
       </div>
@@ -683,11 +672,9 @@ const handleDateChange = useCallback(
         selectedMetrics={[selectedMetric]}
         loading={loading}
         // showRoads={showRoads}
-        // showRoads={showRoads}
       />
       {/* Status - legends */}
       <div
-        className={`absolute bottom-2 left-4 z-40 flex gap-2 ${ isFullscreen ? "fixed" : "" }`}>
         className={`absolute bottom-2 left-4 z-40 flex gap-2 ${ isFullscreen ? "fixed" : "" }`}>
         <StatusCard
           show={showWarehouses || loading.warehouses || !!errors.warehouses}
@@ -736,7 +723,6 @@ const handleDateChange = useCallback(
           extra="Draggable markers with service areas"
         />
         {/* <StatusCard
-        {/* <StatusCard
           show={!showRoads}
           loading={false}
           error=""
@@ -745,20 +731,17 @@ const handleDateChange = useCallback(
           color="yellow"
           extra="Roads and highways are hidden"
         /> */}
-        /> */}
       </div>
     </div>
   );
 }
 
 function ToggleControl({checked, onChange, loading, label, color, disabled=false,}: {
-function ToggleControl({checked, onChange, loading, label, color, disabled=false,}: {
   checked: boolean;
   onChange: (checked: boolean) => void;
   loading: boolean;
   label: string;
   color: "blue" | "green" | "purple" | "yellow" | "red";
-  disabled?: boolean;
   disabled?: boolean;
 }) {
   const colorClass = color === "blue" ? "bg-blue-500" : color === "green" ? "bg-green-500": color === "purple"
@@ -769,9 +752,7 @@ function ToggleControl({checked, onChange, loading, label, color, disabled=false
         checked={checked}
         onChange={onChange}
         disabled={loading || disabled}
-        disabled={loading || disabled}
         className={`${checked ? colorClass : "bg-gray-500"} ${
-          loading || disabled ? "opacity-50" : ""
           loading || disabled ? "opacity-50" : ""
         } relative inline-flex h-4 w-8 rounded-full border-2 border-transparent transition-colors duration-200`}
       >
@@ -787,7 +768,6 @@ function ToggleControl({checked, onChange, loading, label, color, disabled=false
   );
 }
 function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric,metricOptions}: {
-function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric,metricOptions}: {
   show: boolean;
   loading: boolean;
   error: string;
@@ -797,8 +777,6 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
   extra?: string;
   selectedMetric?: string;
   metricOptions?: Array<{ key: string; label: string }>;
-  selectedMetric?: string;
-  metricOptions?: Array<{ key: string; label: string }>;
 }) {
   if (!show) return null;
   const colorClass = color === "blue" ? "text-blue-300" : color === "green" ? "text-green-300" : color === "red" ? 
@@ -806,12 +784,6 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
   const bgClass =
     color === "blue" ? "bg-blue-500" : color === "green" ? "bg-green-500" : color === "red" ? 
     "bg-red-500" : color === "purple" ? "bg-purple-500" : "bg-yellow-500";
-  const getMetricLabel = () => {
-    if (!selectedMetric || !metricOptions) return "";
-    const metric = metricOptions.find(m => m.key === selectedMetric);
-    return metric ? metric.label.toLowerCase() : selectedMetric;
-  };
-    return (
   const getMetricLabel = () => {
     if (!selectedMetric || !metricOptions) return "";
     const metric = metricOptions.find(m => m.key === selectedMetric);
@@ -842,20 +814,11 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
         <div className="space-y-1">
           <div className="flex items-center gap-1">
             <div className={`h-2 w-2 ${bgClass} rounded-full`} />
-            <div className={`h-2 w-2 ${bgClass} rounded-full`} />
             <p className={`${colorClass} text-xs`}>
               {count} {label}
               {count !== 1 ? "s" : ""}
             </p>
           </div>
-          {label === "order location" && selectedMetric && metricOptions && (
-            <div className="flex items-center gap-1">
-              <div className="h-2 w-2 bg-orange-400 rounded-full" />
-              <p className="text-orange-300 text-xs">
-                Metric: {metricOptions.find(m => m.key === selectedMetric)?.label}
-              </p>
-            </div>
-          )}
           {label === "order location" && selectedMetric && metricOptions && (
             <div className="flex items-center gap-1">
               <div className="h-2 w-2 bg-orange-400 rounded-full" />
