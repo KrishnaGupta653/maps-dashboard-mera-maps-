@@ -43,3 +43,6 @@ body {
 .gmnoprint {
   transform: scale(0.85); 
 }
+div::-webkit-scrollbar {
+  display: none;
+}

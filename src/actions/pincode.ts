@@ -109,7 +109,6 @@ async function fetchAllWarehousesPincodes(): Promise<PincodePoint[]> {
     
     const allResults = await Promise.all(warehousePincodePromises)
     const allPincodes = allResults.flat().filter(p => p.placeId)
-    
     // Remove duplicates based on pincode
     return allPincodes.reduce((acc, current) => {
       const existing = acc.find(item => item.pincode === current.pincode)

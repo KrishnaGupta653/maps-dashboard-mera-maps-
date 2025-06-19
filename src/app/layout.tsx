@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
-  title: 'Warehouse Dashboard',
+  title: 'Mera Maps',
   description: 'Interactive warehouse location dashboard with Google Maps',
 }
 export default function RootLayout({

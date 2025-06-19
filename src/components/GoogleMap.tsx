@@ -12,7 +12,7 @@ interface GoogleMapProps {
   showPincodes: boolean;
   showHeatmap: boolean;
   showCircles?: boolean;
-  showRoads: boolean;
+  // showRoads: boolean;
   showNewWarehouses: boolean;
   newWarehouses: NewWarehouse[];
   onNewWarehouseMove: (id: string, lat: number, lng: number) => void;
@@ -82,21 +82,10 @@ declare global {
     initMap: () => void;
   }
 }
-const COLORS = [
-  "#FFEAA7", "#DDA0DD", "#98D8C8", "#F7DC6F", "#4ECDC4", "#F1948A", "#45B7D1",
-  "#BB8FCE", "#85C1E9", "#F8C471", "#82E0AA", "#85C1E9", "#F4D03F", "#FF6B6B", "#96CEB4"];
-
-const ROAD_HIDDEN_STYLES: google.maps.MapTypeStyle[] = [
-  { featureType: "road", stylers: [{ visibility: "off" }] },
-  { featureType: "road.highway", stylers: [{ visibility: "off" }] },
-  { featureType: "road.highway.controlled_access", stylers: [{ visibility: "off" }] },
-  { featureType: "road.arterial", stylers: [{ visibility: "off" }] },
-  { featureType: "road.local", stylers: [{ visibility: "off" }] },
-  { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "transit.line", stylers: [{ visibility: "off" }] },
-  { featureType: "transit.station", stylers: [{ visibility: "off" }] },
-  { featureType: "transit.station.airport", stylers: [{ visibility: "off" }] },
-  ];
+const COLORS = [ "#DDA0DD", "#98D8C8",  "#F7DC6F", 
+  "#4ECDC4",   "#BB8FCE", "#85C1E9","#45B7D1", "#F1948A",
+  "#82E0AA", "#85C1E9", "#F4D03F","#F8C471", "#FFEAA7","#FF6B6B", "#96CEB4"
+];
 const generateWarehouseColors = (
   warehouses: WarehouseLocation[],
   pincodes: PincodePoint[]
@@ -118,7 +107,6 @@ const generateWarehouseColors = (
   );
 };
 const createMarkerIcon_existing_warehouse = (color: string): google.maps.Symbol => ({
-  // path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
   path: "M2 8L12 3L22 8V21H18V17H16V21H8V17H6V21H2V8Z M18 3V7H20V3H18Z M4 10V12H6V10H4Z M8 10V12H10V10H8Z M14 10V12H16V10H14Z M18 10V12H20V10H18Z",
   fillColor: color,
   fillOpacity: 0.9,
@@ -128,14 +116,13 @@ const createMarkerIcon_existing_warehouse = (color: string): google.maps.Symbol 
   anchor: new window.google.maps.Point(12, 21),
 });
 const createMarkerIcon_new_warehouse = (color: string): google.maps.Symbol => ({
-  //path: "M2 20V8L12 2L22 8V20H16V14H8V20H2ZM4 18H6V16H4V18ZM10 18H14V16H10V18ZM18 18H20V16H18V18ZM12 4.5L5.5 9H18.5L12 4.5ZM8 12H16V10H8V12Z",
-path:"M47 5 L53 5 L53 25 L47 25 Z M40 11 L60 11 L60 17 L40 17 Z M50 25 L20 45 L80 45 Z M20 45 L80 45 L80 95 L20 95 Z M25 55 L45 55 L45 90 L25 90 Z M55 55 L75 55 L75 90 L55 90 Z M47 55 L53 55 L53 63 L47 63 Z M18 95 L82 95 L82 99 L18 99 Z M41 71 L43 71 L43 73 L41 73 Z M57 71 L59 71 L59 73 L57 73 Z",
-  fillColor: color,
- fillOpacity: 0.9,
-  strokeColor: "#000000",
-  strokeWeight: 1,
-  scale: 0.4,
-  anchor: new window.google.maps.Point(50, 60),
+  path:"M47 5 L53 5 L53 25 L47 25 Z M40 11 L60 11 L60 17 L40 17 Z M50 25 L20 45 L80 45 Z M20 45 L80 45 L80 95 L20 95 Z M25 55 L45 55 L45 90 L25 90 Z M55 55 L75 55 L75 90 L55 90 Z M47 55 L53 55 L53 63 L47 63 Z M18 95 L82 95 L82 99 L18 99 Z M41 71 L43 71 L43 73 L41 73 Z M57 71 L59 71 L59 73 L57 73 Z",
+    fillColor: color,
+   fillOpacity: 0.9,
+    strokeColor: "#000000",
+    strokeWeight: 1,
+    scale: 0.4,
+    anchor: new window.google.maps.Point(50, 60),
 });
 export default function GoogleMap({
   warehouses,
@@ -146,7 +133,7 @@ export default function GoogleMap({
   showHeatmap,
   showCircles,
   showNewWarehouses,
-  showRoads,
+  // showRoads,
   newWarehouses,
   onNewWarehouseMove,
   selectedMetrics,
@@ -173,7 +160,7 @@ export default function GoogleMap({
         center: { lat: 28.6139, lng: 77.209 },
         zoom: 8,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID,
-        styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
+        // styles: showRoads ? undefined : ROAD_HIDDEN_STYLES,
         mapTypeControl: true,
         mapTypeControlOptions: {
           style: window.google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -199,7 +186,8 @@ export default function GoogleMap({
       window.google.maps.FeatureType.POSTAL_CODE
     );
     isInitializedRef.current = true;
-  }, [showRoads]);
+  // }, [showRoads]);
+  }, []);
 
   const loadGoogleMaps = useCallback(() => {
     if (window.google?.maps) {
@@ -313,7 +301,6 @@ export default function GoogleMap({
       const lng = parseFloat(warehouse.Longitute?.toString() || "0");
       if (isNaN(lat) || isNaN(lng) || lat === 0 || lng === 0) return;
       const center = { lat, lng };
-      // Create 30km circle
       const circle30km = new window.google.maps.Circle({
         strokeColor: "#52ace9",
         strokeOpacity: 1.0,
@@ -363,10 +350,10 @@ export default function GoogleMap({
         zIndex: 1000,
       });
       const infoContent = `
-        <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 320px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15);">
+        <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 350px; min-width: 300px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15); word-wrap: break-word; overflow-wrap: break-word;">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid ${color};">
             <div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 6px ${color}50;"></div>
-            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2;">
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2; word-break: break-word;">
               🏢 ${warehouse.Warehouse || `Warehouse ${index + 1}`}
             </h3>
           </div>
@@ -375,15 +362,15 @@ export default function GoogleMap({
               📍 Location
             </h4>
             <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 10px; border-radius: 6px; border-left: 3px solid ${color};">
-              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${lat.toFixed(6)}, ${lng.toFixed(6)}</span></div>
-              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Zoho ID:</span> <span style="color: #1f2937;">${warehouse.zohoWarehouseId || 'N/A'}</span></div>
+              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600; word-break: break-all;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${lat.toFixed(6)}, ${lng.toFixed(6)}</span></div>
+              <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600; word-break: break-word;"><span style="color: #64748b;">Zoho ID:</span> <span style="color: #1f2937;">${warehouse.zohoWarehouseId || 'N/A'}</span></div>
               ${warehouse.address ? `
                 <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0;">
-                  <div style="font-size: 11px; line-height: 1.3; color: #374151; font-weight: 500;">
-                    <strong>${warehouse.address.addressLine1 || ''}</strong>${warehouse.address.addressLine2 ? '<br>' + warehouse.address.addressLine2 : ''}<br>
-                    ${warehouse.address.city || ''}, ${warehouse.address.district || ''}<br>
-                    <span style="color: ${color}; font-weight: 600;">${warehouse.address.state || ''} - ${warehouse.address.pincode || ''}</span><br>
-                    ${warehouse.address.country || ''}
+                  <div style="font-size: 11px; line-height: 1.3; color: #374151; font-weight: 500; word-wrap: break-word; overflow-wrap: break-word;">
+                    <strong style="word-break: break-word;">${warehouse.address.addressLine1 || ''}</strong>${warehouse.address.addressLine2 ? '<br><span style="word-break: break-word;">' + warehouse.address.addressLine2 + '</span>' : ''}<br>
+                    <span style="word-break: break-word;">${warehouse.address.city || ''}, ${warehouse.address.district || ''}</span><br>
+                    <span style="color: ${color}; font-weight: 600; word-break: break-word;">${warehouse.address.state || ''} - ${warehouse.address.pincode || ''}</span><br>
+                    <span style="word-break: break-word;">${warehouse.address.country || ''}</span>
                   </div>
                 </div>
               ` : ''}
@@ -400,21 +387,21 @@ export default function GoogleMap({
               ${associatedPincodes.length > 0 ? `
                 <div style="margin-bottom: 8px;">
                   <div style="display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 6px;">
-                    ${associatedPincodes.slice(0, 5).map((p) =>
-                      `<span style="display: inline-block; background: ${color}; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;">${p.pincode}</span>`
+                    ${associatedPincodes.slice(0, 6).map((p) =>
+                      `<span style="display: inline-block; background: ${color}; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap;">${p.pincode}</span>`
                     ).join('')}
                   </div>
-                  ${associatedPincodes.length > 5 ? `
+                  ${associatedPincodes.length > 6 ? `
                     <div style="font-size: 10px; color: #64748b; font-weight: 500; margin-bottom: 6px;">
                       +${associatedPincodes.length - 6} more pincodes
                     </div>
                   ` : ''}
                 </div>
                 <div style="background: white; padding: 6px 8px; border-radius: 4px; margin-bottom: 6px;">
-                  <div style="font-size: 13px; color: #374151; font-weight: 600;">
-                  Distance Range:<br>
-                    <span style="color: #10b981;">Min: ${Math.min(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> •
-                    <span style="color: #f59e0b;">Max: ${Math.max(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> • <br>
+                  <div style="font-size: 12px; color: #374151; font-weight: 600; line-height: 1.3;">
+                    Distance Range:<br>
+                    <span style="color: #10b981;">Min: ${Math.min(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span> • 
+                    <span style="color: #f59e0b;">Max: ${Math.max(...associatedPincodes.map(p => p.distance)).toFixed(1)}km</span><br>
                     <span style="color: #6366f1;">Avg: ${(associatedPincodes.reduce((sum, p) => sum + p.distance, 0) / associatedPincodes.length).toFixed(1)}km</span>
                   </div>
                 </div>
@@ -423,12 +410,17 @@ export default function GoogleMap({
                     acc[p.state] = (acc[p.state] || 0) + 1;
                     return acc;
                   }, {} as Record<string, number>);
-                  const states = Object.keys(stateCount);
-                  if (states.length > 1) {
+                  const states = Object.keys(stateCount).sort();
+                  if (states.length > 0) {
                     return `
-                      <div style="background: white; padding: 6px 8px; border-radius: 4px;">
-                        <div style="font-size: 11px; color: #374151; font-weight: 600;">
-                          <strong>States:</strong> ${states.map(state => `${state} (${stateCount[state]})`).slice(0, 2).join(', ')}${states.length > 2 ? ` +${states.length - 2} more` : ''}
+                      <div style="background: white; padding: 6px 8px; border-radius: 4px; max-height: 80px; overflow-y: auto;">
+                        <div style="font-size: 12px; color: #374151; font-weight: 600; margin-bottom: 4px;">
+                          <strong>States Coverage (${states.length}):</strong>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 2px;">
+                          ${states.map(state => 
+                            `<span style="display: inline-block; background: #e5e7eb; color: #374151; padding: 1px 4px; border-radius: 6px; font-size: 10px; font-weight: 500; white-space: nowrap; margin: 1px;">${state} (${stateCount[state]})</span>`
+                          ).join('')}
                         </div>
                       </div>
                     `;
@@ -512,13 +504,13 @@ export default function GoogleMap({
             pincodeToPlaceIdRef.current[pincodeStr] = pincodeData.placeId;
             mappedPincodes++;
           } else {
-             console.warn(`No place ID found for pincode: ${pincodeStr}`);
+            //  console.warn(`No place ID found for pincode: ${pincodeStr}`);
           }
         });
       });
       console.log(`Mapped ${mappedPincodes} out of ${totalPincodes} pincodes to place IDs`);
       if (mappedPincodes === 0) {
-        console.warn('No pincodes could be mapped to place IDs. Postal code styling will not work.');
+        // console.warn('No pincodes could be mapped to place IDs. Postal code styling will not work.');
         return;
       }
     
@@ -538,10 +530,10 @@ export default function GoogleMap({
             if (warehouseInfo) {
               return {
                 strokeColor: warehouseInfo.color,
-                strokeOpacity: 1.0,
-                strokeWeight: 2.0,
+                strokeOpacity: 1,
+                strokeWeight: 2.4,
                 fillColor: warehouseInfo.color,
-                fillOpacity: 0.3,
+                fillOpacity: 0.25,
               };}}
           return null;
         };
@@ -596,8 +588,8 @@ export default function GoogleMap({
                         📅 Service Schedule
                       </h4>
                       <div style="background: #e3f2fd; border: 2px solid #1976d2; padding: 12px; border-radius: 6px;">
-                        <div style="margin-bottom: 6px; font-weight: 600; color: #000;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
-                        <div style="font-weight: 600; color: #000;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
+                        <div style="margin-bottom: 6px; font-weight: 600; color: #000 word-wrap: break-word;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
+                        <div style="font-weight: 600; color: #000; word-wrap: break-word;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
                       </div>
                     </div>
                     ${pincodeData.matchedWarehouse ? `
@@ -669,7 +661,6 @@ export default function GoogleMap({
           }
         });
         const center = position;
-        // 30km circle
         const circle30km = new window.google.maps.Circle({
           strokeColor: "#9B59B6",
           strokeOpacity: 1.0,
@@ -682,7 +673,6 @@ export default function GoogleMap({
           zIndex: -100,
           clickable: false,
         });
-        // 40km circle
         const circle40km = new window.google.maps.Circle({
           strokeColor: "#8E44AD",
           strokeOpacity: 1.0,
@@ -696,21 +686,42 @@ export default function GoogleMap({
           clickable: false,
         });
         const infoContent = `
-        <div style="padding: 12px; font-family: system-ui; max-width: 300px;">
-          <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 8px;">
-            <span style="width: 12px; height: 12px; background-color: ${color}; border-radius: 50%;"></span>
-            🏢 ${warehouse.name}
-          </h3>
-          <div style="font-size: 13px; color: #6b7280; line-height: 1.4;">
-            <div><strong>Location:</strong> ${warehouse.lat.toFixed(6)}, ${warehouse.lng.toFixed(6)}</div>
-            <div><strong>Type:</strong> New Warehouse (Draggable)</div>
-            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; color: #9B59B6;">
-              <strong>Service Areas:</strong><br>
-              • 30km radius (Primary)<br>
-              • 40km radius (Extended)
+        <div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif; max-width: 320px; background: white; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.15);">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid ${color};">
+              <div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 6px ${color}50;"></div>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #1f2937; line-height: 1.2;">
+                 ${warehouse.name} (New)
+              </h3>
+            </div>
+            <div style="margin-bottom: 12px;">
+              <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
+                📍 Location
+              </h4>
+              <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 10px; border-radius: 6px; border-left: 3px solid ${color};">
+                <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Coordinates:</span> <span style="color: #1f2937;">${warehouse.lat.toFixed(6)}, ${warehouse.lng.toFixed(6)}</span></div>
+                <div style="margin-bottom: 4px; font-size: 12px; font-weight: 600;"><span style="color: #64748b;">Type:</span> <span style="color: #1f2937;">Proposed Warehouse</span></div>
+                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; color: ${color}; font-weight: 600;">
+                  ✋ Drag to reposition this warehouse
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom: 8px;">
+              <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #1f2937; text-transform: uppercase; letter-spacing: 0.5px;">
+                ⚡ Service Zones
+              </h4>
+              <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #9B59B6;">
+                <div style="font-size: 11px; color: #6a1b9a; line-height: 1.3; font-weight: 600;">
+                 <div style="margin-bottom: 3px;"><span style="color: #9B59B6; font-size:16px">●</span> <strong>30km:</strong> Primary service zone</div>
+                  <div><span style="color: #8E44AD; font-size:16px">●</span> <strong>40km:</strong> Extended service zone</div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center; padding-top: 8px; border-top: 1px solid #e2e8f0;">
+              <div style="font-size: 10px; color: #64748b; font-weight: 500;">
+                Analyze coverage impact after positioning
+              </div>
             </div>
           </div>
-        </div>
       `;
         marker.addListener("click", () => {
           if (infoWindowRef.current && mapInstanceRef.current) {
@@ -735,15 +746,15 @@ export default function GoogleMap({
     };
   }, [loadGoogleMaps]);
 
-  useEffect(() => {
-    if (!mapInstanceRef.current || !isInitializedRef.current) return;
-      console.log('Toggling roads:', showRoads);
-      const roadStyles = showRoads ? null : ROAD_HIDDEN_STYLES;
-      mapInstanceRef.current.setOptions({
-        styles: roadStyles,
-      });
-       console.log("✅ Road styles updated:", showRoads ? "Visible" : "Hidden");
-    }, [showRoads]);
+  // useEffect(() => {
+  //   if (!mapInstanceRef.current || !isInitializedRef.current) return;
+  //     console.log('Toggling roads:', showRoads);
+  //     const roadStyles = showRoads ? null : ROAD_HIDDEN_STYLES;
+  //     mapInstanceRef.current.setOptions({
+  //       styles: roadStyles,
+  //     });
+  //      console.log("✅ Road styles updated:", showRoads ? "Visible" : "Hidden");
+  //   }, [showRoads]);
 
   useEffect(() => {
     if (!isInitializedRef.current) return;
@@ -762,7 +773,7 @@ export default function GoogleMap({
         const pincodeStrings = pincodes.map(p => p.pincode.toString())
         const uniquePincodes = await getUniqueValidPincodes(pincodeStrings)
         if (uniquePincodes.length === 0) {
-          console.warn('No valid pincodes found after filtering')
+          // console.warn('No valid pincodes found after filtering')
           setPincodeToPlaceIdData({})
           return
         }
@@ -772,7 +783,7 @@ export default function GoogleMap({
         const successCount = Object.keys(data).length
         console.log(`Successfully loaded place IDs for ${successCount} out of ${uniquePincodes.length} pincodes`)
         if (successCount === 0) {
-          console.warn('No place IDs were loaded. This might indicate API authentication issues or invalid pincodes.')
+          // console.warn('No place IDs were loaded. This might indicate API authentication issues or invalid pincodes.')
         }
       } catch (error) {
         console.error("Failed to load pincode place IDs:", error)
@@ -808,11 +819,11 @@ export default function GoogleMap({
   }, [warehouses, showCircles, loading.warehouses, createWarehouseCircles, createPincodeFeatureLayers]);
   
   useEffect(() => {
-     console.log("🏷️ Effect triggered: showPincodes:", showPincodes, "loading.pincodes:", loading.pincodes, "placeIdData:", Object.keys(pincodeToPlaceIdData).length);
+    //  console.log("🏷️ Effect triggered: showPincodes:", showPincodes, "loading.pincodes:", loading.pincodes, "placeIdData:", Object.keys(pincodeToPlaceIdData).length);
     if (!isInitializedRef.current) return;
     if (showPincodes && !loading.pincodes && Object.keys(pincodeToPlaceIdData).length > 0
     ) {
-      console.log("🔥 Triggering createPincodeFeatureLayers");
+      // console.log("🔥 Triggering createPincodeFeatureLayers");
       createPincodeFeatureLayers();
     } else {
       clearMarkers(pincodeMarkersRef);
@@ -987,7 +998,7 @@ export default function GoogleMap({
                   {showHeatmap && orderData.length > 0 && (
                     <div>
                       <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        🔥 Order Heatmap
+                        🔥 {selectedMetrics.join(", ").toUpperCase()} Heatmap
                       </h4>
                       <div className="space-y-2 pl-2">
                         <div className="flex items-center justify-between text-xs text-gray-600">
