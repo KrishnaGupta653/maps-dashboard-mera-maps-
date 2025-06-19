@@ -1,16 +1,16 @@
-# 📍 Mera Maps: Warehouse Location 
+# 📍 Mera Maps: Warehouse Location Map Visualization
 
-An interactive geospatial dashboard for visualizing warehouse locations, service areas, and order data to support logistics planning and expansion decisions.
+An interactive geospatial map visualization for visualizing warehouse locations, service areas, and order data like customer count, sales order count , volume or order value to support logistics planning and expansion decisions.
 
 ## 🧭 Overview
 
-Mera Maps is a web-based dashboard built for Merapasu360 to address the challenge of visualizing and analyzing warehouse locations, their service areas, and order distribution. The platform transforms raw location data into an interactive map-based interface, enabling data-driven decisions for warehouse placement and logistics optimization.
+Mera Maps is a web-based map visualization built for Merapasu360 to address the challenge of visualizing and analyzing warehouse locations, their service areas, and order distribution. The platform transforms raw location data into an interactive map-based interface, enabling data-driven decisions for warehouse placement and logistics optimization.
 
 ### ⚙️ Key Features
 
 - **Warehouse Visualization**: Display existing warehouses with detailed metadata, addresses, and service coverage areas
 - **Pincode Mapping**: Highlight pincodes served by each warehouse with color-coded boundaries
-- **Order Heatmaps**: Visualize order density based on customer count, sales orders, order value, or volume
+- **Heatmaps**: Visualize order density based on customer count, sales orders, order value, or volume
 - **New Warehouse Simulation**: Add and reposition hypothetical warehouse locations with real-time service area visualization
 - **Interactive Controls**: Toggle layers and filter data dynamically
 - **Service Zone Analysis**: Display 30km and 40km service radius circles for each warehouse
@@ -46,7 +46,7 @@ Mera Maps is a web-based dashboard built for Merapasu360 to address the challeng
 ## 🛠️ Architecture
 
 ### Components
-- `page.tsx`: Main dashboard component with state management and UI controls
+- `page.tsx`: Main map visualization component with state management and UI controls
 - `GoogleMap.tsx`: Map initialization, marker creation, and layer rendering
 - `layout.tsx`: Root layout with metadata and global styles
 
