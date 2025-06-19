@@ -7,6 +7,12 @@ import GoogleMap from "@/components/GoogleMap";
 import { WarehouseLocation, fetchWarehouseLocations } from "@/actions/bazaar";
 import { PincodePoint, fetchPincodeLocations } from "@/actions/pincode";
 import { OrderLocationData, fetchOrderLocationData } from "@/actions/order";
+
+const formatDateToDDMMYYYY = (isoDate: string): string => {
+  const [year, month, day] = isoDate.split("-");
+  return `${day}/${month}/${year}`;
+};
+
 const getDefaultDateRange = () => {
   const today = new Date();
   const thirtyDaysAgo = new Date(today);
@@ -17,6 +23,7 @@ const getDefaultDateRange = () => {
     to: today.toISOString().split("T")[0],
   };
 };
+
 interface NewWarehouse {
   id: string;
   lat: number;
@@ -143,7 +150,7 @@ export default function Dashboard() {
     ) => {
       if (type === "pincodes" && isSelected && !showWarehouses) {
         setShowPincodeMessage(true);
-        alert("Please enable Warehouses first to show Pincodes");
+        // alert("Please enable Warehouses first to show Pincodes");
         setTimeout(() => setShowPincodeMessage(false), 3000);
         return;
       }
@@ -218,21 +225,7 @@ export default function Dashboard() {
     },
     [warehouses, pincodes, shouldAutoCollapse, showWarehouses]
   );
-//   const handlePincodeToggle = useCallback(
-//   (isSelected: boolean) => {
-//     if (isSelected && !showWarehouses) {
-//       setShowPincodeWarning(true);
-//       setTimeout(() => setShowPincodeWarning(false), 3000);
-//       handleToggle("warehouses", true);
-//       return;
-//     }
-//     if (showPincodeWarning) {
-//       setShowPincodeWarning(false);
-//     }
-//     handleToggle("pincodes", isSelected);
-//   },
-//   [showWarehouses, showPincodeWarning, handleToggle]
-// );
+
   const fetchOrderData = useCallback(
     async (fromDate: string, toDate: string, metric: string) => {
       setLoading((prev) => ({ ...prev, orders: true }));
@@ -366,10 +359,48 @@ export default function Dashboard() {
               color="green"
               // disabled={!showWarehouses}
             />
-            {showPincodeMessage && (
-              <div className="bg-yellow-500/20 border border-yellow-500/50 px-3 py-2 rounded-lg">
-                <p className="text-yellow-200 text-xs font-medium">
+            {/* {showPincodeMessage && (
+              <div className="bg-red-500/20 border border-red-500/50 px-3 py-2 rounded-lg">
+                <p className="text-red-200 text-xs font-medium">
                   ⚠️ Please enable Warehouses first before enabling Pincodes
+                </p>
+              </div>
+            )} */}
+            {/* {showPincodeMessage && (
+              <div className="bg-red-500/30 border-2 border-red-400/80 px-4 py-3 rounded-lg shadow-lg animate-pulse">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">!</span>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-red-100 text-sm font-bold mb-1">
+                      Action Required
+                    </h4>
+                    <p className="text-red-100 text-sm font-medium leading-relaxed">
+                      Please enable Warehouses first before enabling Pincodes. 
+                      Pincodes require warehouse data to display properly.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowPincodeMessage(false)}
+                    className="flex-shrink-0 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-colors">
+                    <span className="text-white text-xs font-bold">×</span>
+                  </button>
+                </div>
+              </div>
+            )} */}
+            {showPincodeMessage && (
+              <div className="relative bg-red-600/90 border-2 border-red-400 px-4 py-3 rounded-lg shadow-lg backdrop-blur-sm">
+                <button
+                  onClick={() => setShowPincodeMessage(false)}
+                  className="absolute top-1.5 right-2 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-colors" aria-label="Close warning">
+                  <span className="text-white text-xs font-bold">×</span>
+                </button>
+                <p className="text-white text-sm font-bold flex items-center gap-2 pr-6">
+                  <span className="text-yellow-300 text-lg">⚠️</span>
+                  Please enable Warehouses first before enabling Pincodes
                 </p>
               </div>
             )}
@@ -507,7 +538,7 @@ export default function Dashboard() {
               <div className="bg-white/10 px-3 py-2 rounded-lg border border-white/10">
                 <h4 className="text-xs font-medium mb-2 flex items-center gap-1 text-black">
                   <CalendarIcon className="h-3 w-3" />
-                  Date Range
+                  Date Range (mm/dd/yyyy)
                 </h4>
                 <div className="space-y-2">
                   <div>
@@ -518,6 +549,9 @@ export default function Dashboard() {
                       onChange={(e) => handleDateChange("from", e.target.value)}
                       className="w-full px-2 py-1 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black"
                     />
+                    <p className="text-[10px] text-black mt-1 italic">
+                      Selected: {formatDateToDDMMYYYY(dateRange.from)}
+                    </p>
                   </div>
                   <div>
                     <label className="text-xs text-black/70">To</label>
@@ -527,6 +561,9 @@ export default function Dashboard() {
                       onChange={(e) => handleDateChange("to", e.target.value)}
                       className="w-full px-2 py-1 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black"
                     />
+                    <p className="text-[10px] text-black mt-1 italic">
+                      Selected: {formatDateToDDMMYYYY(dateRange.to)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -578,10 +615,7 @@ export default function Dashboard() {
       />
       {/* Status - legends */}
       <div
-        className={`absolute bottom-2 left-4 z-40 flex gap-2 ${
-          isFullscreen ? "fixed" : ""
-        }`}
-      >
+        className={`absolute bottom-2 left-4 z-40 flex gap-2 ${ isFullscreen ? "fixed" : "" }`}>
         <StatusCard
           show={showWarehouses || loading.warehouses || !!errors.warehouses}
           loading={loading.warehouses}
@@ -610,13 +644,29 @@ export default function Dashboard() {
           count={orderData.length}
           label="order location"
           color="red"
-          extra={
-            selectedMetric
-              ? `Metric: ${
-                  metricOptions.find((m) => m.key === selectedMetric)?.label
-                }`
-              : undefined
-          }
+          selectedMetric={selectedMetric}
+          metricOptions={metricOptions}
+           extra={
+            // selectedMetric
+            //   ? `Metric: ${
+            //       metricOptions.find((m) => m.key === selectedMetric)?.label
+            //     }`
+            //   : undefined
+            // showHeatmap && selectedMetric
+            //     ? `Showing: ${
+            //         metricOptions.find((m) => m.key === selectedMetric)?.label || selectedMetric
+            //       } Heatmap`
+            //     : showHeatmap
+            //     ? "Heatmap enabled - select metric and generate"
+            //     : undefined
+            // }
+             showHeatmap && !loading.orders && !errors.orders
+                ? `${metricOptions.find((m) => m.key === selectedMetric)?.label || selectedMetric} (${formatDateToDDMMYYYY(dateRange.from)} to ${formatDateToDDMMYYYY(dateRange.to)})`
+                : loading.orders
+                ? "Generating heatmap data..."
+                : undefined
+
+  }
         />
         <StatusCard
           show={showNewWarehouses}
@@ -626,7 +676,6 @@ export default function Dashboard() {
           label="new warehouse"
           color="purple"
           extra="Draggable markers with service areas"
-          
         />
         {/* <StatusCard
           show={!showRoads}
@@ -673,7 +722,7 @@ function ToggleControl({checked, onChange, loading, label, color, disabled=false
       </div>
   );
 }
-function StatusCard({ show,loading, error,count,label,color,extra,}: {
+function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric,metricOptions}: {
   show: boolean;
   loading: boolean;
   error: string;
@@ -681,6 +730,8 @@ function StatusCard({ show,loading, error,count,label,color,extra,}: {
   label: string;
   color: "blue" | "green" | "red" | "purple" | "yellow";
   extra?: string;
+  selectedMetric?: string;
+  metricOptions?: Array<{ key: string; label: string }>;
 }) {
   if (!show) return null;
   const colorClass = color === "blue" ? "text-blue-300" : color === "green" ? "text-green-300" : color === "red" ? 
@@ -688,14 +739,25 @@ function StatusCard({ show,loading, error,count,label,color,extra,}: {
   const bgClass =
     color === "blue" ? "bg-blue-500" : color === "green" ? "bg-green-500" : color === "red" ? 
     "bg-red-500" : color === "purple" ? "bg-purple-500" : "bg-yellow-500";
-  return (
+  const getMetricLabel = () => {
+    if (!selectedMetric || !metricOptions) return "";
+    const metric = metricOptions.find(m => m.key === selectedMetric);
+    return metric ? metric.label.toLowerCase() : selectedMetric;
+  };
+    return (
     <div className="bg-black/50 backdrop-blur-md rounded-lg p-2 border border-white/10">
       {loading && (
         <div className="flex items-center gap-1">
           <div
             className={`animate-spin h-3 w-3 border-2 border-${color}-400 border-t-transparent rounded-full`}
           />
-          <p className={`${colorClass} text-xs`}>Loading {label}s...</p>
+          {/* <p className={`${colorClass} text-xs`}>Loading {label}s...</p> */}
+        <p className={`${colorClass} text-xs`}>
+            {label === "order location" && selectedMetric 
+              ? `Loading ${getMetricLabel()}...`
+              : `Loading ${label}s...`
+            }
+          </p>
         </div>
       )}
       {error && (
@@ -707,12 +769,20 @@ function StatusCard({ show,loading, error,count,label,color,extra,}: {
       {!loading && !error && count > 0 && (
         <div className="space-y-1">
           <div className="flex items-center gap-1">
-            <div className={`h-3 w-3 ${bgClass} rounded-full`} />
+            <div className={`h-2 w-2 ${bgClass} rounded-full`} />
             <p className={`${colorClass} text-xs`}>
               {count} {label}
               {count !== 1 ? "s" : ""}
             </p>
           </div>
+          {label === "order location" && selectedMetric && metricOptions && (
+            <div className="flex items-center gap-1">
+              <div className="h-2 w-2 bg-orange-400 rounded-full" />
+              <p className="text-orange-300 text-xs">
+                Metric: {metricOptions.find(m => m.key === selectedMetric)?.label}
+              </p>
+            </div>
+          )}
           {extra && (
             <div className="flex items-center gap-1">
               <div className="h-2 w-2 bg-yellow-400 rounded-full" />
