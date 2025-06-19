@@ -82,21 +82,10 @@ declare global {
     initMap: () => void;
   }
 }
-const COLORS = [
-  "#FFEAA7", "#DDA0DD", "#98D8C8", "#F7DC6F", "#4ECDC4", "#F1948A", "#45B7D1",
-  "#BB8FCE", "#85C1E9", "#F8C471", "#82E0AA", "#85C1E9", "#F4D03F", "#FF6B6B", "#96CEB4"];
-
-// const ROAD_HIDDEN_STYLES: google.maps.MapTypeStyle[] = [
-//   { featureType: "road", stylers: [{ visibility: "off" }] },
-//   { featureType: "road.highway", stylers: [{ visibility: "off" }] },
-//   { featureType: "road.highway.controlled_access", stylers: [{ visibility: "off" }] },
-//   { featureType: "road.arterial", stylers: [{ visibility: "off" }] },
-//   { featureType: "road.local", stylers: [{ visibility: "off" }] },
-//   { featureType: "transit", stylers: [{ visibility: "off" }] },
-//   { featureType: "transit.line", stylers: [{ visibility: "off" }] },
-//   { featureType: "transit.station", stylers: [{ visibility: "off" }] },
-//   { featureType: "transit.station.airport", stylers: [{ visibility: "off" }] },
-//   ];
+const COLORS = [ "#DDA0DD", "#98D8C8",  "#F7DC6F", 
+  "#4ECDC4",   "#BB8FCE", "#85C1E9","#45B7D1", "#F1948A",
+  "#82E0AA", "#85C1E9", "#F4D03F","#F8C471", "#FFEAA7","#FF6B6B", "#96CEB4"
+];
 const generateWarehouseColors = (
   warehouses: WarehouseLocation[],
   pincodes: PincodePoint[]
@@ -118,7 +107,6 @@ const generateWarehouseColors = (
   );
 };
 const createMarkerIcon_existing_warehouse = (color: string): google.maps.Symbol => ({
-  // path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
   path: "M2 8L12 3L22 8V21H18V17H16V21H8V17H6V21H2V8Z M18 3V7H20V3H18Z M4 10V12H6V10H4Z M8 10V12H10V10H8Z M14 10V12H16V10H14Z M18 10V12H20V10H18Z",
   fillColor: color,
   fillOpacity: 0.9,
@@ -128,14 +116,13 @@ const createMarkerIcon_existing_warehouse = (color: string): google.maps.Symbol 
   anchor: new window.google.maps.Point(12, 21),
 });
 const createMarkerIcon_new_warehouse = (color: string): google.maps.Symbol => ({
-  //path: "M2 20V8L12 2L22 8V20H16V14H8V20H2ZM4 18H6V16H4V18ZM10 18H14V16H10V18ZM18 18H20V16H18V18ZM12 4.5L5.5 9H18.5L12 4.5ZM8 12H16V10H8V12Z",
-path:"M47 5 L53 5 L53 25 L47 25 Z M40 11 L60 11 L60 17 L40 17 Z M50 25 L20 45 L80 45 Z M20 45 L80 45 L80 95 L20 95 Z M25 55 L45 55 L45 90 L25 90 Z M55 55 L75 55 L75 90 L55 90 Z M47 55 L53 55 L53 63 L47 63 Z M18 95 L82 95 L82 99 L18 99 Z M41 71 L43 71 L43 73 L41 73 Z M57 71 L59 71 L59 73 L57 73 Z",
-  fillColor: color,
- fillOpacity: 0.9,
-  strokeColor: "#000000",
-  strokeWeight: 1,
-  scale: 0.4,
-  anchor: new window.google.maps.Point(50, 60),
+  path:"M47 5 L53 5 L53 25 L47 25 Z M40 11 L60 11 L60 17 L40 17 Z M50 25 L20 45 L80 45 Z M20 45 L80 45 L80 95 L20 95 Z M25 55 L45 55 L45 90 L25 90 Z M55 55 L75 55 L75 90 L55 90 Z M47 55 L53 55 L53 63 L47 63 Z M18 95 L82 95 L82 99 L18 99 Z M41 71 L43 71 L43 73 L41 73 Z M57 71 L59 71 L59 73 L57 73 Z",
+    fillColor: color,
+   fillOpacity: 0.9,
+    strokeColor: "#000000",
+    strokeWeight: 1,
+    scale: 0.4,
+    anchor: new window.google.maps.Point(50, 60),
 });
 export default function GoogleMap({
   warehouses,
@@ -314,7 +301,6 @@ export default function GoogleMap({
       const lng = parseFloat(warehouse.Longitute?.toString() || "0");
       if (isNaN(lat) || isNaN(lng) || lat === 0 || lng === 0) return;
       const center = { lat, lng };
-      // Create 30km circle
       const circle30km = new window.google.maps.Circle({
         strokeColor: "#52ace9",
         strokeOpacity: 1.0,
@@ -518,13 +504,13 @@ export default function GoogleMap({
             pincodeToPlaceIdRef.current[pincodeStr] = pincodeData.placeId;
             mappedPincodes++;
           } else {
-             console.warn(`No place ID found for pincode: ${pincodeStr}`);
+            //  console.warn(`No place ID found for pincode: ${pincodeStr}`);
           }
         });
       });
       console.log(`Mapped ${mappedPincodes} out of ${totalPincodes} pincodes to place IDs`);
       if (mappedPincodes === 0) {
-        console.warn('No pincodes could be mapped to place IDs. Postal code styling will not work.');
+        // console.warn('No pincodes could be mapped to place IDs. Postal code styling will not work.');
         return;
       }
     
@@ -544,10 +530,10 @@ export default function GoogleMap({
             if (warehouseInfo) {
               return {
                 strokeColor: warehouseInfo.color,
-                strokeOpacity: 1.0,
-                strokeWeight: 2.0,
+                strokeOpacity: 1,
+                strokeWeight: 2.4,
                 fillColor: warehouseInfo.color,
-                fillOpacity: 0.3,
+                fillOpacity: 0.25,
               };}}
           return null;
         };
@@ -675,7 +661,6 @@ export default function GoogleMap({
           }
         });
         const center = position;
-        // 30km circle
         const circle30km = new window.google.maps.Circle({
           strokeColor: "#9B59B6",
           strokeOpacity: 1.0,
@@ -688,7 +673,6 @@ export default function GoogleMap({
           zIndex: -100,
           clickable: false,
         });
-        // 40km circle
         const circle40km = new window.google.maps.Circle({
           strokeColor: "#8E44AD",
           strokeOpacity: 1.0,
@@ -789,7 +773,7 @@ export default function GoogleMap({
         const pincodeStrings = pincodes.map(p => p.pincode.toString())
         const uniquePincodes = await getUniqueValidPincodes(pincodeStrings)
         if (uniquePincodes.length === 0) {
-          console.warn('No valid pincodes found after filtering')
+          // console.warn('No valid pincodes found after filtering')
           setPincodeToPlaceIdData({})
           return
         }
@@ -799,7 +783,7 @@ export default function GoogleMap({
         const successCount = Object.keys(data).length
         console.log(`Successfully loaded place IDs for ${successCount} out of ${uniquePincodes.length} pincodes`)
         if (successCount === 0) {
-          console.warn('No place IDs were loaded. This might indicate API authentication issues or invalid pincodes.')
+          // console.warn('No place IDs were loaded. This might indicate API authentication issues or invalid pincodes.')
         }
       } catch (error) {
         console.error("Failed to load pincode place IDs:", error)
@@ -835,11 +819,11 @@ export default function GoogleMap({
   }, [warehouses, showCircles, loading.warehouses, createWarehouseCircles, createPincodeFeatureLayers]);
   
   useEffect(() => {
-     console.log("🏷️ Effect triggered: showPincodes:", showPincodes, "loading.pincodes:", loading.pincodes, "placeIdData:", Object.keys(pincodeToPlaceIdData).length);
+    //  console.log("🏷️ Effect triggered: showPincodes:", showPincodes, "loading.pincodes:", loading.pincodes, "placeIdData:", Object.keys(pincodeToPlaceIdData).length);
     if (!isInitializedRef.current) return;
     if (showPincodes && !loading.pincodes && Object.keys(pincodeToPlaceIdData).length > 0
     ) {
-      console.log("🔥 Triggering createPincodeFeatureLayers");
+      // console.log("🔥 Triggering createPincodeFeatureLayers");
       createPincodeFeatureLayers();
     } else {
       clearMarkers(pincodeMarkersRef);

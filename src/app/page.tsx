@@ -3,16 +3,34 @@ import { useState, useCallback, useEffect } from "react";
 import { Switch } from "@headlessui/react";
 import { CalendarIcon, PlayIcon, Bars3Icon, XMarkIcon,ChevronDownIcon} from "@heroicons/react/24/outline";
 import GoogleMap from "@/components/GoogleMap";
-//import { WarehouseLocation, fetchWarehouseLocations,} from "@/actions/warehouse";
 import { WarehouseLocation, fetchWarehouseLocations } from "@/actions/bazaar";
 import { PincodePoint, fetchPincodeLocations } from "@/actions/pincode";
 import { OrderLocationData, fetchOrderLocationData } from "@/actions/order";
+import SplashScreen from "@/components/SplashScreen";
 
-const formatDateToDDMMYYYY = (isoDate: string): string => {
-  const [year, month, day] = isoDate.split("-");
+const formatDateToISO = (ddmmyyyy: string): string => {
+  if (!ddmmyyyy || ddmmyyyy.length !== 10) return '';
+  const [day, month, year] = ddmmyyyy.split('/');
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+};
+
+const formatISOToDDMMYYYY = (isoDate: string): string => {
+  if (!isoDate) return '';
+  const [year, month, day] = isoDate.split('-');
   return `${day}/${month}/${year}`;
 };
 
+const validateDateFormat = (dateStr: string): boolean => {
+  const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+  if (!regex.test(dateStr)) return false;
+  
+  const [, day, month, year] = dateStr.match(regex) || [];
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  
+  return date.getFullYear() === parseInt(year) &&
+         date.getMonth() === parseInt(month) - 1 &&
+         date.getDate() === parseInt(day);
+};
 const getDefaultDateRange = () => {
   const today = new Date();
   const thirtyDaysAgo = new Date(today);
@@ -52,6 +70,10 @@ export default function Dashboard() {
   // const [showRoads, setShowRoads] = useState(true); 
   const [showPincodeMessage, setShowPincodeMessage] = useState(false);
   const [newWarehouses, setNewWarehouses] = useState<NewWarehouse[]>([]);
+  const [dateErrors, setDateErrors] = useState({ from: '', to: '', dateRange: ''});
+  const [dateInputs, setDateInputs] = useState({ from: formatISOToDDMMYYYY(getDefaultDateRange().from), to: formatISOToDDMMYYYY(getDefaultDateRange().to)});
+  const [showSplashScreen, setShowSplashScreen] = useState(true);
+  // const [hasShownSplash, setHasShownSplash] = useState(false);
   const metricOptions = [
     { key: "cust_count", label: "Customer Count" },
     { key: "so_count", label: "Sales Order Count" },
@@ -95,10 +117,59 @@ export default function Dashboard() {
     return [...prev, newWarehouse];
   });
 }, []);
-
-  const removeNewWarehouse = useCallback(() => {
-    setNewWarehouses((prev) => prev.slice(0, -1));
-  }, []);
+  
+useEffect(() => {
+  const splashShown = sessionStorage.getItem('splashShown');
+  if (splashShown) {
+    setShowSplashScreen(false);
+    // setHasShownSplash(true);
+  }
+}, []);
+const handleSplashComplete = () => {
+  setShowSplashScreen(false);
+  // setHasShownSplash(true);
+  sessionStorage.setItem('splashShown', 'true');
+};
+const handleDateChange = useCallback(
+  (field: "from" | "to", value: string) => {
+    setDateInputs(prev => ({ ...prev, [field]: value }));
+    setDateErrors(prev => ({ ...prev, [field]: '' }));
+    if (value.length === 10) {
+      if (validateDateFormat(value)) {
+        const isoDate = formatDateToISO(value);
+        const updatedRange = { ...dateRange, [field]: isoDate };
+        const fromDate = new Date(field === 'from' ? isoDate : dateRange.from);
+        const toDate = new Date(field === 'to' ? isoDate : dateRange.to);
+         if (fromDate > toDate) {
+          setDateErrors(prev => ({ 
+            ...prev, 
+            dateRange: 'From date cannot be greater than To date' 
+          }));
+          return;
+        }
+        setDateErrors({ from: '', to: '', dateRange: '' });
+        setDateRange(updatedRange);
+        
+        if (errors.orders) {
+          setErrors((prev) => ({ ...prev, orders: "" }));
+        }
+      } else {
+        setDateErrors(prev => ({ 
+          ...prev, 
+          [field]: 'Invalid date format. Use DD/MM/YYYY',
+          dateRange: '' 
+        }));
+      }
+    }
+    else {
+      setDateErrors(prev => ({ ...prev, dateRange: '' }));
+    }
+  },
+  [dateRange, errors.orders]
+);
+  // const removeNewWarehouse = useCallback(() => {
+  //   setNewWarehouses((prev) => prev.slice(0, -1));
+  // }, []);
 
   const updateNewWarehousePosition = useCallback(
     (id: string, lat: number, lng: number) => {
@@ -121,7 +192,9 @@ export default function Dashboard() {
     },
     []
   );
-
+  const clearAllDateErrors = useCallback(() => {
+    setDateErrors({ from: '', to: '', dateRange: '' });
+  }, []);
   const handleNewWarehouseToggle = useCallback(
   (isSelected: boolean) => {
     setShowNewWarehouses(isSelected);
@@ -256,15 +329,15 @@ export default function Dashboard() {
       if (!isSelected) {
         setOrderData([]);
         setErrors((prev) => ({ ...prev, orders: "" }));
+        clearAllDateErrors();
         //setShowHeatmapDropdown(false);
-        // Auto-collapse when turning off
         if (shouldAutoCollapse()) {
           setTimeout(() => setIsMenuOpen(false), 300);
         }
       }
 
     },
-    [shouldAutoCollapse]
+    [shouldAutoCollapse,clearAllDateErrors]
   );
 
   const handleGenerateHeatmap = useCallback(async () => {
@@ -287,16 +360,6 @@ export default function Dashboard() {
     [errors.orders]
   );
 
-  const handleDateChange = useCallback(
-    (field: "from" | "to", value: string) => {
-      const updatedRange = { ...dateRange, [field]: value };
-      setDateRange(updatedRange);
-      if (errors.orders) {
-        setErrors((prev) => ({ ...prev, orders: "" }));
-      }
-    },
-    [dateRange, errors.orders]
-  );
   // const handleRoadsToggle = useCallback(
   //   (isSelected: boolean) => {
   //     setShowRoads(isSelected);
@@ -308,6 +371,11 @@ export default function Dashboard() {
   // );
   const uniqueWarehouseCount = new Set(pincodes.map((p) => p.WH)).size;
   return (
+    <>
+    {showSplashScreen && (
+        <SplashScreen onComplete={handleSplashComplete} 
+        logoSrc="/icon.png"/>
+      )}
     <div className="relative w-full h-screen bg-black text-black overflow-hidden">
       {/* Hamburger Menu Button */}
       <div
@@ -324,7 +392,6 @@ export default function Dashboard() {
           )}
         </button>
       </div>
-
       {/* Hamburger Menu Panel */}
       <div
         className={`${
@@ -359,38 +426,6 @@ export default function Dashboard() {
               color="green"
               // disabled={!showWarehouses}
             />
-            {/* {showPincodeMessage && (
-              <div className="bg-red-500/20 border border-red-500/50 px-3 py-2 rounded-lg">
-                <p className="text-red-200 text-xs font-medium">
-                  ⚠️ Please enable Warehouses first before enabling Pincodes
-                </p>
-              </div>
-            )} */}
-            {/* {showPincodeMessage && (
-              <div className="bg-red-500/30 border-2 border-red-400/80 px-4 py-3 rounded-lg shadow-lg animate-pulse">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0">
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">!</span>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-red-100 text-sm font-bold mb-1">
-                      Action Required
-                    </h4>
-                    <p className="text-red-100 text-sm font-medium leading-relaxed">
-                      Please enable Warehouses first before enabling Pincodes. 
-                      Pincodes require warehouse data to display properly.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setShowPincodeMessage(false)}
-                    className="flex-shrink-0 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-colors">
-                    <span className="text-white text-xs font-bold">×</span>
-                  </button>
-                </div>
-              </div>
-            )} */}
             {showPincodeMessage && (
               <div className="relative bg-red-600/90 border-2 border-red-400 px-4 py-3 rounded-lg shadow-lg backdrop-blur-sm">
                 <button
@@ -418,7 +453,6 @@ export default function Dashboard() {
               label="New Warehouses"
               color="purple"
             />
-            
             {/* New Warehouse Controls - Only show when enabled */}
             {(showNewWarehouses) &&(
               <div className="bg-white/10 px-2 py-2 rounded-lg border border-white/10 w-70 ">
@@ -428,17 +462,15 @@ export default function Dashboard() {
                 <div className="flex items-center gap-1 mb-2">
                   <button
                     onClick={addNewWarehouse}
-                    className="flex items-center justify-center w-8 h-8 bg-purple-500 hover:bg-purple-600 text-white rounded text-xs font-bold transition-colors"
-                  >
+                    className="flex items-center justify-center w-8 h-8 bg-purple-500 hover:bg-purple-600 text-white rounded text-xs font-bold transition-colors">
                     +
                   </button>
-                  <button
+                  {/* <button
                     onClick={removeNewWarehouse}
                     disabled={newWarehouses.length === 0}
-                    className="flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded text-xs font-bold transition-colors"
-                  >
+                    className="flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded text-xs font-bold transition-colors">
                     -
-                  </button>
+                  </button> */}
                   <span className="text-xs text-black">
                     {newWarehouses.length} warehouse
                     {newWarehouses.length !== 1 ? "s" : ""}
@@ -456,8 +488,7 @@ export default function Dashboard() {
                       <button
                         onClick={() => setNewWarehouses(prev => prev.filter(w => w.id !== warehouse.id))}
                         className="w-4 h-4 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center text-xs font-bold transition-colors"
-                        title="Remove warehouse"
-                      >
+                        title="Remove warehouse">
                         ×
                       </button>
                     </div>
@@ -505,7 +536,6 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
-            
             <ToggleControl
               checked={showHeatmap}
               onChange={handleHeatmapToggle}
@@ -521,8 +551,7 @@ export default function Dashboard() {
                   <select
                     value={selectedMetric}
                     onChange={(e) => handleMetricChange(e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black appearance-none cursor-pointer"
-                  >
+                    className="w-full px-2 py-1.5 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black appearance-none cursor-pointer">
                     {metricOptions.map((option) => (
                       <option key={option.key} value={option.key} className="bg-white text-black">
                         {option.label}
@@ -533,48 +562,100 @@ export default function Dashboard() {
                 </div>
               </div>
             )}
-            {/* Date Range - Only show when heatmap is enabled */}
-            {(showHeatmap) &&  (
+            {(showHeatmap) && (
               <div className="bg-white/10 px-3 py-2 rounded-lg border border-white/10">
                 <h4 className="text-xs font-medium mb-2 flex items-center gap-1 text-black">
                   <CalendarIcon className="h-3 w-3" />
-                  Date Range (mm/dd/yyyy)
+                  Date Range (DD/MM/YYYY)
                 </h4>
                 <div className="space-y-2">
                   <div>
                     <label className="text-xs text-black/70">From</label>
                     <input
-                      type="date"
-                      value={dateRange.from}
-                      onChange={(e) => handleDateChange("from", e.target.value)}
-                      className="w-full px-2 py-1 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black"
+                      type="text"
+                      value={dateInputs.from}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^[\d/]*$/.test(value) && value.length <= 10) {
+                          handleDateChange("from", value);
+                        }
+                      }}
+                      placeholder="DD/MM/YYYY"
+                      className={`w-full px-2 py-1 text-xs border rounded focus:ring-1 text-black ${
+                        dateErrors.from 
+                          ? 'bg-red-50 border-red-300 focus:ring-red-500/50' 
+                          : 'bg-white/10 border-white/20 focus:ring-red-500/50'
+                      }`}
                     />
-                    <p className="text-[10px] text-black mt-1 italic">
-                      Selected: {formatDateToDDMMYYYY(dateRange.from)}
-                    </p>
+                    {dateErrors.from && (
+                      <p className="text-red-400 text-[10px] mt-1">{dateErrors.from}</p>
+                    )}
+                    {/* {!dateErrors.from && dateInputs.from.length === 10 && validateDateFormat(dateInputs.from) && (
+                      <p className="text-green-400 text-[10px] mt-1 italic">
+                        ✓ Valid date: {dateInputs.from}
+                      </p>
+                    )} */}
                   </div>
                   <div>
                     <label className="text-xs text-black/70">To</label>
                     <input
-                      type="date"
-                      value={dateRange.to}
-                      onChange={(e) => handleDateChange("to", e.target.value)}
-                      className="w-full px-2 py-1 text-xs bg-white/10 border border-white/20 rounded focus:ring-1 focus:ring-red-500/50 text-black"
+                      type="text"
+                      value={dateInputs.to}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow only numbers and forward slashes, max 10 characters
+                        if (/^[\d/]*$/.test(value) && value.length <= 10) {
+                          handleDateChange("to", value);
+                        }
+                      }}
+                      placeholder="DD/MM/YYYY"
+                      className={`w-full px-2 py-1 text-xs border rounded focus:ring-1 text-black ${
+                        dateErrors.to 
+                          ? 'bg-red-50 border-red-300 focus:ring-red-500/50' 
+                          : 'bg-white/10 border-white/20 focus:ring-red-500/50'
+                      }`}
                     />
-                    <p className="text-[10px] text-black mt-1 italic">
-                      Selected: {formatDateToDDMMYYYY(dateRange.to)}
-                    </p>
+                    {dateErrors.to && (
+                      <p className="text-red-400 text-[10px] mt-1">{dateErrors.to}</p>
+                    )}
+                    {/* {!dateErrors.to && dateInputs.to.length === 10 && validateDateFormat(dateInputs.to) && (
+                      <p className="text-green-400 text-[10px] mt-1 italic">
+                        ✓ Valid date: {dateInputs.to}
+                      </p>
+                    )} */}
                   </div>
+                  {dateErrors.dateRange && (
+                    <div className="relative bg-red-600/90 border-2 border-red-400 px-4 py-3 rounded-lg shadow-lg backdrop-blur-sm">
+                      
+                      <span className="text-white text-xs font-bold flex items-center gap-2 pr-6">⚠️
+                      {dateErrors.dateRange}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-            {/* Generate Button - Only show when heatmap is enabled */}
             {(showHeatmap) && (
               <button
                 onClick={handleGenerateHeatmap}
-                disabled={loading.orders}
+                disabled={
+                  loading.orders || 
+                  !!dateErrors.from || 
+                  !!dateErrors.to ||
+                  !!dateErrors.dateRange ||
+                  dateInputs.from.length !== 10 ||
+                  dateInputs.to.length !== 10 ||
+                  !validateDateFormat(dateInputs.from) ||
+                  !validateDateFormat(dateInputs.to)
+                }
                 className={`w-full flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
-                  loading.orders
+                  loading.orders || 
+                  !!dateErrors.from || 
+                  !!dateErrors.to ||
+                  !!dateErrors.dateRange ||
+                  dateInputs.from.length !== 10 ||
+                  dateInputs.to.length !== 10 ||
+                  !validateDateFormat(dateInputs.from) ||
+                  !validateDateFormat(dateInputs.to)
                     ? "bg-gray-500/50 text-gray-400 cursor-not-allowed"
                     : "bg-red-500 hover:bg-red-600 text-white hover:shadow-md"
                 }`}
@@ -592,11 +673,9 @@ export default function Dashboard() {
                 )}
               </button>
             )}
-            
           </div>
         </div>
       </div>
-
       {/* Map */}
       <GoogleMap
         warehouses={warehouses}
@@ -642,32 +721,17 @@ export default function Dashboard() {
           loading={loading.orders}
           error={errors.orders}
           count={orderData.length}
-          label="order location"
+          label="data point"
           color="red"
           selectedMetric={selectedMetric}
           metricOptions={metricOptions}
            extra={
-            // selectedMetric
-            //   ? `Metric: ${
-            //       metricOptions.find((m) => m.key === selectedMetric)?.label
-            //     }`
-            //   : undefined
-            // showHeatmap && selectedMetric
-            //     ? `Showing: ${
-            //         metricOptions.find((m) => m.key === selectedMetric)?.label || selectedMetric
-            //       } Heatmap`
-            //     : showHeatmap
-            //     ? "Heatmap enabled - select metric and generate"
-            //     : undefined
-            // }
              showHeatmap && !loading.orders && !errors.orders
-                ? `${metricOptions.find((m) => m.key === selectedMetric)?.label || selectedMetric} (${formatDateToDDMMYYYY(dateRange.from)} to ${formatDateToDDMMYYYY(dateRange.to)})`
+                ? `${metricOptions.find((m) => m.key === selectedMetric)?.label || selectedMetric} (${formatISOToDDMMYYYY(dateRange.from)} to ${formatISOToDDMMYYYY(dateRange.to)})`
                 : loading.orders
                 ? "Generating heatmap data..."
-                : undefined
-
-  }
-        />
+                : undefined}
+                />
         <StatusCard
           show={showNewWarehouses}
           loading={false}
@@ -688,6 +752,7 @@ export default function Dashboard() {
         /> */}
       </div>
     </div>
+    </>
   );
 }
 
@@ -751,9 +816,8 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
           <div
             className={`animate-spin h-3 w-3 border-2 border-${color}-400 border-t-transparent rounded-full`}
           />
-          {/* <p className={`${colorClass} text-xs`}>Loading {label}s...</p> */}
-        <p className={`${colorClass} text-xs`}>
-            {label === "order location" && selectedMetric 
+          <p className={`${colorClass} text-xs`}>
+            {label === "data point" && selectedMetric 
               ? `Loading ${getMetricLabel()}...`
               : `Loading ${label}s...`
             }
@@ -775,7 +839,7 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
               {count !== 1 ? "s" : ""}
             </p>
           </div>
-          {label === "order location" && selectedMetric && metricOptions && (
+          {label === "data point" && selectedMetric && metricOptions && (
             <div className="flex items-center gap-1">
               <div className="h-2 w-2 bg-orange-400 rounded-full" />
               <p className="text-orange-300 text-xs">
