@@ -63,29 +63,6 @@ Mera Maps is a web-based map visualization built for Merapasu360 to address the 
 4. Google Maps API renders updated visualizations
 5. React state management ensures seamless UI updates
 
-### Implementation Details
-
-┌────────────────────────┐     User Input     ┌────────────────────┐    Data Fetch     ┌────────────────────────┐
-│        Browser         │  (Toggles, Dates,  │     Next.js App     │◄─────────────────►│     Actions Layer       │
-│    (React + Tailwind)  │   Metrics, Map)    │  (page.tsx, hooks)  │   useEffect/API   │  (bazaar.ts, order.ts)  │
-└────────────┬───────────┘                   └────────────┬────────┘                    └────────────┬───────────┘
-             │                                             │                                         │
-             ▼                                             ▼                                         ▼
-   ┌────────────────────┐                     ┌────────────────────────────┐          ┌────────────────────────────┐
-   │    UI Controls     │                     │     GoogleMap.tsx          │          │   External APIs / DB        │
-   │  (Heatmap toggle,  │ ───── triggers ───▶ │     Map Initialization     │ ───────▶ │ (Warehouse, Pincode, Order) │
-   │   warehouse view)  │                     │     Marker & Layer Logic   │          │  JSON response via fetch    │
-   └────────────────────┘                     └────────────────────────────┘          └────────────────────────────┘
-                                                          │
-                                                          ▼
-                                            ┌────────────────────────────┐
-                                            │ Google Maps JS API         │
-                                            │ (Maps, Markers, Heatmaps)  │
-                                            └────────────────────────────┘
-                                                          │
-                                              Rendered onto <div ref={map}>
-
-
 
 ## 🚀 Getting Started
 
