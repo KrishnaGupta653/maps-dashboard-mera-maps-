@@ -78,9 +78,9 @@ Create a `.env.local` file with:
 ```env
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 NEXT_PUBLIC_GOOGLE_MAP_ID=your_google_map_id
-BAZAAR_BASE_URL=https://bazaar.merapasu360.com
-DHRUV_TARA_URL=https://dhruvtara.merapasu360.com
-SUCHNAVALI_BASE_URL=https://suchnavali.merapasu360.com
+BAZAAR_BASE_URL=
+DHRUV_TARA_URL=
+SUCHNAVALI_BASE_URL=
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ```
 
