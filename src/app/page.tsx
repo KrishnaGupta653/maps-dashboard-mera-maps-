@@ -73,7 +73,7 @@ export default function Dashboard() {
   const [dateErrors, setDateErrors] = useState({ from: '', to: '', dateRange: ''});
   const [dateInputs, setDateInputs] = useState({ from: formatISOToDDMMYYYY(getDefaultDateRange().from), to: formatISOToDDMMYYYY(getDefaultDateRange().to)});
   const [showSplashScreen, setShowSplashScreen] = useState(true);
-  const [hasShownSplash, setHasShownSplash] = useState(false);
+  // const [hasShownSplash, setHasShownSplash] = useState(false);
   const metricOptions = [
     { key: "cust_count", label: "Customer Count" },
     { key: "so_count", label: "Sales Order Count" },
@@ -122,12 +122,12 @@ useEffect(() => {
   const splashShown = sessionStorage.getItem('splashShown');
   if (splashShown) {
     setShowSplashScreen(false);
-    setHasShownSplash(true);
+    // setHasShownSplash(true);
   }
 }, []);
 const handleSplashComplete = () => {
   setShowSplashScreen(false);
-  setHasShownSplash(true);
+  // setHasShownSplash(true);
   sessionStorage.setItem('splashShown', 'true');
 };
 const handleDateChange = useCallback(
@@ -376,7 +376,6 @@ const handleDateChange = useCallback(
         <SplashScreen onComplete={handleSplashComplete} 
         logoSrc="/icon.png"/>
       )}
-    {(hasShownSplash || !showSplashScreen) && (
     <div className="relative w-full h-screen bg-black text-black overflow-hidden">
       {/* Hamburger Menu Button */}
       <div
@@ -753,7 +752,6 @@ const handleDateChange = useCallback(
         /> */}
       </div>
     </div>
-    )}
     </>
   );
 }
