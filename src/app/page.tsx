@@ -6,6 +6,7 @@ import GoogleMap from "@/components/GoogleMap";
 import { WarehouseLocation, fetchWarehouseLocations } from "@/actions/bazaar";
 import { PincodePoint, fetchPincodeLocations } from "@/actions/pincode";
 import { OrderLocationData, fetchOrderLocationData } from "@/actions/order";
+import SplashScreen from "@/components/SplashScreen";
 
 const formatDateToISO = (ddmmyyyy: string): string => {
   if (!ddmmyyyy || ddmmyyyy.length !== 10) return '';
@@ -71,6 +72,8 @@ export default function Dashboard() {
   const [newWarehouses, setNewWarehouses] = useState<NewWarehouse[]>([]);
   const [dateErrors, setDateErrors] = useState({ from: '', to: '', dateRange: ''});
   const [dateInputs, setDateInputs] = useState({ from: formatISOToDDMMYYYY(getDefaultDateRange().from), to: formatISOToDDMMYYYY(getDefaultDateRange().to)});
+  const [showSplashScreen, setShowSplashScreen] = useState(true);
+  const [hasShownSplash, setHasShownSplash] = useState(false);
   const metricOptions = [
     { key: "cust_count", label: "Customer Count" },
     { key: "so_count", label: "Sales Order Count" },
@@ -115,7 +118,18 @@ export default function Dashboard() {
   });
 }, []);
   
-
+useEffect(() => {
+  const splashShown = sessionStorage.getItem('splashShown');
+  if (splashShown) {
+    setShowSplashScreen(false);
+    setHasShownSplash(true);
+  }
+}, []);
+const handleSplashComplete = () => {
+  setShowSplashScreen(false);
+  setHasShownSplash(true);
+  sessionStorage.setItem('splashShown', 'true');
+};
 const handleDateChange = useCallback(
   (field: "from" | "to", value: string) => {
     setDateInputs(prev => ({ ...prev, [field]: value }));
@@ -357,6 +371,12 @@ const handleDateChange = useCallback(
   // );
   const uniqueWarehouseCount = new Set(pincodes.map((p) => p.WH)).size;
   return (
+    <>
+    {showSplashScreen && (
+        <SplashScreen onComplete={handleSplashComplete} 
+        logoSrc="/icon.png"/>
+      )}
+    {(hasShownSplash || !showSplashScreen) && (
     <div className="relative w-full h-screen bg-black text-black overflow-hidden">
       {/* Hamburger Menu Button */}
       <div
@@ -702,7 +722,7 @@ const handleDateChange = useCallback(
           loading={loading.orders}
           error={errors.orders}
           count={orderData.length}
-          label="order location"
+          label="data point"
           color="red"
           selectedMetric={selectedMetric}
           metricOptions={metricOptions}
@@ -733,6 +753,8 @@ const handleDateChange = useCallback(
         /> */}
       </div>
     </div>
+    )}
+    </>
   );
 }
 
@@ -797,7 +819,7 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
             className={`animate-spin h-3 w-3 border-2 border-${color}-400 border-t-transparent rounded-full`}
           />
           <p className={`${colorClass} text-xs`}>
-            {label === "order location" && selectedMetric 
+            {label === "data point" && selectedMetric 
               ? `Loading ${getMetricLabel()}...`
               : `Loading ${label}s...`
             }
@@ -819,7 +841,7 @@ function StatusCard({ show,loading, error,count,label,color,extra,selectedMetric
               {count !== 1 ? "s" : ""}
             </p>
           </div>
-          {label === "order location" && selectedMetric && metricOptions && (
+          {label === "data point" && selectedMetric && metricOptions && (
             <div className="flex items-center gap-1">
               <div className="h-2 w-2 bg-orange-400 rounded-full" />
               <p className="text-orange-300 text-xs">
