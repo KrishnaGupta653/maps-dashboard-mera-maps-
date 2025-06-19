@@ -63,6 +63,30 @@ Mera Maps is a web-based dashboard built for Merapasu360 to address the challeng
 4. Google Maps API renders updated visualizations
 5. React state management ensures seamless UI updates
 
+### Implementation Details
+
+┌────────────────────────┐     User Input     ┌────────────────────┐    Data Fetch     ┌────────────────────────┐
+│        Browser         │  (Toggles, Dates,  │     Next.js App     │◄─────────────────►│     Actions Layer       │
+│    (React + Tailwind)  │   Metrics, Map)    │  (page.tsx, hooks)  │   useEffect/API   │  (bazaar.ts, order.ts)  │
+└────────────┬───────────┘                   └────────────┬────────┘                    └────────────┬───────────┘
+             │                                             │                                         │
+             ▼                                             ▼                                         ▼
+   ┌────────────────────┐                     ┌────────────────────────────┐          ┌────────────────────────────┐
+   │    UI Controls     │                     │     GoogleMap.tsx          │          │   External APIs / DB        │
+   │  (Heatmap toggle,  │ ───── triggers ───▶ │     Map Initialization     │ ───────▶ │ (Warehouse, Pincode, Order) │
+   │   warehouse view)  │                     │     Marker & Layer Logic   │          │  JSON response via fetch    │
+   └────────────────────┘                     └────────────────────────────┘          └────────────────────────────┘
+                                                          │
+                                                          ▼
+                                            ┌────────────────────────────┐
+                                            │ Google Maps JS API         │
+                                            │ (Maps, Markers, Heatmaps)  │
+                                            └────────────────────────────┘
+                                                          │
+                                              Rendered onto <div ref={map}>
+
+
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -123,23 +147,6 @@ npm run dev
 - Click pincode areas to see assignment details
 - Use the legend panel for explanations of map elements
 
-## 📂 File Structure
-
-```
-.
-├── app/
-│   ├── layout.tsx          # Root layout
-│   ├── page.tsx            # Main dashboard
-│   └── globals.css         # Global styles
-├── components/
-│   └── GoogleMap.tsx       # Map logic and rendering
-├── actions/
-│   ├── bazaar.ts           # Warehouse API actions
-│   ├── pincode.ts          # Pincode API actions
-│   ├── order.ts            # Order data API actions
-│   └── gauth.ts            # Authentication utilities
-└── public/                 # Static assets
-```
 
 ## License
 This project is proprietary to Merapasu360 and intended for internal use only.
