@@ -302,10 +302,10 @@ export default function GoogleMap({
       if (isNaN(lat) || isNaN(lng) || lat === 0 || lng === 0) return;
       const center = { lat, lng };
       const circle30km = new window.google.maps.Circle({
-        strokeColor: "#52ace9",
+        strokeColor: "#3e6cff",
         strokeOpacity: 1.0,
         strokeWeight: 2,
-        fillColor: "#52ace9",
+        fillColor: "#3e6cff",
         fillOpacity: 0.1,
         map: mapInstanceRef.current,
         center: center,
@@ -316,7 +316,7 @@ export default function GoogleMap({
       const circle40km = new window.google.maps.Circle({
         strokeColor: "#f14c3b",
         strokeOpacity: 1.0,
-        strokeWeight: 1,
+        strokeWeight: 1.5,
         fillColor: "#f14c3b",
         fillOpacity: 0.05,
         map: mapInstanceRef.current,
@@ -528,13 +528,17 @@ export default function GoogleMap({
             const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
           
             if (warehouseInfo) {
+              const pincodeData = warehouseInfo.data;
+              const isOnDemand = pincodeData.schedule_type === "On-Demand";
               return {
                 strokeColor: warehouseInfo.color,
                 strokeOpacity: 1,
                 strokeWeight: 2.4,
                 fillColor: warehouseInfo.color,
                 fillOpacity: 0.25,
-              };}}
+                //fillOpacity: isOnDemand ? (0) : 0.25,
+              };}
+            }
           return null;
         };
         postalCodeLayerRef.current.addListener("click",(event: FeatureMouseEvent) => {
