@@ -1,0 +1,352 @@
+[
+  {
+    "pincode": "400001",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 72.8311,
+      "latitude": 18.9390
+    },
+    "state": "Maharashtra",
+    "district": "Mumbai",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH001",
+          "erpnextWarehouseId": "ERP001",
+          "distance": 0.5
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJ_xkgOm7H5zsRoDKGfBCBBvk"
+      }
+    }
+  },
+  {
+    "pincode": "400002",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY", "2_DAY"],
+    "geoLocation": {
+      "longitude": 72.8397,
+      "latitude": 18.9667
+    },
+    "state": "Maharashtra",
+    "district": "Mumbai",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH001",
+          "erpnextWarehouseId": "ERP001",
+          "distance": 3.2
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJu46S-VXH5zsROG9RsTq68PM"
+      }
+    }
+  },
+  {
+    "pincode": "400051",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 72.8200,
+      "latitude": 19.0500
+    },
+    "state": "Maharashtra",
+    "district": "Mumbai",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH001",
+          "erpnextWarehouseId": "ERP001",
+          "distance": 12.8
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJQdwNWM7H5zsRJ0q7ZzmGAAQ"
+      }
+    }
+  },
+  {
+    "pincode": "110001",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 77.2311,
+      "latitude": 28.6358
+    },
+    "state": "Delhi",
+    "district": "New Delhi",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH002",
+          "erpnextWarehouseId": "ERP002",
+          "distance": 0.2
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJL_P_CXMEDTkRw0ZdG-0GVvw"
+      }
+    }
+  },
+  {
+    "pincode": "110002",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 77.2167,
+      "latitude": 28.6500
+    },
+    "state": "Delhi",
+    "district": "New Delhi",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH002",
+          "erpnextWarehouseId": "ERP002",
+          "distance": 1.8
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJASZcWnMEDTkRgnOd4_O8eHg"
+      }
+    }
+  },
+  {
+    "pincode": "110019",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY", "2_DAY"],
+    "geoLocation": {
+      "longitude": 77.1500,
+      "latitude": 28.5500
+    },
+    "state": "Delhi",
+    "district": "New Delhi",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH002",
+          "erpnextWarehouseId": "ERP002",
+          "distance": 12.5
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJhXpG_mYFDTkRzY-Q82ENTjI"
+      }
+    }
+  },
+  {
+    "pincode": "560100",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 77.6033,
+      "latitude": 12.8456
+    },
+    "state": "Karnataka",
+    "district": "Bangalore Urban",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH003",
+          "erpnextWarehouseId": "ERP003",
+          "distance": 0.3
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJbU60yXAWrjsR4E9-UejD3_g"
+      }
+    }
+  },
+  {
+    "pincode": "560025",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY", "2_DAY"],
+    "geoLocation": {
+      "longitude": 77.6212,
+      "latitude": 12.9716
+    },
+    "state": "Karnataka",
+    "district": "Bangalore Urban",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH003",
+          "erpnextWarehouseId": "ERP003",
+          "distance": 15.2
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJSTaNJysWrjsRGOLM3HuJoLM"
+      }
+    }
+  },
+  {
+    "pincode": "600119",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY", "2_DAY"],
+    "geoLocation": {
+      "longitude": 80.2333,
+      "latitude": 12.9667
+    },
+    "state": "Tamil Nadu",
+    "district": "Chennai",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH004",
+          "erpnextWarehouseId": "ERP004",
+          "distance": 0.5
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJ7c2JX9lnUjoRM9RjhAanHCQ"
+      }
+    }
+  },
+  {
+    "pincode": "600001",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 80.2707,
+      "latitude": 13.0827
+    },
+    "state": "Tamil Nadu",
+    "district": "Chennai",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH004",
+          "erpnextWarehouseId": "ERP004",
+          "distance": 13.5
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJOZZc4cVmUjoRgbzOTvIhxJ0"
+      }
+    }
+  },
+  {
+    "pincode": "700091",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 88.4333,
+      "latitude": 22.5667
+    },
+    "state": "West Bengal",
+    "district": "Kolkata",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH005",
+          "erpnextWarehouseId": "ERP005",
+          "distance": 0.8
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJZ_YISduC5zsRH0kNJ0G8G8k"
+      }
+    }
+  },
+  {
+    "pincode": "700001",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY", "2_DAY"],
+    "geoLocation": {
+      "longitude": 88.3639,
+      "latitude": 22.5726
+    },
+    "state": "West Bengal",
+    "district": "Kolkata",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH005",
+          "erpnextWarehouseId": "ERP005",
+          "distance": 7.8
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJcd4Rd-aC5zsRFkfr1LEMVjU"
+      }
+    }
+  },
+  {
+    "pincode": "411057",
+    "deliveryType": "STANDARD",
+    "serviceSchedule": ["NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 73.7333,
+      "latitude": 18.6333
+    },
+    "state": "Maharashtra",
+    "district": "Pune",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH006",
+          "erpnextWarehouseId": "ERP006",
+          "distance": 0.4
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJbU60yXAWrjsR4E9-UejD4_g"
+      }
+    }
+  },
+  {
+    "pincode": "411001",
+    "deliveryType": "EXPRESS",
+    "serviceSchedule": ["SAME_DAY", "NEXT_DAY"],
+    "geoLocation": {
+      "longitude": 73.8567,
+      "latitude": 18.5204
+    },
+    "state": "Maharashtra",
+    "district": "Pune",
+    "servicedBy": {
+      "warehouses": [
+        {
+          "zohoWarehouseId": "WH006",
+          "erpnextWarehouseId": "ERP006",
+          "distance": 14.2
+        }
+      ]
+    },
+    "mapInfo": {
+      "googleMaps": {
+        "placeId": "ChIJARFGX14QQjsRIKAL8dHiRvY"
+      }
+    }
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "_id": "672f1234567890abcdef1234",
+    "name": "Mumbai Central Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH001",
+    "address": {
+      "addressLine1": "Plot No. 123, Industrial Area",
+      "addressLine2": "Near Metro Station",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "district": "Mumbai",
+      "pincode": 400001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [72.8311, 18.9390]
+    },
+    "shipsyHubCode": "MUM001",
+    "hubCode": "HUB001",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1235",
+    "name": "Delhi North Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH002",
+    "address": {
+      "addressLine1": "Sector 15, Industrial Complex",
+      "addressLine2": "Gurgaon Road",
+      "state": "Delhi",
+      "city": "New Delhi",
+      "district": "New Delhi",
+      "pincode": 110001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [77.2311, 28.6358]
+    },
+    "shipsyHubCode": "DEL001",
+    "hubCode": "HUB002",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1236",
+    "name": "Bangalore Tech Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH003",
+    "address": {
+      "addressLine1": "Electronic City Phase 1",
+      "addressLine2": "Hosur Road",
+      "state": "Karnataka",
+      "city": "Bangalore",
+      "district": "Bangalore Urban",
+      "pincode": 560100,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [77.6033, 12.8456]
+    },
+    "shipsyHubCode": "BLR001",
+    "hubCode": "HUB003",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1237",
+    "name": "Chennai Port Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH004",
+    "address": {
+      "addressLine1": "OMR IT Corridor",
+      "addressLine2": "Sholinganallur",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "district": "Chennai",
+      "pincode": 600119,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [80.2333, 12.9667]
+    },
+    "shipsyHubCode": "CHN001",
+    "hubCode": "HUB004",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1238",
+    "name": "Kolkata East Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH005",
+    "address": {
+      "addressLine1": "Salt Lake Sector V",
+      "addressLine2": "IT Hub Area",
+      "state": "West Bengal",
+      "city": "Kolkata",
+      "district": "Kolkata",
+      "pincode": 700091,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [88.4333, 22.5667]
+    },
+    "shipsyHubCode": "KOL001",
+    "hubCode": "HUB005",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1239",
+    "name": "Pune Industrial Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH006",
+    "address": {
+      "addressLine1": "Hinjewadi Phase 3",
+      "addressLine2": "IT Park Road",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "district": "Pune",
+      "pincode": 411057,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [73.7333, 18.6333]
+    },
+    "shipsyHubCode": "PUN001",
+    "hubCode": "HUB006",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  }
+]

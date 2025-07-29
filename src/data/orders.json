@@ -1,0 +1,218 @@
+[
+  {
+    "cust_count": 25,
+    "latitude": 19.0760,
+    "longitude": 72.8777,
+    "order_date": "2024-07-15",
+    "order_value": 125000.50,
+    "so_count": 45,
+    "volume": 1250.75
+  },
+  {
+    "cust_count": 18,
+    "latitude": 19.0896,
+    "longitude": 72.8656,
+    "order_date": "2024-07-15",
+    "order_value": 89500.25,
+    "so_count": 32,
+    "volume": 890.30
+  },
+  {
+    "cust_count": 32,
+    "latitude": 28.6139,
+    "longitude": 77.2090,
+    "order_date": "2024-07-15",
+    "order_value": 198750.00,
+    "so_count": 67,
+    "volume": 1987.50
+  },
+  {
+    "cust_count": 22,
+    "latitude": 28.5355,
+    "longitude": 77.3910,
+    "order_date": "2024-07-15",
+    "order_value": 134500.75,
+    "so_count": 38,
+    "volume": 1345.25
+  },
+  {
+    "cust_count": 28,
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "order_date": "2024-07-15",
+    "order_value": 167800.40,
+    "so_count": 52,
+    "volume": 1678.80
+  },
+  {
+    "cust_count": 15,
+    "latitude": 12.9352,
+    "longitude": 77.6245,
+    "order_date": "2024-07-15",
+    "order_value": 78900.60,
+    "so_count": 24,
+    "volume": 789.15
+  },
+  {
+    "cust_count": 35,
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "order_date": "2024-07-15",
+    "order_value": 234500.90,
+    "so_count": 78,
+    "volume": 2345.75
+  },
+  {
+    "cust_count": 19,
+    "latitude": 13.0478,
+    "longitude": 80.2573,
+    "order_date": "2024-07-15",
+    "order_value": 98750.30,
+    "so_count": 31,
+    "volume": 987.90
+  },
+  {
+    "cust_count": 26,
+    "latitude": 22.5726,
+    "longitude": 88.3639,
+    "order_date": "2024-07-15",
+    "order_value": 156800.85,
+    "so_count": 43,
+    "volume": 1568.45
+  },
+  {
+    "cust_count": 21,
+    "latitude": 22.4783,
+    "longitude": 88.3753,
+    "order_date": "2024-07-15",
+    "order_value": 112300.50,
+    "so_count": 35,
+    "volume": 1123.75
+  },
+  {
+    "cust_count": 30,
+    "latitude": 18.5204,
+    "longitude": 73.8567,
+    "order_date": "2024-07-15",
+    "order_value": 187900.45,
+    "so_count": 58,
+    "volume": 1879.30
+  },
+  {
+    "cust_count": 24,
+    "latitude": 18.4633,
+    "longitude": 73.8667,
+    "order_date": "2024-07-15",
+    "order_value": 143200.75,
+    "so_count": 39,
+    "volume": 1432.60
+  },
+  {
+    "cust_count": 16,
+    "latitude": 19.1136,
+    "longitude": 72.8697,
+    "order_date": "2024-07-16",
+    "order_value": 92450.20,
+    "so_count": 28,
+    "volume": 924.85
+  },
+  {
+    "cust_count": 33,
+    "latitude": 28.7041,
+    "longitude": 77.1025,
+    "order_date": "2024-07-16",
+    "order_value": 205600.35,
+    "so_count": 65,
+    "volume": 2056.75
+  },
+  {
+    "cust_count": 27,
+    "latitude": 12.8406,
+    "longitude": 77.6602,
+    "order_date": "2024-07-16",
+    "order_value": 159300.90,
+    "so_count": 47,
+    "volume": 1593.40
+  },
+  {
+    "cust_count": 20,
+    "latitude": 13.1186,
+    "longitude": 80.2472,
+    "order_date": "2024-07-16",
+    "order_value": 116500.60,
+    "so_count": 33,
+    "volume": 1165.75
+  },
+  {
+    "cust_count": 29,
+    "latitude": 22.6202,
+    "longitude": 88.4370,
+    "order_date": "2024-07-16",
+    "order_value": 173800.25,
+    "so_count": 51,
+    "volume": 1738.90
+  },
+  {
+    "cust_count": 23,
+    "latitude": 18.5793,
+    "longitude": 73.8143,
+    "order_date": "2024-07-16",
+    "order_value": 137400.80,
+    "so_count": 41,
+    "volume": 1374.55
+  },
+  {
+    "cust_count": 31,
+    "latitude": 19.0330,
+    "longitude": 73.0297,
+    "order_date": "2024-07-17",
+    "order_value": 192700.15,
+    "so_count": 62,
+    "volume": 1927.30
+  },
+  {
+    "cust_count": 17,
+    "latitude": 28.4595,
+    "longitude": 77.0266,
+    "order_date": "2024-07-17",
+    "order_value": 95800.45,
+    "so_count": 29,
+    "volume": 958.70
+  },
+  {
+    "cust_count": 25,
+    "latitude": 12.9698,
+    "longitude": 77.7500,
+    "order_date": "2024-07-17",
+    "order_value": 148900.70,
+    "so_count": 44,
+    "volume": 1489.85
+  },
+  {
+    "cust_count": 34,
+    "latitude": 13.0569,
+    "longitude": 80.2420,
+    "order_date": "2024-07-17",
+    "order_value": 213400.55,
+    "so_count": 71,
+    "volume": 2134.90
+  },
+  {
+    "cust_count": 22,
+    "latitude": 22.5697,
+    "longitude": 88.3685,
+    "order_date": "2024-07-17",
+    "order_value": 128700.35,
+    "so_count": 37,
+    "volume": 1287.45
+  },
+  {
+    "cust_count": 28,
+    "latitude": 18.4529,
+    "longitude": 73.8697,
+    "order_date": "2024-07-17",
+    "order_value": 165200.90,
+    "so_count": 49,
+    "volume": 1652.75
+  }
+]
