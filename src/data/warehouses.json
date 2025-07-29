@@ -142,5 +142,437 @@
     "status": "ACTIVE",
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef123a",
+    "name": "Hyderabad Tech Hub Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH007",
+    "address": {
+      "addressLine1": "HITEC City",
+      "addressLine2": "Madhapur",
+      "state": "Telangana",
+      "city": "Hyderabad",
+      "district": "Hyderabad",
+      "pincode": 500081,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [78.3869, 17.4485]
+    },
+    "shipsyHubCode": "HYD001",
+    "hubCode": "HUB007",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-16T11:00:00Z",
+    "updatedAt": "2024-01-16T11:00:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef123b",
+    "name": "Ahmedabad Commerce Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH008",
+    "address": {
+      "addressLine1": "GIDC Industrial Estate",
+      "addressLine2": "Vatva",
+      "state": "Gujarat",
+      "city": "Ahmedabad",
+      "district": "Ahmedabad",
+      "pincode": 382445,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [72.6369, 23.0225]
+    },
+    "shipsyHubCode": "AMD001",
+    "hubCode": "HUB008",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-17T09:45:00Z",
+    "updatedAt": "2024-01-17T09:45:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef123c",
+    "name": "Jaipur Logistics Center",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH009",
+    "address": {
+      "addressLine1": "Industrial Area A",
+      "addressLine2": "Sitapura",
+      "state": "Rajasthan",
+      "city": "Jaipur",
+      "district": "Jaipur",
+      "pincode": 302022,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [75.8573, 26.8467]
+    },
+    "shipsyHubCode": "JAI001",
+    "hubCode": "HUB009",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-18T14:20:00Z",
+    "updatedAt": "2024-01-18T14:20:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef123d",
+    "name": "Lucknow Distribution Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH010",
+    "address": {
+      "addressLine1": "Amausi Industrial Area",
+      "addressLine2": "Near Airport",
+      "state": "Uttar Pradesh",
+      "city": "Lucknow",
+      "district": "Lucknow",
+      "pincode": 226009,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [80.8828, 26.7606]
+    },
+    "shipsyHubCode": "LKO001",
+    "hubCode": "HUB010",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-19T12:15:00Z",
+    "updatedAt": "2024-01-19T12:15:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef123e",
+    "name": "Bhubaneswar Supply Center",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH011",
+    "address": {
+      "addressLine1": "Patia Industrial Estate",
+      "addressLine2": "Chandrasekharpur",
+      "state": "Odisha",
+      "city": "Bhubaneswar",
+      "district": "Khordha",
+      "pincode": 751024,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [85.8245, 20.3517]
+    },
+    "shipsyHubCode": "BBS001",
+    "hubCode": "HUB011",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-20T08:30:00Z",
+    "updatedAt": "2024-01-20T08:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef123f",
+    "name": "Indore Central Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH012",
+    "address": {
+      "addressLine1": "Pithampur Industrial Area",
+      "addressLine2": "Sector 3",
+      "state": "Madhya Pradesh",
+      "city": "Indore",
+      "district": "Indore",
+      "pincode": 453771,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [75.6993, 22.5726]
+    },
+    "shipsyHubCode": "IDR001",
+    "hubCode": "HUB012",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-21T13:45:00Z",
+    "updatedAt": "2024-01-21T13:45:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1240",
+    "name": "Chandigarh Regional Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH013",
+    "address": {
+      "addressLine1": "Industrial Area Phase 2",
+      "addressLine2": "Focal Point",
+      "state": "Punjab",
+      "city": "Chandigarh",
+      "district": "Chandigarh",
+      "pincode": 160002,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [76.7794, 30.7333]
+    },
+    "shipsyHubCode": "CHD001",
+    "hubCode": "HUB013",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-22T10:20:00Z",
+    "updatedAt": "2024-01-22T10:20:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1241",
+    "name": "Coimbatore Textile Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH014",
+    "address": {
+      "addressLine1": "SIDCO Industrial Estate",
+      "addressLine2": "Kurichi",
+      "state": "Tamil Nadu",
+      "city": "Coimbatore",
+      "district": "Coimbatore",
+      "pincode": 641021,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [77.0266, 11.0168]
+    },
+    "shipsyHubCode": "CBE001",
+    "hubCode": "HUB014",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-23T15:10:00Z",
+    "updatedAt": "2024-01-23T15:10:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1242",
+    "name": "Kochi Port Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH015",
+    "address": {
+      "addressLine1": "Infopark Campus",
+      "addressLine2": "Kakkanad",
+      "state": "Kerala",
+      "city": "Kochi",
+      "district": "Ernakulam",
+      "pincode": 682030,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [76.3472, 9.9312]
+    },
+    "shipsyHubCode": "COK001",
+    "hubCode": "HUB015",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-24T11:55:00Z",
+    "updatedAt": "2024-01-24T11:55:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1243",
+    "name": "Nagpur Central India Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH016",
+    "address": {
+      "addressLine1": "MIDC Industrial Area",
+      "addressLine2": "Hingna",
+      "state": "Maharashtra",
+      "city": "Nagpur",
+      "district": "Nagpur",
+      "pincode": 440016,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [79.0882, 21.1458]
+    },
+    "shipsyHubCode": "NAG001",
+    "hubCode": "HUB016",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-25T09:40:00Z",
+    "updatedAt": "2024-01-25T09:40:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1244",
+    "name": "Visakhapatnam Steel City Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH017",
+    "address": {
+      "addressLine1": "Autonagar Industrial Estate",
+      "addressLine2": "Gajuwaka",
+      "state": "Andhra Pradesh",
+      "city": "Visakhapatnam",
+      "district": "Visakhapatnam",
+      "pincode": 530012,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [83.2185, 17.7231]
+    },
+    "shipsyHubCode": "VZG001",
+    "hubCode": "HUB017",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-26T14:25:00Z",
+    "updatedAt": "2024-01-26T14:25:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1245",
+    "name": "Guwahati Northeast Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH018",
+    "address": {
+      "addressLine1": "Amingaon Industrial Area",
+      "addressLine2": "NH-31",
+      "state": "Assam",
+      "city": "Guwahati",
+      "district": "Kamrup",
+      "pincode": 781031,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [91.8933, 26.1445]
+    },
+    "shipsyHubCode": "GAU001",
+    "hubCode": "HUB018",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-27T16:50:00Z",
+    "updatedAt": "2024-01-27T16:50:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1246",
+    "name": "Surat Diamond Hub Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH019",
+    "address": {
+      "addressLine1": "GIDC Estate",
+      "addressLine2": "Sachin",
+      "state": "Gujarat",
+      "city": "Surat",
+      "district": "Surat",
+      "pincode": 394230,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [72.8777, 21.1702]
+    },
+    "shipsyHubCode": "SRT001",
+    "hubCode": "HUB019",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-28T12:35:00Z",
+    "updatedAt": "2024-01-28T12:35:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1247",
+    "name": "Nashik Wine Country Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH020",
+    "address": {
+      "addressLine1": "MIDC Ambad",
+      "addressLine2": "Phase 2",
+      "state": "Maharashtra",
+      "city": "Nashik",
+      "district": "Nashik",
+      "pincode": 422010,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [73.7898, 19.9975]
+    },
+    "shipsyHubCode": "NSK001",
+    "hubCode": "HUB020",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-29T08:15:00Z",
+    "updatedAt": "2024-01-29T08:15:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1248",
+    "name": "Mysore Heritage Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH021",
+    "address": {
+      "addressLine1": "Belagola Industrial Area",
+      "addressLine2": "Ring Road",
+      "state": "Karnataka",
+      "city": "Mysore",
+      "district": "Mysuru",
+      "pincode": 570018,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [76.6394, 12.2958]
+    },
+    "shipsyHubCode": "MYS001",
+    "hubCode": "HUB021",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-30T13:20:00Z",
+    "updatedAt": "2024-01-30T13:20:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef1249",
+    "name": "Vadodara Chemical Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH022",
+    "address": {
+      "addressLine1": "GIDC Makarpura",
+      "addressLine2": "Phase 4",
+      "state": "Gujarat",
+      "city": "Vadodara",
+      "district": "Vadodara",
+      "pincode": 390010,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [73.2081, 22.3072]
+    },
+    "shipsyHubCode": "VDR001",
+    "hubCode": "HUB022",
+    "status": "ACTIVE",
+    "createdAt": "2024-02-01T10:45:00Z",
+    "updatedAt": "2024-02-01T10:45:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef124a",
+    "name": "Kanpur Leather City Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH023",
+    "address": {
+      "addressLine1": "Panki Industrial Area",
+      "addressLine2": "GT Road",
+      "state": "Uttar Pradesh",
+      "city": "Kanpur",
+      "district": "Kanpur Nagar",
+      "pincode": 208022,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [80.3319, 26.4499]
+    },
+    "shipsyHubCode": "KNP001",
+    "hubCode": "HUB023",
+    "status": "ACTIVE",
+    "createdAt": "2024-02-02T15:30:00Z",
+    "updatedAt": "2024-02-02T15:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef124b",
+    "name": "Trichy Central Tamil Nadu Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH024",
+    "address": {
+      "addressLine1": "SIDCO Industrial Complex",
+      "addressLine2": "Senneerkuppam",
+      "state": "Tamil Nadu",
+      "city": "Tiruchirappalli",
+      "district": "Tiruchirappalli",
+      "pincode": 620014,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [78.7047, 10.7905]
+    },
+    "shipsyHubCode": "TRY001",
+    "hubCode": "HUB024",
+    "status": "ACTIVE",
+    "createdAt": "2024-02-03T11:10:00Z",
+    "updatedAt": "2024-02-03T11:10:00Z"
   }
 ]
