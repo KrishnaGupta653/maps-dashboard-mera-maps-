@@ -1,522 +1,488 @@
 [
   {
-    "_id": "672f1234567890abcdef1234",
-    "name": "Mumbai Central Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH001",
-    "address": {
-      "addressLine1": "Plot No. 123, Industrial Area",
-      "addressLine2": "Near Metro Station",
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "district": "Mumbai",
-      "pincode": 400001,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [72.8311, 18.9390]
-    },
-    "shipsyHubCode": "MUM001",
-    "hubCode": "HUB001",
-    "status": "ACTIVE",
-    "capacity": 15000,
-    "currentStock": 12500,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 25,
+    "latitude": 19.0760,
+    "longitude": 72.8777,
+    "order_date": "2024-07-15",
+    "order_value": 125000.50,
+    "so_count": 45,
+    "volume": 1250.75
   },
   {
-    "_id": "672f1234567890abcdef1235",
-    "name": "Delhi North Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH002",
-    "address": {
-      "addressLine1": "Sector 15, Industrial Complex",
-      "addressLine2": "Gurgaon Road",
-      "state": "Delhi",
-      "city": "New Delhi",
-      "district": "New Delhi",
-      "pincode": 110001,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [77.2311, 28.6358]
-    },
-    "shipsyHubCode": "DEL001",
-    "hubCode": "HUB002",
-    "status": "ACTIVE",
-    "capacity": 18000,
-    "currentStock": 16200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 18,
+    "latitude": 19.0896,
+    "longitude": 72.8656,
+    "order_date": "2024-07-15",
+    "order_value": 89500.25,
+    "so_count": 32,
+    "volume": 890.30
   },
   {
-    "_id": "672f1234567890abcdef1236",
-    "name": "Bangalore Tech Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH003",
-    "address": {
-      "addressLine1": "Electronic City Phase 1",
-      "addressLine2": "Hosur Road",
-      "state": "Karnataka",
-      "city": "Bangalore",
-      "district": "Bangalore Urban",
-      "pincode": 560100,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [77.6033, 12.8456]
-    },
-    "shipsyHubCode": "BLR001",
-    "hubCode": "HUB003",
-    "status": "ACTIVE",
-    "capacity": 12000,
-    "currentStock": 9800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 32,
+    "latitude": 28.6139,
+    "longitude": 77.2090,
+    "order_date": "2024-07-15",
+    "order_value": 198750.00,
+    "so_count": 67,
+    "volume": 1987.50
   },
   {
-    "_id": "672f1234567890abcdef1237",
-    "name": "Chennai Port Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH004",
-    "address": {
-      "addressLine1": "OMR IT Corridor",
-      "addressLine2": "Sholinganallur",
-      "state": "Tamil Nadu",
-      "city": "Chennai",
-      "district": "Chennai",
-      "pincode": 600119,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [80.2333, 12.9667]
-    },
-    "shipsyHubCode": "CHN001",
-    "hubCode": "HUB004",
-    "status": "ACTIVE",
-    "capacity": 14000,
-    "currentStock": 11200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 22,
+    "latitude": 28.5355,
+    "longitude": 77.3910,
+    "order_date": "2024-07-15",
+    "order_value": 134500.75,
+    "so_count": 38,
+    "volume": 1345.25
   },
   {
-    "_id": "672f1234567890abcdef1238",
-    "name": "Kolkata East Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH005",
-    "address": {
-      "addressLine1": "Salt Lake Sector V",
-      "addressLine2": "IT Hub Area",
-      "state": "West Bengal",
-      "city": "Kolkata",
-      "district": "Kolkata",
-      "pincode": 700091,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [88.4333, 22.5667]
-    },
-    "shipsyHubCode": "KOL001",
-    "hubCode": "HUB005",
-    "status": "ACTIVE",
-    "capacity": 10000,
-    "currentStock": 8500,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 28,
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "order_date": "2024-07-15",
+    "order_value": 167800.40,
+    "so_count": 52,
+    "volume": 1678.80
   },
   {
-    "_id": "672f1234567890abcdef1239",
-    "name": "Pune Industrial Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH006",
-    "address": {
-      "addressLine1": "Hinjewadi Phase 3",
-      "addressLine2": "IT Park Road",
-      "state": "Maharashtra",
-      "city": "Pune",
-      "district": "Pune",
-      "pincode": 411057,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [73.7333, 18.6333]
-    },
-    "shipsyHubCode": "PUN001",
-    "hubCode": "HUB006",
-    "status": "ACTIVE",
-    "capacity": 13000,
-    "currentStock": 10400,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 15,
+    "latitude": 12.9352,
+    "longitude": 77.6245,
+    "order_date": "2024-07-15",
+    "order_value": 78900.60,
+    "so_count": 24,
+    "volume": 789.15
   },
   {
-    "_id": "672f1234567890abcdef123a",
-    "name": "Hyderabad Cyberabad Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH007",
-    "address": {
-      "addressLine1": "HITEC City",
-      "addressLine2": "Madhapur",
-      "state": "Telangana",
-      "city": "Hyderabad",
-      "district": "Hyderabad",
-      "pincode": 500081,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [78.3882, 17.4399]
-    },
-    "shipsyHubCode": "HYD001",
-    "hubCode": "HUB007",
-    "status": "ACTIVE",
-    "capacity": 16000,
-    "currentStock": 13800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 35,
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "order_date": "2024-07-15",
+    "order_value": 234500.90,
+    "so_count": 78,
+    "volume": 2345.75
   },
   {
-    "_id": "672f1234567890abcdef123b",
-    "name": "Ahmedabad Gujarat Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH008",
-    "address": {
-      "addressLine1": "Sarkhej-Gandhinagar Highway",
-      "addressLine2": "Near GIFT City",
-      "state": "Gujarat",
-      "city": "Ahmedabad",
-      "district": "Ahmedabad",
-      "pincode": 380015,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [72.5714, 23.0225]
-    },
-    "shipsyHubCode": "AMD001",
-    "hubCode": "HUB008",
-    "status": "ACTIVE",
-    "capacity": 11000,
-    "currentStock": 9200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 19,
+    "latitude": 13.0478,
+    "longitude": 80.2573,
+    "order_date": "2024-07-15",
+    "order_value": 98750.30,
+    "so_count": 31,
+    "volume": 987.90
   },
   {
-    "_id": "672f1234567890abcdef123c",
-    "name": "Jaipur Rajasthan Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH009",
-    "address": {
-      "addressLine1": "Mahindra World City",
-      "addressLine2": "Ajmer Road",
-      "state": "Rajasthan",
-      "city": "Jaipur",
-      "district": "Jaipur",
-      "pincode": 302037,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [75.7873, 26.9124]
-    },
-    "shipsyHubCode": "JAI001",
-    "hubCode": "HUB009",
-    "status": "ACTIVE",
-    "capacity": 8000,
-    "currentStock": 6500,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 26,
+    "latitude": 22.5726,
+    "longitude": 88.3639,
+    "order_date": "2024-07-15",
+    "order_value": 156800.85,
+    "so_count": 43,
+    "volume": 1568.45
   },
   {
-    "_id": "672f1234567890abcdef123d",
-    "name": "Kochi Kerala Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH010",
-    "address": {
-      "addressLine1": "Infopark Kakkanad",
-      "addressLine2": "Smart City",
-      "state": "Kerala",
-      "city": "Kochi",
-      "district": "Ernakulam",
-      "pincode": 682030,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [76.3472, 9.9312]
-    },
-    "shipsyHubCode": "KOC001",
-    "hubCode": "HUB010",
-    "status": "ACTIVE",
-    "capacity": 7500,
-    "currentStock": 6200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 21,
+    "latitude": 22.4783,
+    "longitude": 88.3753,
+    "order_date": "2024-07-15",
+    "order_value": 112300.50,
+    "so_count": 35,
+    "volume": 1123.75
   },
   {
-    "_id": "672f1234567890abcdef123e",
-    "name": "Chandigarh Punjab Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH011",
-    "address": {
-      "addressLine1": "IT Park Chandigarh",
-      "addressLine2": "Sector 28",
-      "state": "Punjab",
-      "city": "Chandigarh",
-      "district": "Chandigarh",
-      "pincode": 160036,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [76.7794, 30.7333]
-    },
-    "shipsyHubCode": "CHD001",
-    "hubCode": "HUB011",
-    "status": "ACTIVE",
-    "capacity": 9500,
-    "currentStock": 7800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 30,
+    "latitude": 18.5204,
+    "longitude": 73.8567,
+    "order_date": "2024-07-15",
+    "order_value": 187900.45,
+    "so_count": 58,
+    "volume": 1879.30
   },
   {
-    "_id": "672f1234567890abcdef123f",
-    "name": "Bhubaneswar Odisha Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH012",
-    "address": {
-      "addressLine1": "Infocity Patia",
-      "addressLine2": "Software Technology Park",
-      "state": "Odisha",
-      "city": "Bhubaneswar",
-      "district": "Khordha",
-      "pincode": 751024,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [85.8245, 20.2961]
-    },
-    "shipsyHubCode": "BBS001",
-    "hubCode": "HUB012",
-    "status": "ACTIVE",
-    "capacity": 6000,
-    "currentStock": 4800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 24,
+    "latitude": 18.4633,
+    "longitude": 73.8667,
+    "order_date": "2024-07-15",
+    "order_value": 143200.75,
+    "so_count": 39,
+    "volume": 1432.60
   },
   {
-    "_id": "672f1234567890abcdef1240",
-    "name": "Indore Madhya Pradesh Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH013",
-    "address": {
-      "addressLine1": "Pithampur Industrial Area",
-      "addressLine2": "Auto Cluster",
-      "state": "Madhya Pradesh",
-      "city": "Indore",
-      "district": "Indore",
-      "pincode": 452016,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [75.8577, 22.7196]
-    },
-    "shipsyHubCode": "IDR001",
-    "hubCode": "HUB013",
-    "status": "ACTIVE",
-    "capacity": 8500,
-    "currentStock": 7100,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 16,
+    "latitude": 19.1136,
+    "longitude": 72.8697,
+    "order_date": "2024-07-16",
+    "order_value": 92450.20,
+    "so_count": 28,
+    "volume": 924.85
   },
   {
-    "_id": "672f1234567890abcdef1241",
-    "name": "Coimbatore Tamil Nadu Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH014",
-    "address": {
-      "addressLine1": "TIDEL Park",
-      "addressLine2": "Peelamedu",
-      "state": "Tamil Nadu",
-      "city": "Coimbatore",
-      "district": "Coimbatore",
-      "pincode": 641004,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [76.9558, 11.0168]
-    },
-    "shipsyHubCode": "CBE001",
-    "hubCode": "HUB014",
-    "status": "ACTIVE",
-    "capacity": 7000,
-    "currentStock": 5600,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 33,
+    "latitude": 28.7041,
+    "longitude": 77.1025,
+    "order_date": "2024-07-16",
+    "order_value": 205600.35,
+    "so_count": 65,
+    "volume": 2056.75
   },
   {
-    "_id": "672f1234567890abcdef1242",
-    "name": "Nagpur Maharashtra Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH015",
-    "address": {
-      "addressLine1": "MIDC Hingna",
-      "addressLine2": "Industrial Area",
-      "state": "Maharashtra",
-      "city": "Nagpur",
-      "district": "Nagpur",
-      "pincode": 440016,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [79.0882, 21.1458]
-    },
-    "shipsyHubCode": "NAG001",
-    "hubCode": "HUB015",
-    "status": "ACTIVE",
-    "capacity": 9000,
-    "currentStock": 7200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 27,
+    "latitude": 12.8406,
+    "longitude": 77.6602,
+    "order_date": "2024-07-16",
+    "order_value": 159300.90,
+    "so_count": 47,
+    "volume": 1593.40
   },
   {
-    "_id": "672f1234567890abcdef1243",
-    "name": "Visakhapatnam Andhra Pradesh Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH016",
-    "address": {
-      "addressLine1": "IT SEZ Madhurawada",
-      "addressLine2": "Financial District",
-      "state": "Andhra Pradesh",
-      "city": "Visakhapatnam",
-      "district": "Visakhapatnam",
-      "pincode": 530041,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [83.2185, 17.7231]
-    },
-    "shipsyHubCode": "VZG001",
-    "hubCode": "HUB016",
-    "status": "ACTIVE",
-    "capacity": 6500,
-    "currentStock": 5200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 20,
+    "latitude": 13.1186,
+    "longitude": 80.2472,
+    "order_date": "2024-07-16",
+    "order_value": 116500.60,
+    "so_count": 33,
+    "volume": 1165.75
   },
   {
-    "_id": "672f1234567890abcdef1244",
-    "name": "Guwahati Assam Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH017",
-    "address": {
-      "addressLine1": "Amingaon Industrial Area",
-      "addressLine2": "NH-37",
-      "state": "Assam",
-      "city": "Guwahati",
-      "district": "Kamrup",
-      "pincode": 781031,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [91.7362, 26.1445]
-    },
-    "shipsyHubCode": "GUW001",
-    "hubCode": "HUB017",
-    "status": "ACTIVE",
-    "capacity": 5000,
-    "currentStock": 4100,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 29,
+    "latitude": 22.6202,
+    "longitude": 88.4370,
+    "order_date": "2024-07-16",
+    "order_value": 173800.25,
+    "so_count": 51,
+    "volume": 1738.90
   },
   {
-    "_id": "672f1234567890abcdef1245",
-    "name": "Lucknow Uttar Pradesh Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH018",
-    "address": {
-      "addressLine1": "IT City Gomti Nagar",
-      "addressLine2": "Extension",
-      "state": "Uttar Pradesh",
-      "city": "Lucknow",
-      "district": "Lucknow",
-      "pincode": 226010,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [80.9462, 26.8467]
-    },
-    "shipsyHubCode": "LKO001",
-    "hubCode": "HUB018",
-    "status": "ACTIVE",
-    "capacity": 10500,
-    "currentStock": 8900,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 23,
+    "latitude": 18.5793,
+    "longitude": 73.8143,
+    "order_date": "2024-07-16",
+    "order_value": 137400.80,
+    "so_count": 41,
+    "volume": 1374.55
   },
   {
-    "_id": "672f1234567890abcdef1246",
-    "name": "Patna Bihar Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH019",
-    "address": {
-      "addressLine1": "Bihta Industrial Area",
-      "addressLine2": "NH-30",
-      "state": "Bihar",
-      "city": "Patna",
-      "district": "Patna",
-      "pincode": 801103,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [85.0002, 25.5941]
-    },
-    "shipsyHubCode": "PAT001",
-    "hubCode": "HUB019",
-    "status": "ACTIVE",
-    "capacity": 4500,
-    "currentStock": 3600,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 31,
+    "latitude": 19.0330,
+    "longitude": 73.0297,
+    "order_date": "2024-07-17",
+    "order_value": 192700.15,
+    "so_count": 62,
+    "volume": 1927.30
   },
   {
-    "_id": "672f1234567890abcdef1247",
-    "name": "Surat Gujarat Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH020",
-    "address": {
-      "addressLine1": "DREAM City",
-      "addressLine2": "Surat-Dumas Road",
-      "state": "Gujarat",
-      "city": "Surat",
-      "district": "Surat",
-      "pincode": 395007,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [72.8311, 21.1702]
-    },
-    "shipsyHubCode": "SRT001",
-    "hubCode": "HUB020",
-    "status": "ACTIVE",
-    "capacity": 12500,
-    "currentStock": 10800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "cust_count": 17,
+    "latitude": 28.4595,
+    "longitude": 77.0266,
+    "order_date": "2024-07-17",
+    "order_value": 95800.45,
+    "so_count": 29,
+    "volume": 958.70
+  },
+  {
+    "cust_count": 25,
+    "latitude": 12.9698,
+    "longitude": 77.7500,
+    "order_date": "2024-07-17",
+    "order_value": 148900.70,
+    "so_count": 44,
+    "volume": 1489.85
+  },
+  {
+    "cust_count": 34,
+    "latitude": 13.0569,
+    "longitude": 80.2420,
+    "order_date": "2024-07-17",
+    "order_value": 213400.55,
+    "so_count": 71,
+    "volume": 2134.90
+  },
+  {
+    "cust_count": 22,
+    "latitude": 22.5697,
+    "longitude": 88.3685,
+    "order_date": "2024-07-17",
+    "order_value": 128700.35,
+    "so_count": 37,
+    "volume": 1287.45
+  },
+  {
+    "cust_count": 28,
+    "latitude": 18.4529,
+    "longitude": 73.8697,
+    "order_date": "2024-07-17",
+    "order_value": 165200.90,
+    "so_count": 49,
+    "volume": 1652.75
+  },
+  {
+    "cust_count": 25,
+    "latitude": 19.0760,
+    "longitude": 72.8777,
+    "order_date": "2024-07-15",
+    "order_value": 125000.50,
+    "so_count": 45,
+    "volume": 1250.75
+  },
+  {
+    "cust_count": 18,
+    "latitude": 19.0896,
+    "longitude": 72.8656,
+    "order_date": "2024-07-15",
+    "order_value": 89500.25,
+    "so_count": 32,
+    "volume": 890.30
+  },
+  {
+    "cust_count": 32,
+    "latitude": 28.6139,
+    "longitude": 77.2090,
+    "order_date": "2024-07-15",
+    "order_value": 198750.00,
+    "so_count": 67,
+    "volume": 1987.50
+  },
+  {
+    "cust_count": 22,
+    "latitude": 28.5355,
+    "longitude": 77.3910,
+    "order_date": "2024-07-15",
+    "order_value": 134500.75,
+    "so_count": 38,
+    "volume": 1345.25
+  },
+  {
+    "cust_count": 28,
+    "latitude": 12.9716,
+    "longitude": 77.5946,
+    "order_date": "2024-07-15",
+    "order_value": 167800.40,
+    "so_count": 52,
+    "volume": 1678.80
+  },
+  {
+    "cust_count": 15,
+    "latitude": 12.9352,
+    "longitude": 77.6245,
+    "order_date": "2024-07-15",
+    "order_value": 78900.60,
+    "so_count": 24,
+    "volume": 789.15
+  },
+  {
+    "cust_count": 35,
+    "latitude": 13.0827,
+    "longitude": 80.2707,
+    "order_date": "2024-07-15",
+    "order_value": 234500.90,
+    "so_count": 78,
+    "volume": 2345.75
+  },
+  {
+    "cust_count": 19,
+    "latitude": 13.0478,
+    "longitude": 80.2573,
+    "order_date": "2024-07-15",
+    "order_value": 98750.30,
+    "so_count": 31,
+    "volume": 987.90
+  },
+  {
+    "cust_count": 26,
+    "latitude": 22.5726,
+    "longitude": 88.3639,
+    "order_date": "2024-07-15",
+    "order_value": 156800.85,
+    "so_count": 43,
+    "volume": 1568.45
+  },
+  {
+    "cust_count": 21,
+    "latitude": 22.4783,
+    "longitude": 88.3753,
+    "order_date": "2024-07-15",
+    "order_value": 112300.50,
+    "so_count": 35,
+    "volume": 1123.75
+  },
+  {
+    "cust_count": 30,
+    "latitude": 18.5204,
+    "longitude": 73.8567,
+    "order_date": "2024-07-15",
+    "order_value": 187900.45,
+    "so_count": 58,
+    "volume": 1879.30
+  },
+  {
+    "cust_count": 24,
+    "latitude": 18.4633,
+    "longitude": 73.8667,
+    "order_date": "2024-07-15",
+    "order_value": 143200.75,
+    "so_count": 39,
+    "volume": 1432.60
+  },
+  {
+    "cust_count": 16,
+    "latitude": 19.1136,
+    "longitude": 72.8697,
+    "order_date": "2024-07-16",
+    "order_value": 92450.20,
+    "so_count": 28,
+    "volume": 924.85
+  },
+  {
+    "cust_count": 33,
+    "latitude": 28.7041,
+    "longitude": 77.1025,
+    "order_date": "2024-07-16",
+    "order_value": 205600.35,
+    "so_count": 65,
+    "volume": 2056.75
+  },
+  {
+    "cust_count": 27,
+    "latitude": 12.8406,
+    "longitude": 77.6602,
+    "order_date": "2024-07-16",
+    "order_value": 159300.90,
+    "so_count": 47,
+    "volume": 1593.40
+  },
+  {
+    "cust_count": 20,
+    "latitude": 13.1186,
+    "longitude": 80.2472,
+    "order_date": "2024-07-16",
+    "order_value": 116500.60,
+    "so_count": 33,
+    "volume": 1165.75
+  },
+  {
+    "cust_count": 29,
+    "latitude": 22.6202,
+    "longitude": 88.4370,
+    "order_date": "2024-07-16",
+    "order_value": 173800.25,
+    "so_count": 51,
+    "volume": 1738.90
+  },
+  {
+    "cust_count": 23,
+    "latitude": 18.5793,
+    "longitude": 73.8143,
+    "order_date": "2024-07-16",
+    "order_value": 137400.80,
+    "so_count": 41,
+    "volume": 1374.55
+  },
+  {
+    "cust_count": 31,
+    "latitude": 19.0330,
+    "longitude": 73.0297,
+    "order_date": "2024-07-17",
+    "order_value": 192700.15,
+    "so_count": 62,
+    "volume": 1927.30
+  },
+  {
+    "cust_count": 17,
+    "latitude": 28.4595,
+    "longitude": 77.0266,
+    "order_date": "2024-07-17",
+    "order_value": 95800.45,
+    "so_count": 29,
+    "volume": 958.70
+  },
+  {
+    "cust_count": 25,
+    "latitude": 12.9698,
+    "longitude": 77.7500,
+    "order_date": "2024-07-17",
+    "order_value": 148900.70,
+    "so_count": 44,
+    "volume": 1489.85
+  },
+  {
+    "cust_count": 34,
+    "latitude": 13.0569,
+    "longitude": 80.2420,
+    "order_date": "2024-07-17",
+    "order_value": 213400.55,
+    "so_count": 71,
+    "volume": 2134.90
+  },
+  {
+    "cust_count": 22,
+    "latitude": 22.5697,
+    "longitude": 88.3685,
+    "order_date": "2024-07-17",
+    "order_value": 128700.35,
+    "so_count": 37,
+    "volume": 1287.45
+  },
+  {
+    "cust_count": 28,
+    "latitude": 18.4529,
+    "longitude": 73.8697,
+    "order_date": "2024-07-17",
+    "order_value": 165200.90,
+    "so_count": 49,
+    "volume": 1652.75
+  },
+  {
+    "cust_count": 36,
+    "latitude": 19.2183,
+    "longitude": 72.9781,
+    "order_date": "2024-07-18",
+    "order_value": 245600.80,
+    "so_count": 82,
+    "volume": 2456.90
+  },
+  {
+    "cust_count": 14,
+    "latitude": 28.5421,
+    "longitude": 77.1642,
+    "order_date": "2024-07-18",
+    "order_value": 87200.35,
+    "so_count": 26,
+    "volume": 872.45
+  },
+  {
+    "cust_count": 29,
+    "latitude": 12.8797,
+    "longitude": 77.6243,
+    "order_date": "2024-07-18",
+    "order_value": 176500.60,
+    "so_count": 54,
+    "volume": 1765.80
+  },
+  {
+    "cust_count": 21,
+    "latitude": 13.0935,
+    "longitude": 80.1982,
+    "order_date": "2024-07-18",
+    "order_value": 124800.25,
+    "so_count": 36,
+    "volume": 1248.70
+  },
+  {
+    "cust_count": 38,
+    "latitude": 22.6273,
+    "longitude": 88.4101,
+    "order_date": "2024-07-18",
+    "order_value": 289300.15,
+    "so_count": 91,
+    "volume": 2893.55
+  },
+  {
+    "cust_count": 26,
+    "latitude": 18.5056,
+    "longitude": 73.8567,
+    "order_date": "2024-07-18",
+    "order_value": 154700.90,
+    "so_count": 42,
+    "volume": 1547.85
   }
 ]
