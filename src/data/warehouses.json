@@ -20,8 +20,6 @@
     "shipsyHubCode": "MUM001",
     "hubCode": "HUB001",
     "status": "ACTIVE",
-    "capacity": 15000,
-    "currentStock": 12500,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
   },
@@ -46,8 +44,6 @@
     "shipsyHubCode": "DEL001",
     "hubCode": "HUB002",
     "status": "ACTIVE",
-    "capacity": 18000,
-    "currentStock": 16200,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
   },
@@ -72,8 +68,6 @@
     "shipsyHubCode": "BLR001",
     "hubCode": "HUB003",
     "status": "ACTIVE",
-    "capacity": 12000,
-    "currentStock": 9800,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
   },
@@ -98,8 +92,6 @@
     "shipsyHubCode": "CHN001",
     "hubCode": "HUB004",
     "status": "ACTIVE",
-    "capacity": 14000,
-    "currentStock": 11200,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
   },
@@ -124,8 +116,6 @@
     "shipsyHubCode": "KOL001",
     "hubCode": "HUB005",
     "status": "ACTIVE",
-    "capacity": 10000,
-    "currentStock": 8500,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
   },
@@ -150,372 +140,6 @@
     "shipsyHubCode": "PUN001",
     "hubCode": "HUB006",
     "status": "ACTIVE",
-    "capacity": 13000,
-    "currentStock": 10400,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef123a",
-    "name": "Hyderabad Cyberabad Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH007",
-    "address": {
-      "addressLine1": "HITEC City",
-      "addressLine2": "Madhapur",
-      "state": "Telangana",
-      "city": "Hyderabad",
-      "district": "Hyderabad",
-      "pincode": 500081,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [78.3882, 17.4399]
-    },
-    "shipsyHubCode": "HYD001",
-    "hubCode": "HUB007",
-    "status": "ACTIVE",
-    "capacity": 16000,
-    "currentStock": 13800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef123b",
-    "name": "Ahmedabad Gujarat Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH008",
-    "address": {
-      "addressLine1": "Sarkhej-Gandhinagar Highway",
-      "addressLine2": "Near GIFT City",
-      "state": "Gujarat",
-      "city": "Ahmedabad",
-      "district": "Ahmedabad",
-      "pincode": 380015,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [72.5714, 23.0225]
-    },
-    "shipsyHubCode": "AMD001",
-    "hubCode": "HUB008",
-    "status": "ACTIVE",
-    "capacity": 11000,
-    "currentStock": 9200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef123c",
-    "name": "Jaipur Rajasthan Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH009",
-    "address": {
-      "addressLine1": "Mahindra World City",
-      "addressLine2": "Ajmer Road",
-      "state": "Rajasthan",
-      "city": "Jaipur",
-      "district": "Jaipur",
-      "pincode": 302037,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [75.7873, 26.9124]
-    },
-    "shipsyHubCode": "JAI001",
-    "hubCode": "HUB009",
-    "status": "ACTIVE",
-    "capacity": 8000,
-    "currentStock": 6500,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef123d",
-    "name": "Kochi Kerala Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH010",
-    "address": {
-      "addressLine1": "Infopark Kakkanad",
-      "addressLine2": "Smart City",
-      "state": "Kerala",
-      "city": "Kochi",
-      "district": "Ernakulam",
-      "pincode": 682030,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [76.3472, 9.9312]
-    },
-    "shipsyHubCode": "KOC001",
-    "hubCode": "HUB010",
-    "status": "ACTIVE",
-    "capacity": 7500,
-    "currentStock": 6200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef123e",
-    "name": "Chandigarh Punjab Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH011",
-    "address": {
-      "addressLine1": "IT Park Chandigarh",
-      "addressLine2": "Sector 28",
-      "state": "Punjab",
-      "city": "Chandigarh",
-      "district": "Chandigarh",
-      "pincode": 160036,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [76.7794, 30.7333]
-    },
-    "shipsyHubCode": "CHD001",
-    "hubCode": "HUB011",
-    "status": "ACTIVE",
-    "capacity": 9500,
-    "currentStock": 7800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef123f",
-    "name": "Bhubaneswar Odisha Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH012",
-    "address": {
-      "addressLine1": "Infocity Patia",
-      "addressLine2": "Software Technology Park",
-      "state": "Odisha",
-      "city": "Bhubaneswar",
-      "district": "Khordha",
-      "pincode": 751024,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [85.8245, 20.2961]
-    },
-    "shipsyHubCode": "BBS001",
-    "hubCode": "HUB012",
-    "status": "ACTIVE",
-    "capacity": 6000,
-    "currentStock": 4800,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1240",
-    "name": "Indore Madhya Pradesh Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH013",
-    "address": {
-      "addressLine1": "Pithampur Industrial Area",
-      "addressLine2": "Auto Cluster",
-      "state": "Madhya Pradesh",
-      "city": "Indore",
-      "district": "Indore",
-      "pincode": 452016,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [75.8577, 22.7196]
-    },
-    "shipsyHubCode": "IDR001",
-    "hubCode": "HUB013",
-    "status": "ACTIVE",
-    "capacity": 8500,
-    "currentStock": 7100,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1241",
-    "name": "Coimbatore Tamil Nadu Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH014",
-    "address": {
-      "addressLine1": "TIDEL Park",
-      "addressLine2": "Peelamedu",
-      "state": "Tamil Nadu",
-      "city": "Coimbatore",
-      "district": "Coimbatore",
-      "pincode": 641004,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [76.9558, 11.0168]
-    },
-    "shipsyHubCode": "CBE001",
-    "hubCode": "HUB014",
-    "status": "ACTIVE",
-    "capacity": 7000,
-    "currentStock": 5600,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1242",
-    "name": "Nagpur Maharashtra Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH015",
-    "address": {
-      "addressLine1": "MIDC Hingna",
-      "addressLine2": "Industrial Area",
-      "state": "Maharashtra",
-      "city": "Nagpur",
-      "district": "Nagpur",
-      "pincode": 440016,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [79.0882, 21.1458]
-    },
-    "shipsyHubCode": "NAG001",
-    "hubCode": "HUB015",
-    "status": "ACTIVE",
-    "capacity": 9000,
-    "currentStock": 7200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1243",
-    "name": "Visakhapatnam Andhra Pradesh Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH016",
-    "address": {
-      "addressLine1": "IT SEZ Madhurawada",
-      "addressLine2": "Financial District",
-      "state": "Andhra Pradesh",
-      "city": "Visakhapatnam",
-      "district": "Visakhapatnam",
-      "pincode": 530041,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [83.2185, 17.7231]
-    },
-    "shipsyHubCode": "VZG001",
-    "hubCode": "HUB016",
-    "status": "ACTIVE",
-    "capacity": 6500,
-    "currentStock": 5200,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1244",
-    "name": "Guwahati Assam Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH017",
-    "address": {
-      "addressLine1": "Amingaon Industrial Area",
-      "addressLine2": "NH-37",
-      "state": "Assam",
-      "city": "Guwahati",
-      "district": "Kamrup",
-      "pincode": 781031,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [91.7362, 26.1445]
-    },
-    "shipsyHubCode": "GUW001",
-    "hubCode": "HUB017",
-    "status": "ACTIVE",
-    "capacity": 5000,
-    "currentStock": 4100,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1245",
-    "name": "Lucknow Uttar Pradesh Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH018",
-    "address": {
-      "addressLine1": "IT City Gomti Nagar",
-      "addressLine2": "Extension",
-      "state": "Uttar Pradesh",
-      "city": "Lucknow",
-      "district": "Lucknow",
-      "pincode": 226010,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [80.9462, 26.8467]
-    },
-    "shipsyHubCode": "LKO001",
-    "hubCode": "HUB018",
-    "status": "ACTIVE",
-    "capacity": 10500,
-    "currentStock": 8900,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1246",
-    "name": "Patna Bihar Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH019",
-    "address": {
-      "addressLine1": "Bihta Industrial Area",
-      "addressLine2": "NH-30",
-      "state": "Bihar",
-      "city": "Patna",
-      "district": "Patna",
-      "pincode": 801103,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [85.0002, 25.5941]
-    },
-    "shipsyHubCode": "PAT001",
-    "hubCode": "HUB019",
-    "status": "ACTIVE",
-    "capacity": 4500,
-    "currentStock": 3600,
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef1247",
-    "name": "Surat Gujarat Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH020",
-    "address": {
-      "addressLine1": "DREAM City",
-      "addressLine2": "Surat-Dumas Road",
-      "state": "Gujarat",
-      "city": "Surat",
-      "district": "Surat",
-      "pincode": 395007,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [72.8311, 21.1702]
-    },
-    "shipsyHubCode": "SRT001",
-    "hubCode": "HUB020",
-    "status": "ACTIVE",
-    "capacity": 12500,
-    "currentStock": 10800,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
   }
