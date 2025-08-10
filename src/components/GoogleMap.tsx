@@ -461,7 +461,205 @@ export default function GoogleMap({
       fitBounds(positions);
     }
   }, [warehouses, showWarehouses, pincodes, showHeatmap, showPincodes]);
-  const createPincodeFeatureLayers = useCallback(async () => {
+//   const createPincodeFeatureLayers = useCallback(async () => {
+//   console.log('🎯 createPincodeFeatureLayers called:', {
+//     showPincodes,
+//     pincodeCount: pincodes.length,
+//     placeIdDataCount: Object.keys(pincodeToPlaceIdData).length,
+//     mapInstance: !!mapInstanceRef.current,
+//     postalCodeLayer: !!postalCodeLayerRef.current
+//   });
+
+//   if (!mapInstanceRef.current || !showPincodes || pincodes.length === 0) {
+//     console.log('❌ Early return: Missing requirements');
+//     if (postalCodeLayerRef.current) {
+//       postalCodeLayerRef.current.style = null;
+//     }
+//     return;
+//   }
+
+//   if (Object.keys(pincodeToPlaceIdData).length === 0) {
+//     console.log('❌ Early return: No place ID data available');
+//     if (postalCodeLayerRef.current) {
+//       postalCodeLayerRef.current.style = null;
+//     }
+//     return;
+//   }
+
+//   clearMarkers(pincodeMarkersRef);
+  
+//   // Reset the feature layer style first
+//   if (postalCodeLayerRef.current) {
+//     postalCodeLayerRef.current.style = null;
+//   }
+  
+//   pincodeToPlaceIdRef.current = {};
+
+//   const warehouseGroups = pincodes.reduce((acc, pincode) => {
+//     if (!acc[pincode.WH]) acc[pincode.WH] = [];
+//     acc[pincode.WH].push(pincode);
+//     return acc;
+//   }, {} as Record<string, PincodePoint[]>);
+
+//   const warehouseColors = generateWarehouseColors(warehouses, pincodes);
+//   const pincodeToWarehouseMap: Record<
+//     string,
+//     { warehouse: string; color: string; data: PincodePoint } 
+//   > = {};
+  
+//   let mappedPincodes = 0;
+//   let totalPincodes = 0;
+
+//   Object.entries(warehouseGroups).forEach(([warehouseName, pincodeGroup]) => {
+//     const color = warehouseColors[warehouseName] || "#4285F4";
+//     pincodeGroup.forEach((pincode) => {
+//       totalPincodes++;
+//       const pincodeStr = pincode.pincode.toString();
+//       pincodeToWarehouseMap[pincodeStr] = {
+//         warehouse: warehouseName,
+//         color,
+//         data: pincode,
+//       };
+      
+//       const pincodeData = pincodeToPlaceIdData[pincodeStr];
+//       if (pincodeData?.placeId) {
+//         pincodeToPlaceIdRef.current[pincodeStr] = pincodeData.placeId;
+//         mappedPincodes++;
+//       }
+//     });
+//   });
+
+//   console.log(`📊 Pincode mapping stats:`, {
+//     total: totalPincodes,
+//     mapped: mappedPincodes,
+//     placeIds: Object.keys(pincodeToPlaceIdRef.current).length
+//   });
+
+//   if (mappedPincodes === 0) {
+//     console.warn('⚠️ No pincodes could be mapped to place IDs');
+//     return;
+//   }
+
+//   // Apply the feature layer styling
+//   if (postalCodeLayerRef.current) {
+//     console.log('🎨 Applying postal code feature styling...');
+    
+//     postalCodeLayerRef.current.style = (params: google.maps.FeatureStyleFunctionOptions) => {
+//       const feature = params.feature as google.maps.PlaceFeature;
+//       const placeId = feature.placeId;
+      
+//       if (!placeId) return null;
+      
+//       const matchingPincode = Object.entries(pincodeToPlaceIdRef.current)
+//         .find(([, storedPlaceId]) => storedPlaceId === placeId);
+    
+//       if (matchingPincode) {
+//         const [pincodeStr] = matchingPincode;
+//         const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
+      
+//         if (warehouseInfo) {
+//           console.log(`✅ Styling pincode ${pincodeStr} with color ${warehouseInfo.color}`);
+//           return {
+//             strokeColor: warehouseInfo.color,
+//             strokeOpacity: 1,
+//             strokeWeight: 2.4,
+//             fillColor: warehouseInfo.color,
+//             fillOpacity: 0.25,
+//           };
+//         }
+//       }
+//       return null;
+//     };
+
+//     // Add click listener for info windows
+//     postalCodeLayerRef.current.addListener("click", (event: FeatureMouseEvent) => {
+//       const features = event.features || [];
+//       const feature = features[0];
+    
+//       if (feature?.placeId) {
+//         const matchingPincode = Object.entries(pincodeToPlaceIdRef.current)
+//           .find(([, storedPlaceId]) => storedPlaceId === feature.placeId);
+      
+//         if (matchingPincode && event.latLng) {
+//           const [pincodeStr] = matchingPincode;
+//           const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
+          
+//           if (warehouseInfo && infoWindowRef.current && mapInstanceRef.current) {
+//             const pincodeData = warehouseInfo.data;
+//             console.log(`🔍 Clicked on pincode: ${pincodeStr}`);
+            
+//             infoWindowRef.current.setContent(`
+//               <div style="padding: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; color: #000; line-height: 1.6; max-width: 320px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+//                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 3px solid ${warehouseInfo.color};">
+//                   <div style="width: 18px; height: 18px; background: ${warehouseInfo.color}; border-radius: 50%;"></div>
+//                   <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #000;">
+//                     📍 Pincode ${pincodeStr}
+//                   </h3>
+//                 </div>
+//                 <div style="margin-bottom: 16px;">
+//                   <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
+//                     🌍 Location Details
+//                   </h4>
+//                   <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e9ecef;">
+//                     <div style="margin-bottom: 6px; font-weight: 600;"><strong>State:</strong> ${pincodeData.state}</div>
+//                     <div style="margin-bottom: 6px; font-weight: 600;"><strong>District:</strong> ${pincodeData.district}</div>
+//                     <div style="font-weight: 600;"><strong>Coordinates:</strong> ${pincodeData.latitude.toFixed(6)}, ${pincodeData.longitute.toFixed(6)}</div>
+//                   </div>
+//                 </div>
+//                 <div style="margin-bottom: 16px;">
+//                   <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
+//                     🏢 Warehouse Assignment
+//                   </h4>
+//                   <div style="background: ${warehouseInfo.color}20; border: 2px solid ${warehouseInfo.color}; padding: 12px; border-radius: 6px;">
+//                     <div style="margin-bottom: 6px; font-weight: 700; color: #000;">
+//                       <strong>Warehouse:</strong> ${warehouseInfo.warehouse}
+//                     </div>
+//                     <div style="margin-bottom: 6px; font-weight: 600;"><strong>Distance:</strong> ${pincodeData.distance} km</div>
+//                   </div>
+//                 </div>
+//                 <div style="margin-bottom: 16px;">
+//                   <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
+//                     📅 Service Schedule
+//                   </h4>
+//                   <div style="background: #e3f2fd; border: 2px solid #1976d2; padding: 12px; border-radius: 6px;">
+//                     <div style="margin-bottom: 6px; font-weight: 600; color: #000;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
+//                     <div style="font-weight: 600; color: #000;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
+//                   </div>
+//                 </div>
+//               </div>
+//             `);
+//             infoWindowRef.current.setPosition(event.latLng);
+//             infoWindowRef.current.open(mapInstanceRef.current);
+//           }
+//         }
+//       }
+//     });
+
+//     // Fit map bounds to show pincodes if no other data is shown
+//     if (!showWarehouses && !showHeatmap && pincodes.length > 0) {
+//       console.log('🗺️ Fitting map bounds to pincodes...');
+//       const positions = pincodes
+//         .filter(p => p.latitude && p.longitute)
+//         .map(p => ({ lat: p.latitude, lng: p.longitute }));
+      
+//       if (positions.length > 0) {
+//         fitBounds(positions, 8);
+//       }
+//     }
+
+//     console.log('✅ Postal code feature layer styling applied successfully');
+//   }
+
+//   // Close info window when clicking elsewhere on the map
+//   mapInstanceRef.current.addListener('click', () => {
+//     if (infoWindowRef.current) {
+//       infoWindowRef.current.close();
+//     }
+//   });
+// }, [pincodes, showPincodes, warehouses, pincodeToPlaceIdData, showWarehouses, showHeatmap]);  
+  // Enhanced GoogleMap.tsx with debugging and visibility fixes
+
+const createPincodeFeatureLayers = useCallback(async () => {
   console.log('🎯 createPincodeFeatureLayers called:', {
     showPincodes,
     pincodeCount: pincodes.length,
@@ -532,7 +730,8 @@ export default function GoogleMap({
   console.log(`📊 Pincode mapping stats:`, {
     total: totalPincodes,
     mapped: mappedPincodes,
-    placeIds: Object.keys(pincodeToPlaceIdRef.current).length
+    placeIds: Object.keys(pincodeToPlaceIdRef.current).length,
+    samplePlaceIds: Object.entries(pincodeToPlaceIdRef.current).slice(0, 3)
   });
 
   if (mappedPincodes === 0) {
@@ -540,15 +739,21 @@ export default function GoogleMap({
     return;
   }
 
-  // Apply the feature layer styling
+  // Apply the feature layer styling with enhanced debugging
   if (postalCodeLayerRef.current) {
     console.log('🎨 Applying postal code feature styling...');
+    
+    // Add a small delay to ensure map is ready
+    await new Promise(resolve => setTimeout(resolve, 100));
     
     postalCodeLayerRef.current.style = (params: google.maps.FeatureStyleFunctionOptions) => {
       const feature = params.feature as google.maps.PlaceFeature;
       const placeId = feature.placeId;
       
-      if (!placeId) return null;
+      if (!placeId) {
+        console.log('❌ Feature without placeId:', feature);
+        return null;
+      }
       
       const matchingPincode = Object.entries(pincodeToPlaceIdRef.current)
         .find(([, storedPlaceId]) => storedPlaceId === placeId);
@@ -558,82 +763,108 @@ export default function GoogleMap({
         const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
       
         if (warehouseInfo) {
-          console.log(`✅ Styling pincode ${pincodeStr} with color ${warehouseInfo.color}`);
+          console.log(`✅ Styling pincode ${pincodeStr} with color ${warehouseInfo.color} for placeId ${placeId}`);
+          
+          // Enhanced styling with better visibility
           return {
             strokeColor: warehouseInfo.color,
-            strokeOpacity: 1,
-            strokeWeight: 2.4,
+            strokeOpacity: 0.9,
+            strokeWeight: 3,
             fillColor: warehouseInfo.color,
-            fillOpacity: 0.25,
+            fillOpacity: 0.35,
+            // Add z-index for better layering
+            zIndex: 1000
           };
+        }
+      } else {
+        // Log unmatched features occasionally for debugging
+        if (Math.random() < 0.01) { // 1% sample
+          console.log(`🔍 Unmatched feature with placeId: ${placeId.substring(0, 20)}...`);
         }
       }
       return null;
     };
 
-    // Add click listener for info windows
-    postalCodeLayerRef.current.addListener("click", (event: FeatureMouseEvent) => {
-      const features = event.features || [];
-      const feature = features[0];
-    
-      if (feature?.placeId) {
-        const matchingPincode = Object.entries(pincodeToPlaceIdRef.current)
-          .find(([, storedPlaceId]) => storedPlaceId === feature.placeId);
-      
-        if (matchingPincode && event.latLng) {
-          const [pincodeStr] = matchingPincode;
-          const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
-          
-          if (warehouseInfo && infoWindowRef.current && mapInstanceRef.current) {
-            const pincodeData = warehouseInfo.data;
-            console.log(`🔍 Clicked on pincode: ${pincodeStr}`);
-            
-            infoWindowRef.current.setContent(`
-              <div style="padding: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; color: #000; line-height: 1.6; max-width: 320px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 3px solid ${warehouseInfo.color};">
-                  <div style="width: 18px; height: 18px; background: ${warehouseInfo.color}; border-radius: 50%;"></div>
-                  <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #000;">
-                    📍 Pincode ${pincodeStr}
-                  </h3>
-                </div>
-                <div style="margin-bottom: 16px;">
-                  <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
-                    🌍 Location Details
-                  </h4>
-                  <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e9ecef;">
-                    <div style="margin-bottom: 6px; font-weight: 600;"><strong>State:</strong> ${pincodeData.state}</div>
-                    <div style="margin-bottom: 6px; font-weight: 600;"><strong>District:</strong> ${pincodeData.district}</div>
-                    <div style="font-weight: 600;"><strong>Coordinates:</strong> ${pincodeData.latitude.toFixed(6)}, ${pincodeData.longitute.toFixed(6)}</div>
-                  </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                  <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
-                    🏢 Warehouse Assignment
-                  </h4>
-                  <div style="background: ${warehouseInfo.color}20; border: 2px solid ${warehouseInfo.color}; padding: 12px; border-radius: 6px;">
-                    <div style="margin-bottom: 6px; font-weight: 700; color: #000;">
-                      <strong>Warehouse:</strong> ${warehouseInfo.warehouse}
-                    </div>
-                    <div style="margin-bottom: 6px; font-weight: 600;"><strong>Distance:</strong> ${pincodeData.distance} km</div>
-                  </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                  <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
-                    📅 Service Schedule
-                  </h4>
-                  <div style="background: #e3f2fd; border: 2px solid #1976d2; padding: 12px; border-radius: 6px;">
-                    <div style="margin-bottom: 6px; font-weight: 600; color: #000;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
-                    <div style="font-weight: 600; color: #000;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
-                  </div>
-                </div>
-              </div>
-            `);
-            infoWindowRef.current.setPosition(event.latLng);
-            infoWindowRef.current.open(mapInstanceRef.current);
-          }
-        }
-      }
+    // Ensure the layer is visible
+    postalCodeLayerRef.current.isAvailable?.then((available) => {
+      console.log('📍 Postal code layer availability:', available);
+    }).catch((error) => {
+      console.error('❌ Error checking postal code layer availability:', error);
     });
+
+    // Add click listener for info windows with better error handling
+    try {
+      postalCodeLayerRef.current.addListener("click", (event: FeatureMouseEvent) => {
+        console.log('🖱️ Postal code layer clicked:', event);
+        
+        const features = event.features || [];
+        const feature = features[0];
+      
+        if (feature?.placeId) {
+          const matchingPincode = Object.entries(pincodeToPlaceIdRef.current)
+            .find(([, storedPlaceId]) => storedPlaceId === feature.placeId);
+        
+          if (matchingPincode && event.latLng) {
+            const [pincodeStr] = matchingPincode;
+            const warehouseInfo = pincodeToWarehouseMap[pincodeStr];
+            
+            if (warehouseInfo && infoWindowRef.current && mapInstanceRef.current) {
+              const pincodeData = warehouseInfo.data;
+              console.log(`🔍 Showing info for pincode: ${pincodeStr}`);
+              
+              infoWindowRef.current.setContent(`
+                <div style="padding: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; color: #000; line-height: 1.6; max-width: 320px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 3px solid ${warehouseInfo.color};">
+                    <div style="width: 18px; height: 18px; background: ${warehouseInfo.color}; border-radius: 50%;"></div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #000;">
+                      📍 Pincode ${pincodeStr}
+                    </h3>
+                  </div>
+                  <div style="margin-bottom: 16px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
+                      🌍 Location Details
+                    </h4>
+                    <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e9ecef;">
+                      <div style="margin-bottom: 6px; font-weight: 600;"><strong>State:</strong> ${pincodeData.state}</div>
+                      <div style="margin-bottom: 6px; font-weight: 600;"><strong>District:</strong> ${pincodeData.district}</div>
+                      <div style="font-weight: 600;"><strong>Coordinates:</strong> ${pincodeData.latitude.toFixed(6)}, ${pincodeData.longitute.toFixed(6)}</div>
+                    </div>
+                  </div>
+                  <div style="margin-bottom: 16px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
+                      🏢 Warehouse Assignment
+                    </h4>
+                    <div style="background: ${warehouseInfo.color}20; border: 2px solid ${warehouseInfo.color}; padding: 12px; border-radius: 6px;">
+                      <div style="margin-bottom: 6px; font-weight: 700; color: #000;">
+                        <strong>Warehouse:</strong> ${warehouseInfo.warehouse}
+                      </div>
+                      <div style="margin-bottom: 6px; font-weight: 600;"><strong>Distance:</strong> ${pincodeData.distance} km</div>
+                    </div>
+                  </div>
+                  <div style="margin-bottom: 16px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #000;">
+                      📅 Service Schedule
+                    </h4>
+                    <div style="background: #e3f2fd; border: 2px solid #1976d2; padding: 12px; border-radius: 6px;">
+                      <div style="margin-bottom: 6px; font-weight: 600; color: #000;"><strong>Schedule Type:</strong> ${pincodeData.schedule_type}</div>
+                      <div style="font-weight: 600; color: #000;"><strong>Schedule:</strong> ${pincodeData.Schedule}</div>
+                    </div>
+                  </div>
+                </div>
+              `);
+              infoWindowRef.current.setPosition(event.latLng);
+              infoWindowRef.current.open(mapInstanceRef.current);
+            }
+          }
+        } else {
+          console.log('❌ No feature or placeId in click event');
+        }
+      });
+      
+      console.log('✅ Click listener added to postal code layer');
+    } catch (error) {
+      console.error('❌ Error adding click listener:', error);
+    }
 
     // Fit map bounds to show pincodes if no other data is shown
     if (!showWarehouses && !showHeatmap && pincodes.length > 0) {
@@ -647,16 +878,46 @@ export default function GoogleMap({
       }
     }
 
+    // Force map refresh to ensure postal codes are visible
+    setTimeout(() => {
+      if (mapInstanceRef.current) {
+        console.log('🔄 Triggering map refresh for better visibility');
+        const currentZoom = mapInstanceRef.current.getZoom();
+        const currentCenter = mapInstanceRef.current.getCenter();
+        
+        if (currentZoom && currentCenter) {
+          // Slight zoom change to trigger refresh
+          mapInstanceRef.current.setZoom(currentZoom + 0.1);
+          setTimeout(() => {
+            if (mapInstanceRef.current && currentZoom) {
+              mapInstanceRef.current.setZoom(currentZoom);
+            }
+          }, 100);
+        }
+      }
+    }, 500);
+
     console.log('✅ Postal code feature layer styling applied successfully');
+    
+    // Verify styling is active
+    setTimeout(() => {
+      console.log('🔍 Verifying postal code layer styling...');
+      console.log('- Layer exists:', !!postalCodeLayerRef.current);
+      console.log('- Style function exists:', !!postalCodeLayerRef.current?.style);
+      console.log('- Map zoom level:', mapInstanceRef.current?.getZoom());
+      console.log('- Expected visible pincodes:', mappedPincodes);
+    }, 1000);
   }
 
   // Close info window when clicking elsewhere on the map
-  mapInstanceRef.current.addListener('click', () => {
-    if (infoWindowRef.current) {
-      infoWindowRef.current.close();
-    }
-  });
-}, [pincodes, showPincodes, warehouses, pincodeToPlaceIdData, showWarehouses, showHeatmap]);  
+  if (mapInstanceRef.current) {
+    mapInstanceRef.current.addListener('click', () => {
+      if (infoWindowRef.current) {
+        infoWindowRef.current.close();
+      }
+    });
+  }
+}, [pincodes, showPincodes, warehouses, pincodeToPlaceIdData, showWarehouses, showHeatmap]);
   const clearNewWarehouseMarkers = () => {
       newWarehouseMarkersRef.current.forEach((marker) => marker.setMap(null));
       newWarehouseMarkersRef.current = [];
