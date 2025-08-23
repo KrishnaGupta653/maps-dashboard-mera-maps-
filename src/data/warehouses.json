@@ -1,14 +1,14 @@
 [
   {
     "_id": "672f1234567890abcdef04d3",
-    "name": "Delhi Regional Warehouse",
+    "name": "Delhi NCR Central Hub",
     "type": "WAREHOUSE",
     "zohoWarehouseId": "WH001",
     "address": {
-      "addressLine1": "Industrial Area, Sector 1",
-      "addressLine2": "Main Highway Road",
+      "addressLine1": "Industrial Area, Sector 24",
+      "addressLine2": "Ring Road",
       "state": "Delhi",
-      "city": "Delhi",
+      "city": "New Delhi",
       "district": "New Delhi",
       "pincode": 110001,
       "country": "India"
@@ -20,7 +20,7 @@
         28.6358
       ]
     },
-    "shipsyHubCode": "DEL001",
+    "shipsyHubCode": "NEW001",
     "hubCode": "HUB001",
     "status": "ACTIVE",
     "createdAt": "2024-01-16T10:30:00Z",
@@ -28,12 +28,12 @@
   },
   {
     "_id": "672f1234567890abcdef04d4",
-    "name": "Gurugram Regional Warehouse",
+    "name": "Gurugram Tech Hub Warehouse",
     "type": "WAREHOUSE",
     "zohoWarehouseId": "WH002",
     "address": {
-      "addressLine1": "Industrial Area, Sector 2",
-      "addressLine2": "Main Highway Road",
+      "addressLine1": "Cyber City, DLF Phase III",
+      "addressLine2": "Golf Course Road",
       "state": "Haryana",
       "city": "Gurugram",
       "district": "Gurugram",
@@ -55,26 +55,26 @@
   },
   {
     "_id": "672f1234567890abcdef04d5",
-    "name": "Meerut Regional Warehouse",
+    "name": "Faridabad Industrial Warehouse",
     "type": "WAREHOUSE",
     "zohoWarehouseId": "WH003",
     "address": {
-      "addressLine1": "Industrial Area, Sector 3",
-      "addressLine2": "Main Highway Road",
-      "state": "Uttar Pradesh",
-      "city": "Meerut",
-      "district": "Meerut",
-      "pincode": 250001,
+      "addressLine1": "Industrial Area, Sector 25",
+      "addressLine2": "NH-19",
+      "state": "Haryana",
+      "city": "Faridabad",
+      "district": "Faridabad",
+      "pincode": 121001,
       "country": "India"
     },
     "geoLocation": {
       "type": "Point",
       "coordinates": [
-        77.7064,
-        28.9845
+        77.3178,
+        28.4089
       ]
     },
-    "shipsyHubCode": "MEE003",
+    "shipsyHubCode": "FAR003",
     "hubCode": "HUB003",
     "status": "ACTIVE",
     "createdAt": "2024-01-18T10:30:00Z",
@@ -82,66 +82,12 @@
   },
   {
     "_id": "672f1234567890abcdef04d6",
-    "name": "Jaipur Regional Warehouse",
+    "name": "Rohtak Regional Hub",
     "type": "WAREHOUSE",
     "zohoWarehouseId": "WH004",
     "address": {
-      "addressLine1": "Industrial Area, Sector 4",
-      "addressLine2": "Main Highway Road",
-      "state": "Rajasthan",
-      "city": "Jaipur",
-      "district": "Jaipur",
-      "pincode": 302001,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [
-        75.7873,
-        26.9124
-      ]
-    },
-    "shipsyHubCode": "JAI004",
-    "hubCode": "HUB004",
-    "status": "ACTIVE",
-    "createdAt": "2024-01-19T10:30:00Z",
-    "updatedAt": "2024-01-19T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef04d7",
-    "name": "Noida Regional Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH005",
-    "address": {
-      "addressLine1": "Industrial Area, Sector 5",
-      "addressLine2": "Main Highway Road",
-      "state": "Uttar Pradesh",
-      "city": "Noida",
-      "district": "Gautam Buddha Nagar",
-      "pincode": 201301,
-      "country": "India"
-    },
-    "geoLocation": {
-      "type": "Point",
-      "coordinates": [
-        77.391,
-        28.5355
-      ]
-    },
-    "shipsyHubCode": "NOI005",
-    "hubCode": "HUB005",
-    "status": "ACTIVE",
-    "createdAt": "2024-01-20T10:30:00Z",
-    "updatedAt": "2024-01-20T10:30:00Z"
-  },
-  {
-    "_id": "672f1234567890abcdef04d8",
-    "name": "Rohtak Regional Warehouse",
-    "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH006",
-    "address": {
-      "addressLine1": "Industrial Area, Sector 6",
-      "addressLine2": "Main Highway Road",
+      "addressLine1": "Industrial Area",
+      "addressLine2": "Delhi Road",
       "state": "Haryana",
       "city": "Rohtak",
       "district": "Rohtak",
@@ -155,20 +101,20 @@
         28.8955
       ]
     },
-    "shipsyHubCode": "ROH006",
-    "hubCode": "HUB006",
+    "shipsyHubCode": "ROH004",
+    "hubCode": "HUB004",
     "status": "ACTIVE",
-    "createdAt": "2024-01-21T10:30:00Z",
-    "updatedAt": "2024-01-21T10:30:00Z"
+    "createdAt": "2024-01-19T10:30:00Z",
+    "updatedAt": "2024-01-19T10:30:00Z"
   },
   {
-    "_id": "672f1234567890abcdef04d9",
-    "name": "Karnal Regional Warehouse",
+    "_id": "672f1234567890abcdef04d7",
+    "name": "Karnal Distribution Center",
     "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH007",
+    "zohoWarehouseId": "WH005",
     "address": {
-      "addressLine1": "Industrial Area, Sector 7",
-      "addressLine2": "Main Highway Road",
+      "addressLine1": "Industrial Area, Sector 12",
+      "addressLine2": "GT Road",
       "state": "Haryana",
       "city": "Karnal",
       "district": "Karnal",
@@ -182,7 +128,61 @@
         29.6857
       ]
     },
-    "shipsyHubCode": "KAR007",
+    "shipsyHubCode": "KAR005",
+    "hubCode": "HUB005",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-20T10:30:00Z",
+    "updatedAt": "2024-01-20T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04d8",
+    "name": "Hisar Western Haryana Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH006",
+    "address": {
+      "addressLine1": "Industrial Estate",
+      "addressLine2": "Chandigarh Road",
+      "state": "Haryana",
+      "city": "Hisar",
+      "district": "Hisar",
+      "pincode": 125001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        75.7217,
+        29.1492
+      ]
+    },
+    "shipsyHubCode": "HIS006",
+    "hubCode": "HUB006",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-21T10:30:00Z",
+    "updatedAt": "2024-01-21T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04d9",
+    "name": "Ambala Northern Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH007",
+    "address": {
+      "addressLine1": "Industrial Area, Phase I",
+      "addressLine2": "NH-1",
+      "state": "Haryana",
+      "city": "Ambala",
+      "district": "Ambala",
+      "pincode": 134001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        76.7821,
+        30.3752
+      ]
+    },
+    "shipsyHubCode": "AMB007",
     "hubCode": "HUB007",
     "status": "ACTIVE",
     "createdAt": "2024-01-22T10:30:00Z",
@@ -190,12 +190,93 @@
   },
   {
     "_id": "672f1234567890abcdef04da",
-    "name": "Aligarh Regional Warehouse",
+    "name": "Noida Tech Park Warehouse",
     "type": "WAREHOUSE",
     "zohoWarehouseId": "WH008",
     "address": {
-      "addressLine1": "Industrial Area, Sector 8",
-      "addressLine2": "Main Highway Road",
+      "addressLine1": "Sector 62",
+      "addressLine2": "Electronic City",
+      "state": "Uttar Pradesh",
+      "city": "Noida",
+      "district": "Gautam Buddha Nagar",
+      "pincode": 201301,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        77.391,
+        28.5355
+      ]
+    },
+    "shipsyHubCode": "NOI008",
+    "hubCode": "HUB008",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-23T10:30:00Z",
+    "updatedAt": "2024-01-23T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04db",
+    "name": "Ghaziabad Industrial Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH009",
+    "address": {
+      "addressLine1": "Industrial Area, Site IV",
+      "addressLine2": "NH-24",
+      "state": "Uttar Pradesh",
+      "city": "Ghaziabad",
+      "district": "Ghaziabad",
+      "pincode": 201001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        77.4538,
+        28.6692
+      ]
+    },
+    "shipsyHubCode": "GHA009",
+    "hubCode": "HUB009",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-24T10:30:00Z",
+    "updatedAt": "2024-01-24T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04dc",
+    "name": "Meerut Western UP Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH010",
+    "address": {
+      "addressLine1": "Industrial Area, Partapur",
+      "addressLine2": "Delhi Road",
+      "state": "Uttar Pradesh",
+      "city": "Meerut",
+      "district": "Meerut",
+      "pincode": 250001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        77.7064,
+        28.9845
+      ]
+    },
+    "shipsyHubCode": "MEE010",
+    "hubCode": "HUB010",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-25T10:30:00Z",
+    "updatedAt": "2024-01-25T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04dd",
+    "name": "Aligarh Central UP Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH011",
+    "address": {
+      "addressLine1": "Industrial Area",
+      "addressLine2": "Grand Trunk Road",
       "state": "Uttar Pradesh",
       "city": "Aligarh",
       "district": "Aligarh",
@@ -209,20 +290,155 @@
         27.8974
       ]
     },
-    "shipsyHubCode": "ALI008",
-    "hubCode": "HUB008",
+    "shipsyHubCode": "ALI011",
+    "hubCode": "HUB011",
     "status": "ACTIVE",
-    "createdAt": "2024-01-23T10:30:00Z",
-    "updatedAt": "2024-01-23T10:30:00Z"
+    "createdAt": "2024-01-26T10:30:00Z",
+    "updatedAt": "2024-01-26T10:30:00Z"
   },
   {
-    "_id": "672f1234567890abcdef04db",
-    "name": "Alwar Regional Warehouse",
+    "_id": "672f1234567890abcdef04de",
+    "name": "Agra Heritage City Hub",
     "type": "WAREHOUSE",
-    "zohoWarehouseId": "WH009",
+    "zohoWarehouseId": "WH012",
     "address": {
-      "addressLine1": "Industrial Area, Sector 9",
-      "addressLine2": "Main Highway Road",
+      "addressLine1": "Industrial Area, Sikandra",
+      "addressLine2": "Mathura Road",
+      "state": "Uttar Pradesh",
+      "city": "Agra",
+      "district": "Agra",
+      "pincode": 282001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        78.0081,
+        27.1767
+      ]
+    },
+    "shipsyHubCode": "AGR012",
+    "hubCode": "HUB012",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-27T10:30:00Z",
+    "updatedAt": "2024-01-27T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04df",
+    "name": "Lucknow Capital Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH013",
+    "address": {
+      "addressLine1": "Gomti Nagar Industrial Area",
+      "addressLine2": "Shaheed Path",
+      "state": "Uttar Pradesh",
+      "city": "Lucknow",
+      "district": "Lucknow",
+      "pincode": 226001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        80.9462,
+        26.8467
+      ]
+    },
+    "shipsyHubCode": "LUC013",
+    "hubCode": "HUB013",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-28T10:30:00Z",
+    "updatedAt": "2024-01-28T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e0",
+    "name": "Kanpur Industrial Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH014",
+    "address": {
+      "addressLine1": "Panki Industrial Area",
+      "addressLine2": "GT Road",
+      "state": "Uttar Pradesh",
+      "city": "Kanpur",
+      "district": "Kanpur Nagar",
+      "pincode": 208001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        80.3319,
+        26.4499
+      ]
+    },
+    "shipsyHubCode": "KAN014",
+    "hubCode": "HUB014",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-29T10:30:00Z",
+    "updatedAt": "2024-01-29T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e1",
+    "name": "Bareilly Northern UP Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH015",
+    "address": {
+      "addressLine1": "Industrial Area",
+      "addressLine2": "Delhi Road",
+      "state": "Uttar Pradesh",
+      "city": "Bareilly",
+      "district": "Bareilly",
+      "pincode": 243001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        79.4304,
+        28.367
+      ]
+    },
+    "shipsyHubCode": "BAR015",
+    "hubCode": "HUB015",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-30T10:30:00Z",
+    "updatedAt": "2024-01-30T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e2",
+    "name": "Jaipur Pink City Warehouse",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH016",
+    "address": {
+      "addressLine1": "Sitapura Industrial Area",
+      "addressLine2": "Tonk Road",
+      "state": "Rajasthan",
+      "city": "Jaipur",
+      "district": "Jaipur",
+      "pincode": 302001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        75.7873,
+        26.9124
+      ]
+    },
+    "shipsyHubCode": "JAI016",
+    "hubCode": "HUB016",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-31T10:30:00Z",
+    "updatedAt": "2024-01-31T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e3",
+    "name": "Alwar Eastern Rajasthan Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH017",
+    "address": {
+      "addressLine1": "Industrial Area",
+      "addressLine2": "Delhi Road",
       "state": "Rajasthan",
       "city": "Alwar",
       "district": "Alwar",
@@ -236,10 +452,91 @@
         27.553
       ]
     },
-    "shipsyHubCode": "ALW009",
-    "hubCode": "HUB009",
+    "shipsyHubCode": "ALW017",
+    "hubCode": "HUB017",
     "status": "ACTIVE",
-    "createdAt": "2024-01-24T10:30:00Z",
-    "updatedAt": "2024-01-24T10:30:00Z"
+    "createdAt": "2024-01-32T10:30:00Z",
+    "updatedAt": "2024-01-32T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e4",
+    "name": "Ajmer Central Rajasthan Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH018",
+    "address": {
+      "addressLine1": "Industrial Area",
+      "addressLine2": "Jaipur Road",
+      "state": "Rajasthan",
+      "city": "Ajmer",
+      "district": "Ajmer",
+      "pincode": 305001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        74.6399,
+        26.4499
+      ]
+    },
+    "shipsyHubCode": "AJM018",
+    "hubCode": "HUB018",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-33T10:30:00Z",
+    "updatedAt": "2024-01-33T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e5",
+    "name": "Jodhpur Western Rajasthan Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH019",
+    "address": {
+      "addressLine1": "Industrial Area, Basni",
+      "addressLine2": "NH-65",
+      "state": "Rajasthan",
+      "city": "Jodhpur",
+      "district": "Jodhpur",
+      "pincode": 342001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        73.0243,
+        26.2389
+      ]
+    },
+    "shipsyHubCode": "JOD019",
+    "hubCode": "HUB019",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-34T10:30:00Z",
+    "updatedAt": "2024-01-34T10:30:00Z"
+  },
+  {
+    "_id": "672f1234567890abcdef04e6",
+    "name": "Kota Industrial Hub",
+    "type": "WAREHOUSE",
+    "zohoWarehouseId": "WH020",
+    "address": {
+      "addressLine1": "Industrial Area",
+      "addressLine2": "Bundi Road",
+      "state": "Rajasthan",
+      "city": "Kota",
+      "district": "Kota",
+      "pincode": 324001,
+      "country": "India"
+    },
+    "geoLocation": {
+      "type": "Point",
+      "coordinates": [
+        75.8648,
+        25.2138
+      ]
+    },
+    "shipsyHubCode": "KOT020",
+    "hubCode": "HUB020",
+    "status": "ACTIVE",
+    "createdAt": "2024-01-35T10:30:00Z",
+    "updatedAt": "2024-01-35T10:30:00Z"
   }
 ]
